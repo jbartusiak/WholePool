@@ -1,4 +1,4 @@
-package com.jba.web;
+package com.jba;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
