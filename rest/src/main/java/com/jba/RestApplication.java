@@ -1,4 +1,4 @@
-package com.jba.rest;
+package com.jba;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RestApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(RestApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(RestApplication.class, args);
+	}
 
-    @RequestMapping("/")
-    public String home() {
-        return "Hello Docker World";
-    }
+	@RequestMapping("/")
+	public String hello(){
+		return "hello";
+	}
 }
