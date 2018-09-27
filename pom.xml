@@ -24,6 +24,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>dao</module>
         <module>web</module>
         <module>rest</module>
     </modules>
