@@ -1,16 +1,12 @@
 package com.jba;
 
-import com.jba.dao.user.UserType;
+import com.jba.dao.user.enitity.UserType;
+import com.jba.session.WPLSessionFactory;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 public class Main {
     public static void main(String[] args) {
-        Configuration configuration;
-        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(UserType.class).buildSessionFactory();
-
-        Session session = factory.getCurrentSession();
+        Session session = WPLSessionFactory.getDBSession();
 
         try{
             System.out.println("Creating a new user type.");
@@ -28,7 +24,7 @@ public class Main {
             System.out.println("Done");
         }
         finally {
-            factory.close();
+            WPLSessionFactory.close();
         }
 
     }

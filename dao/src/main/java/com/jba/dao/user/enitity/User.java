@@ -1,4 +1,4 @@
-package com.jba.dao.user;
+package com.jba.dao.user.enitity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
