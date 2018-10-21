@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class WPLSessionFactory {
 
     private static SessionFactory FACTORY_INSTANCE;
-    private static ArrayList<Session> sessionsHandedOut;
+    private static ArrayList<Session> sessnionRegister;
 
     private WPLSessionFactory(){
 
@@ -18,23 +18,34 @@ public class WPLSessionFactory {
 
     private static SessionFactory getInstance(){
         if(FACTORY_INSTANCE==null){
-            FACTORY_INSTANCE = new Configuration()
-                    .configure("hibernate.cfg.xml")
-                    .addAnnotatedClass(UserType.class)
-                    .buildSessionFactory();
-            sessionsHandedOut = new ArrayList<>();
+            FACTORY_INSTANCE = initialize();
+            sessnionRegister = new ArrayList<>();
+        }
+        if(FACTORY_INSTANCE.isClosed()){
+            FACTORY_INSTANCE = initialize();
         }
         return FACTORY_INSTANCE;
     }
 
+    private static SessionFactory initialize(){
+        return new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(UserType.class)
+                .buildSessionFactory();
+    }
+
     public static Session getDBSession(){
-        Session session = getInstance().getCurrentSession();
-        sessionsHandedOut.add(session);
+        Session session = getInstance().openSession();
+        sessnionRegister.add(session);
         return session;
     }
 
     public static void closeAndFinalize(){
-        sessionsHandedOut.forEach(session -> session.close());
+        sessnionRegister.forEach(session ->{
+            if(session.isOpen()) {
+                session.close();
+            }
+        });
         getInstance().close();
     }
 
