@@ -1,5 +1,7 @@
 package com.jba;
 
+import com.jba.dao.user.dao.UserDAO;
+import com.jba.dao.user.enitity.User;
 import com.jba.dao.user.enitity.UserType;
 import com.jba.session.WPLSessionFactory;
 import org.hibernate.Session;
@@ -22,9 +24,10 @@ public class Main {
             session.getTransaction().commit();
 
             System.out.println("Done");
+
         }
         finally {
-            WPLSessionFactory.close();
+            WPLSessionFactory.closeAndFinalize();
         }
 
     }

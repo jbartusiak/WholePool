@@ -13,6 +13,7 @@ import java.sql.Date;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="pk_user_id")
     private int userId;
 

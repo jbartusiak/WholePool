@@ -30,7 +30,6 @@ public class WPLSessionFactory {
     private static SessionFactory initialize(){
         return new Configuration()
                 .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(UserType.class)
                 .buildSessionFactory();
     }
 

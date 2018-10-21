@@ -3,9 +3,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-
     <session-factory>
-
         <!-- JDBC Database connection settings -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/wholepool?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
@@ -23,7 +21,7 @@
 
 		<!-- Set the current session context -->
 		<property name="current_session_context_class">thread</property>
- 
-    </session-factory>
 
+        <mapping package="com.jba.dao"/>
+    </session-factory>
 </hibernate-configuration>

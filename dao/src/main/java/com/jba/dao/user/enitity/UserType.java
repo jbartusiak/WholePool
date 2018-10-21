@@ -5,10 +5,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="UserType")
+
 @NoArgsConstructor
 @Data
+@Entity
+@Table(name="UserType")
 public class UserType {
 
     @Id
