@@ -7,10 +7,24 @@ import org.hibernate.Session;
 
 import java.util.List;
 
+
 public class UserDAO {
 
     private UserDAO(){
 
+    }
+
+    public static List<User> getAllUsers(){
+        Session session = WPLSessionFactory.getDBSession();
+        session.beginTransaction();
+
+        List<User> result = session.createQuery("from User u").getResultList();
+
+        session.getTransaction().commit();
+
+        WPLSessionFactory.closeSession(session);
+
+        return result;
     }
 
     public static User getUserById(int id){
@@ -28,17 +42,6 @@ public class UserDAO {
 
     public static List<UserType> getUserByUsername(String username){
         //todo: Implement
-
-        Session session = WPLSessionFactory.getDBSession();
-        session.beginTransaction();
-
-        List<User> result = session
-                .createQuery(" from UserType u")
-                .getResultList();
-
-        session.getTransaction().commit();
-
-        WPLSessionFactory.closeSession(session);
 
         return null;
     }

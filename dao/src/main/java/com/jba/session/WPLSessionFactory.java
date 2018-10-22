@@ -1,6 +1,5 @@
 package com.jba.session;
 
-import com.jba.dao.user.enitity.UserType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -30,6 +29,7 @@ public class WPLSessionFactory {
     private static SessionFactory initialize(){
         return new Configuration()
                 .configure("hibernate.cfg.xml")
+                .addPackage("com.jba.dao")
                 .buildSessionFactory();
     }
 
