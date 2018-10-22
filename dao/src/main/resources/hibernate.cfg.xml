@@ -24,6 +24,8 @@
         <property name="hibernate.default_schema">wholepool</property>
 
         <!-- Entities -->
+        <mapping class="com.jba.dao.blocked.entity.BlockStatus"/>
+
         <mapping class="com.jba.dao.user.enitity.User"/>
         <mapping class="com.jba.dao.user.enitity.UserType"/>
 
