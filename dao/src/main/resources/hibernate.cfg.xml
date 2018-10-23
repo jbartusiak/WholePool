@@ -25,6 +25,7 @@
 
         <!-- Entities -->
         <mapping class="com.jba.dao.blocked.entity.BlockStatus"/>
+        <mapping class="com.jba.dao.blocked.entity.BlockedUsers"/>
 
         <mapping class="com.jba.dao.user.enitity.User"/>
         <mapping class="com.jba.dao.user.enitity.UserType"/>
