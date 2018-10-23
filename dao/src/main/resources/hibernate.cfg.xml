@@ -30,6 +30,8 @@
         <mapping class="com.jba.dao.user.enitity.User"/>
         <mapping class="com.jba.dao.user.enitity.UserType"/>
 
+        <mapping class="com.jba.dao.cars.entity.CarType"/>
+
     </session-factory>
 
 </hibernate-configuration>
