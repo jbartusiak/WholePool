@@ -32,6 +32,7 @@
 
         <mapping class="com.jba.dao.cars.entity.CarType"/>
         <mapping class="com.jba.dao.cars.entity.Car"/>
+        <mapping class="com.jba.dao.cars.entity.UsersCars"/>
 
     </session-factory>
 
