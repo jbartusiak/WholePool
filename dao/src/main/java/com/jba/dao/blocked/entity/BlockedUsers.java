@@ -13,7 +13,7 @@ import java.util.Date;
 public class BlockedUsers implements Serializable {
 
     @Id
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name="fk_blocked_user_id")
     private User user;
 
