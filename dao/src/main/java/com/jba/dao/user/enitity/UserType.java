@@ -1,8 +1,10 @@
 package com.jba.dao.user.enitity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,6 +17,10 @@ public class UserType {
 
     @Column(name="type_name")
     String typeName;
+
+    @OneToMany(mappedBy = "userType")
+    @ToString.Exclude
+    private Set<User> usersOfThisType;
 
     public UserType(){}
 

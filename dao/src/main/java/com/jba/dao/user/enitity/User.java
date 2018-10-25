@@ -1,9 +1,12 @@
 package com.jba.dao.user.enitity;
 
+import com.jba.dao.blocked.entity.BlockedUsers;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name="User")
@@ -17,7 +20,7 @@ public class User {
     @Column(name="pk_user_id")
     private int userId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="fk_user_type_id")
     private UserType userType;
 
@@ -39,4 +42,8 @@ public class User {
 
     @Column(name="user_name")
     private String userName;
+
+    @OneToMany(mappedBy = "blockedBy")
+    @ToString.Exclude
+    private Set<BlockedUsers> blockedByThisUser;
 }

@@ -1,8 +1,10 @@
 package com.jba.dao.blocked.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,4 +23,8 @@ public class BlockStatus {
 
     @Column(name="status_reversible")
     private boolean isReversible;
+
+    @OneToMany(mappedBy = "blockStatus", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private Set<BlockedUsers> usersWithThisStatus;
 }
