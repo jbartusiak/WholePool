@@ -36,6 +36,9 @@
 
         <mapping class="com.jba.dao.source.entity.Source"/>
 
+        <mapping class="com.jba.dao.ride.enitity.RideDetails"/>
+        <mapping class="com.jba.dao.ride.enitity.Ride"/>
+
     </session-factory>
 
 </hibernate-configuration>
