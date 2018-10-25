@@ -34,6 +34,8 @@
         <mapping class="com.jba.dao.cars.entity.Car"/>
         <mapping class="com.jba.dao.cars.entity.UsersCars"/>
 
+        <mapping class="com.jba.dao.source.entity.Source"/>
+
     </session-factory>
 
 </hibernate-configuration>
