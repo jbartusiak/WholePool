@@ -42,5 +42,5 @@ public class Ride {
     @OneToMany(mappedBy = "ride")
     @ToString.Exclude
     private Set<RidePassangers> passengers;
-    
+
 }

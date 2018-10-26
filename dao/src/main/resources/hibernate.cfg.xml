@@ -30,6 +30,9 @@
         <mapping class="com.jba.dao.user.enitity.User"/>
         <mapping class="com.jba.dao.user.enitity.UserType"/>
 
+        <mapping class="com.jba.dao.preferences.entity.Preference"/>
+
+
         <mapping class="com.jba.dao.cars.entity.CarType"/>
         <mapping class="com.jba.dao.cars.entity.Car"/>
         <mapping class="com.jba.dao.cars.entity.UsersCars"/>
