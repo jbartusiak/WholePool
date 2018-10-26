@@ -23,5 +23,5 @@ public class SearchHistory {
     @ManyToOne
     @JoinColumn(name = "FK_HISTORY_SEARCH_ID")
     private Search usersSearch;
-    
+
 }
