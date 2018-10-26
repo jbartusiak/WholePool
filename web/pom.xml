@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.jba</groupId>
             <artifactId>wholepool-dao</artifactId>
-            <version>${daoModuleVersion}</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
