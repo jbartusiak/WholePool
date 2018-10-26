@@ -1,6 +1,7 @@
 package com.jba.dao.route.entity;
 
 import com.jba.dao.ride.enitity.Ride;
+import com.jba.dao.search.entity.Search;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,4 +42,8 @@ public class Route {
     @OneToMany(mappedBy = "routeForThisRide")
     @ToString.Exclude
     private Set<Ride> ridesThatTakePlaceOnThisRoute;
+
+    @OneToMany(mappedBy = "route")
+    @ToString.Exclude
+    private Set<Search> existsInSearches;
 }

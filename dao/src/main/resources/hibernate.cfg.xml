@@ -42,6 +42,8 @@
         <mapping class="com.jba.dao.route.entity.Route"/>
         <mapping class="com.jba.dao.route.entity.PopularRoute"/>
 
+        <mapping class="com.jba.dao.search.entity.Search"/>
+
     </session-factory>
 
 </hibernate-configuration>
