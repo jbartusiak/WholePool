@@ -30,5 +30,5 @@ public class Search {
 
     @Column(name = "OREDER_CRITERIA")
     private String orderCriteria;
-    
+
 }
