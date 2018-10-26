@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "userspreference")
-public class UsersPreference {
+public class UsersPreference implements Serializable {
 
     @Id
     @ManyToOne

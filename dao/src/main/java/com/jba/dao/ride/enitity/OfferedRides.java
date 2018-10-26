@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "offeredrides")
-public class OfferedRides {
+public class OfferedRides implements Serializable {
 
     @Id
     @ManyToOne

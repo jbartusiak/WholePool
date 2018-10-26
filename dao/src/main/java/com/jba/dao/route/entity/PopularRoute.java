@@ -6,17 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "popularroute")
-public class PopularRoute {
+public class PopularRoute implements Serializable {
 
     @Id
-    @OneToOne
-    @Column(name = "FK_POP_RIDE_ID")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "FK_POP_RIDE_ID")
     private Route rideId;
 
     @Column(name = "POPULAR_AVERAGE_PRICE")

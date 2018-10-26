@@ -35,7 +35,7 @@ class UsersCarsTest {
     @Test
     void shouldInsertAndGetBackANewCarForAUser(){
         session.beginTransaction();
-        User theUser = session.createQuery("from User u where u.userName='satanicus1991'", User.class).getSingleResult();
+        User theUser = session.createQuery("from User u where u.userName='ambiguous1991'", User.class).getSingleResult();
         CarType carType = new CarType("a super racer");
         Car car = new Car(carType, "satanicus1991 car", "ABCABC123", 2018);
 

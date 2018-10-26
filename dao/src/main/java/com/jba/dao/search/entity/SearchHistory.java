@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "searchhistory")
-public class SearchHistory {
+public class SearchHistory implements Serializable {
 
     @Id
     @ManyToOne

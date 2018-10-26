@@ -17,7 +17,7 @@ public class Search {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FK_ROUTE_ID")
+    @Column(name = "PK_SEARCH_ID")
     private long searchId;
 
     @ManyToOne
