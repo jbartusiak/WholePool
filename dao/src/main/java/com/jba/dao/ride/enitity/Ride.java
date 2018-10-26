@@ -6,7 +6,6 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
@@ -25,13 +24,10 @@ public class Ride {
     @NotNull
     private Source route;
 
-    /* TODO: Implement Route and then uncomment
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "FK_RIDE_ROUTE_ID")
-    @ToString.Exclude
     @NotNull
-    private Set<Route> route;
-    */
+    private Route routeForThisRide;
 
     @Column(name = "RIDE_CAN_SMOKE")
     private boolean allowSmokers;

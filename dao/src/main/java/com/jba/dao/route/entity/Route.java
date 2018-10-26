@@ -38,7 +38,7 @@ public class Route {
     @Column(name="ROUTE_TO_LOCATION")
     private String routeToLocation;
 
-    @OneToMany()//TODO: add mapped by
+    @OneToMany(mappedBy = "routeForThisRide")
     @ToString.Exclude
     private Set<Ride> ridesThatTakePlaceOnThisRoute;
 }
