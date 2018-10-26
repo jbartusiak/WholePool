@@ -1,6 +1,7 @@
 package com.jba.dao.user.enitity;
 
 import com.jba.dao.blocked.entity.BlockedUsers;
+import com.jba.dao.ride.enitity.RidePassangers;
 import lombok.Data;
 import lombok.ToString;
 
@@ -46,4 +47,8 @@ public class User {
     @OneToMany(mappedBy = "blockedBy")
     @ToString.Exclude
     private Set<BlockedUsers> blockedByThisUser;
+
+    @OneToMany(mappedBy = "passenger")
+    @ToString.Exclude
+    private Set<RidePassangers> isPassengerAtRides;
 }

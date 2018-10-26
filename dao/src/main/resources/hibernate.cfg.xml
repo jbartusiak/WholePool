@@ -39,6 +39,7 @@
         <mapping class="com.jba.dao.ride.enitity.RideDetails"/>
         <mapping class="com.jba.dao.ride.enitity.Ride"/>
         <mapping class="com.jba.dao.ride.enitity.OfferedRides"/>
+        <mapping class="com.jba.dao.ride.enitity.RidePassangers"/>
 
         <mapping class="com.jba.dao.route.entity.Route"/>
         <mapping class="com.jba.dao.route.entity.PopularRoute"/>

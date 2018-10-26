@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -37,4 +38,9 @@ public class Ride {
 
     @Column(name="RIDE_NO_OF_SEATS")
     private int nrOfSeats;
+
+    @OneToMany(mappedBy = "ride")
+    @ToString.Exclude
+    private Set<RidePassangers> passengers;
+    
 }
