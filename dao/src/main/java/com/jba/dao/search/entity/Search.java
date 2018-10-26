@@ -28,7 +28,7 @@ public class Search {
     @Column(name = "SEARCH_CRITERIA")
     private String searchCriteria;
 
-    @Column(name = "OREDER_CRITERIA")
+    @Column(name = "ORDER_CRITERIA")
     private String orderCriteria;
 
 }
