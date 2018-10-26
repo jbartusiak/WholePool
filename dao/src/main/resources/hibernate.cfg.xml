@@ -43,6 +43,7 @@
         <mapping class="com.jba.dao.route.entity.PopularRoute"/>
 
         <mapping class="com.jba.dao.search.entity.Search"/>
+        <mapping class="com.jba.dao.search.entity.SearchHistory"/>
 
     </session-factory>
 
