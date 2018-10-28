@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//TODO Implement
 class OfferedRidesTest {
 
     private Session session;
