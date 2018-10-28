@@ -30,6 +30,14 @@ class SearchHistoryTest {
         session.getTransaction().commit();
     }
 
+    @Test
+    void deleteTest(){
+        session.beginTransaction();
+        SearchHistory history = session.createQuery("from SearchHistory h where h.searchOwner.id=1 and h.usersSearch.id=1", SearchHistory.class).getSingleResult();
+        session.delete(history);
+        session.getTransaction().commit();
+    }
+
     @AfterEach
     void tearDown() {
         WPLSessionFactory.closeAndFinalize();

@@ -63,7 +63,6 @@ class RideTest {
                 "from Ride r where r.sourceId.sourceName='localhost' and r.routeForThisRide.routeFromLocation='xxx'",
                 Ride.class).getResultList().get(0);
 
-        session.delete(ride);
         session.getTransaction().commit();
     }
 

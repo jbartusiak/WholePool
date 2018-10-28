@@ -24,6 +24,7 @@ class RidePassangersTest {
     @Test
     void createDBObject(){
         session.beginTransaction();
+
         Ride ride = session.createQuery("from Ride",Ride.class).getResultList().get(0);
         System.out.println(ride.toString());
 
@@ -36,12 +37,20 @@ class RidePassangersTest {
 
         RidePassangers passangers = new RidePassangers(user,ride);
 
-        session.save(passangers);
-
-        passangers = new RidePassangers(user2,ride);
+        session.delete(passangers);
 
         session.save(passangers);
 
+        RidePassangers passangers2 = new RidePassangers(user2,ride);
+
+        session.save(passangers);
+
+        session.getTransaction().commit();
+
+        session.beginTransaction();
+        session.delete(passangers);
+        session.delete(passangers2);
+        session.delete(user2);
         session.getTransaction().commit();
     }
 

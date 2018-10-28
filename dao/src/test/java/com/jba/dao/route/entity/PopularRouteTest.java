@@ -24,6 +24,10 @@ class PopularRouteTest {
         PopularRoute popularRoute = new PopularRoute(route,2.0,3.0,1.0,2);
         session.save(popularRoute);
         session.getTransaction().commit();
+
+        session.beginTransaction();
+        session.delete(popularRoute);
+        session.getTransaction().commit();
     }
 
     @AfterEach
