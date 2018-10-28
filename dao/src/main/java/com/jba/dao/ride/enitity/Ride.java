@@ -17,12 +17,13 @@ public class Ride {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PK_RIDE_ID")
     private int rideId;
 
     @ManyToOne
     @JoinColumn(name = "FK_RIDE_SOURCE_ID")
     @NonNull
-    private Source route;
+    private Source sourceId;
 
     @ManyToOne
     @JoinColumn(name = "FK_RIDE_ROUTE_ID")
