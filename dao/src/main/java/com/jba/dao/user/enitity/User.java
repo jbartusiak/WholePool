@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
@@ -37,7 +37,6 @@ public class User {
     @Column(name="user_last_name")
     private String lastName;
 
-    @Temporal(TemporalType.DATE)
     @Column(name="user_date_of_birth")
     private Date dateOfBirth;
 
