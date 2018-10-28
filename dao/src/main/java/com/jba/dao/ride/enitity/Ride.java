@@ -11,23 +11,23 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@RequiredArgsConstructor
 @Table(name = "ride")
 public class Ride {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
+    @Column(name = "PK_RIDE_ID")
     private int rideId;
 
     @ManyToOne
     @JoinColumn(name = "FK_RIDE_SOURCE_ID")
-    @NotNull
-    private Source route;
+    @NonNull
+    private Source sourceId;
 
     @ManyToOne
     @JoinColumn(name = "FK_RIDE_ROUTE_ID")
-    @NotNull
+    @NonNull
     private Route routeForThisRide;
 
     @Column(name = "RIDE_CAN_SMOKE")

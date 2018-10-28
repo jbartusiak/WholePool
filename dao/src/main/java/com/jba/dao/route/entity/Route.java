@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @Table(name = "route")
 public class Route {

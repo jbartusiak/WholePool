@@ -1,17 +1,14 @@
 package com.jba.dao.search.entity;
 
 import com.jba.dao.route.entity.Route;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "search")
 public class Search {
 
@@ -26,9 +23,11 @@ public class Search {
     private Route route;
 
     @Column(name = "SEARCH_CRITERIA")
+    @NonNull
     private String searchCriteria;
 
     @Column(name = "ORDER_CRITERIA")
+    @NonNull
     private String orderCriteria;
 
 }

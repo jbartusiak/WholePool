@@ -2,11 +2,10 @@ package com.jba.dao.blocked.entity;
 
 import com.jba.dao.user.enitity.User;
 import lombok.Data;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name="blockedusers")
