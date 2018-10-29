@@ -6,18 +6,23 @@ import org.hibernate.Session;
 @UtilityClass
 public class DBUtils {
 
-    public static Object saveOrUpdate(Session session, Object object){
-        try{
+    public static Object saveOrUpdate(Object object){
+        Session session = WPLSessionFactory.getDBSession();
+
+        try(session){
+            session.beginTransaction();
             session.saveOrUpdate(object);
             session.getTransaction().commit();
-            session.close();
-            return object;
         }
         catch (Exception e){
             session.getTransaction().rollback();
-            session.close();
             e.printStackTrace();
             return null;
         }
+        finally {
+            session.close();
+        }
+        if (session.isOpen() != false) throw new AssertionError();
+        return object;
     }
 }
