@@ -4,7 +4,9 @@ import com.jba.dao.preferences.entity.Preference;
 import com.jba.dao.preferences.entity.UsersPreference;
 import com.jba.dao.user.enitity.User;
 import com.jba.dao.user.enitity.UserType;
+import com.jba.session.DBUtils;
 import com.jba.session.WPLSessionFactory;
+import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 
@@ -12,12 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@UtilityClass
 public class UserDAO {
-
-    private UserDAO(){
-
-    }
 
     public static User getUserById(int id){
         Session session = WPLSessionFactory.getDBSession();
@@ -94,7 +92,7 @@ public class UserDAO {
         Session session = WPLSessionFactory.getDBSession();
         session.beginTransaction();
 
-        saveOrUpdate(session,user);
+        DBUtils.saveOrUpdate(session,user);
     }
 
     public static UsersPreference setPreference(User user, Preference preference, String value){
@@ -136,7 +134,7 @@ public class UserDAO {
         Session session = WPLSessionFactory.getDBSession();
         session.beginTransaction();
 
-        saveOrUpdate(session,user);
+        DBUtils.saveOrUpdate(session,user);
 
         return user;
     }
@@ -147,19 +145,6 @@ public class UserDAO {
 
         user.setPasswordHash(passwordHash);
 
-        saveOrUpdate(session, user);
-    }
-
-    private static void saveOrUpdate(Session session, Object object){
-        try{
-            session.saveOrUpdate(object);
-            session.getTransaction().commit();
-            session.close();
-        }
-        catch (Exception e){
-            session.getTransaction().rollback();
-            session.close();
-            e.printStackTrace();
-        }
+        DBUtils.saveOrUpdate(session, user);
     }
 }
