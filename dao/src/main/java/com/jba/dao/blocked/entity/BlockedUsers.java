@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-@Table(name="blockedusers")
+@Table(name="BlockedUsers")
 @Data
 public class BlockedUsers implements Serializable {
 

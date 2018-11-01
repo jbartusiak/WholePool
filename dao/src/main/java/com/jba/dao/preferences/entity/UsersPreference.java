@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "userspreference")
+@Table(name = "UsersPreference")
 public class UsersPreference implements Serializable {
 
     @Id

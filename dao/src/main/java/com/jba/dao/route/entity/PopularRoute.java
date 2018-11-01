@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "popularroute")
+@Table(name = "PopularRoute")
 public class PopularRoute implements Serializable {
 
     @Id

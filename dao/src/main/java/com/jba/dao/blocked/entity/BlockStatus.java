@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name="blockstatus")
+@Table(name="BlockStatus")
 public class BlockStatus {
 
     public BlockStatus(){}

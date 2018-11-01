@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="usertype")
+@Table(name="UserType")
 public class UserType {
 
     @Id

@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "preference")
+@Table(name = "Preference")
 public class Preference {
 
     @Id

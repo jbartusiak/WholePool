@@ -8,7 +8,7 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "ridedetails")
+@Table(name = "RideDetails")
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class RideDetails implements Serializable {

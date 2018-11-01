@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "search")
+@Table(name = "Search")
 public class Search {
 
     @Id

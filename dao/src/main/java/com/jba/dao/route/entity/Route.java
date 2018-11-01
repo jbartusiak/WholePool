@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Table(name = "route")
+@Table(name = "Route")
 public class Route {
 
     @Id
