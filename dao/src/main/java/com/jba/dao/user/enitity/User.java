@@ -56,4 +56,10 @@ public class User {
     @OneToMany(mappedBy = "passenger")
     @ToString.Exclude
     private Set<RidePassangers> isPassengerAtRides;
+
+    public static User of(int id){
+        User user = new User();
+        user.setUserId(id);
+        return user;
+    }
 }
