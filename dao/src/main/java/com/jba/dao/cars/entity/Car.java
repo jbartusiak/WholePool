@@ -7,7 +7,7 @@ import java.time.Year;
 
 @Entity
 @Data
-@Table(name = "car")
+@Table(name = "Car")
 public class Car {
 
     @Id

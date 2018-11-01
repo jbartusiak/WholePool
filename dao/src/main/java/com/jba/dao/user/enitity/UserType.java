@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name="usertype")
+@Table(name="UserType")
 public class UserType {
 
     @Id
@@ -28,4 +28,9 @@ public class UserType {
         this.typeName=typeName;
     }
 
+    public static UserType of(int id){
+        UserType userType = new UserType();
+        userType.setTypeId(id);
+        return userType;
+    }
 }

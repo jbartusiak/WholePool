@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "ride")
+@Table(name = "Ride")
 public class Ride {
 
     @Id
@@ -39,8 +39,14 @@ public class Ride {
     @Column(name="RIDE_NO_OF_SEATS")
     private int nrOfSeats;
 
+    @Column(name="RIDE_DIRECT_URL")
+    private String directURL;
+
     @OneToMany(mappedBy = "ride")
     @ToString.Exclude
     private Set<RidePassangers> passengers;
 
+    @OneToOne(mappedBy = "rideId")
+    @ToString.Exclude
+    private RideDetails rideDetails;
 }
