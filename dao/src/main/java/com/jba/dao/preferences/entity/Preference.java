@@ -1,17 +1,14 @@
 package com.jba.dao.preferences.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "preference")
+@RequiredArgsConstructor
+@Table(name = "Preference")
 public class Preference {
 
     @Id

@@ -1,45 +1,42 @@
 package com.jba.dao.ride.enitity;
 
-import com.sun.istack.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "ridedetails")
+@Table(name = "RideDetails")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class RideDetails {
+@RequiredArgsConstructor
+public class RideDetails implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rideDetailsId;
+    @OneToOne
+    @JoinColumn(name = "FK_RIDE_ID")
+    @NonNull
+    private Ride rideId;
 
-    @Transient
     @Column(name = "RIDE_DATE_OF_DEPARTURE")
-    @NotNull
+    @NonNull
     private Date dateOfDeparture;
 
-    @Transient
     @Column(name = "RIDE_DATE_OF_ARRIVAL")
-    @NotNull
+    @NonNull
     private Date dateOfArrival;
 
     @Column(name="RIDE_TRAVEL_TIME")
-    @NotNull
+    @NonNull
     private int travelTime;
 
     @Column(name="RIDE_PRICE")
-    @NotNull
+    @NonNull
     private double price;
 
     @Column(name = "RIDE_DESCRIPTION")
-    @NotNull
+    @NonNull
     private String description;
 
 }

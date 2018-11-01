@@ -5,8 +5,20 @@
 <hibernate-configuration>
     <session-factory>
         <!-- JDBC Database connection settings -->
+
+        <!-- AWS
+
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/wholepool?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
+        <property name="connection.url">jdbc:mysql://wholepool-db.ckrms4qkskz1.eu-west-3.rds.amazonaws.com:3306/wholepooltest?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
+        <property name="connection.username">wholepool-writer</property>
+        <property name="connection.password">P@ssw0rd</property>
+
+        -->
+
+        <!--LOCAL -->
+
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/wholepooltest?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
         <property name="connection.username">wholepool-writer</property>
         <property name="connection.password">P@ssw0rd</property>
 

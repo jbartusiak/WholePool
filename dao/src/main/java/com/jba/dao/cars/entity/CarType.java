@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "cartype")
+@Table(name = "CarType")
 public class CarType {
 
     @Id
@@ -22,5 +22,11 @@ public class CarType {
 
     public CarType(String carTypeName){
         this.carTypeName=carTypeName;
+    }
+
+    public static CarType of(int id){
+        CarType carType = new CarType();
+        carType.setCarTypeId(id);
+        return carType;
     }
 }

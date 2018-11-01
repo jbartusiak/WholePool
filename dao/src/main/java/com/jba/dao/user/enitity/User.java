@@ -2,19 +2,18 @@ package com.jba.dao.user.enitity;
 
 import com.jba.dao.blocked.entity.BlockedUsers;
 import com.jba.dao.ride.enitity.RidePassangers;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
 @Table(name="User")
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Data
 public class User {
-
-    public User(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,26 +21,32 @@ public class User {
     private int userId;
 
     @ManyToOne
+    @NonNull
     @JoinColumn(name="fk_user_type_id")
     private UserType userType;
 
     @Column(name="user_email_address")
+    @NonNull
     private String emailAddress;
 
     @Column(name="user_password_hash")
+    @NonNull
     private String passwordHash;
 
     @Column(name="user_first_name")
+    @NonNull
     private String firstName;
 
     @Column(name="user_last_name")
+    @NonNull
     private String lastName;
 
-    @Temporal(TemporalType.DATE)
     @Column(name="user_date_of_birth")
+    @NonNull
     private Date dateOfBirth;
 
     @Column(name="user_name")
+    @NonNull
     private String userName;
 
     @OneToMany(mappedBy = "blockedBy")
@@ -51,4 +56,10 @@ public class User {
     @OneToMany(mappedBy = "passenger")
     @ToString.Exclude
     private Set<RidePassangers> isPassengerAtRides;
+
+    public static User of(int id){
+        User user = new User();
+        user.setUserId(id);
+        return user;
+    }
 }
