@@ -27,4 +27,10 @@ public class BlockStatus {
     @OneToMany(mappedBy = "blockStatus", cascade = CascadeType.ALL)
     @ToString.Exclude
     private Set<BlockedUsers> usersWithThisStatus;
+
+    public static BlockStatus of(int id){
+        BlockStatus blockStatus = new BlockStatus();
+        blockStatus.setBlockStatusId(id);
+        return blockStatus;
+    }
 }
