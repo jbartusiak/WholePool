@@ -39,6 +39,9 @@ public class Ride {
     @Column(name="RIDE_NO_OF_SEATS")
     private int nrOfSeats;
 
+    @Column(name="RIDE_DIRECT_URL")
+    private String directURL;
+
     @OneToMany(mappedBy = "ride")
     @ToString.Exclude
     private Set<RidePassangers> passengers;
