@@ -46,4 +46,7 @@ public class Ride {
     @ToString.Exclude
     private Set<RidePassangers> passengers;
 
+    @OneToOne(mappedBy = "rideId")
+    @ToString.Exclude
+    private RideDetails rideDetails;
 }

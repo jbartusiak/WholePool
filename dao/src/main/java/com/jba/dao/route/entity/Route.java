@@ -40,6 +40,12 @@ public class Route {
     @Column(name="ROUTE_TO_LOCATION")
     private String routeToLocation;
 
+    public static final Route of(int id){
+        Route route = new Route();
+        route.setRouteId(id);
+        return route;
+    }
+
     @OneToMany(mappedBy = "routeForThisRide")
     @ToString.Exclude
     private Set<Ride> ridesThatTakePlaceOnThisRoute;
