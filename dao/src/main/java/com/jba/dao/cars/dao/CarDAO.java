@@ -45,7 +45,7 @@ public class CarDAO {
     public static Car getCarById(int id){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             Car result = session.
@@ -55,10 +55,15 @@ public class CarDAO {
 
             session.getTransaction().commit();
 
+            session.close();
             return result;
         }
         catch (Exception e){
             logger.error("Error fetching car of id "+id, e);
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             return null;
         }
     }
@@ -71,7 +76,7 @@ public class CarDAO {
     public static List<Car> getUsersCars(User user){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session) {
+        try {
             session.beginTransaction();
             List<UsersCars> usersCars = session.
                     createQuery("from UsersCars u where u.user=:user", UsersCars.class).
@@ -84,10 +89,15 @@ public class CarDAO {
 
             usersCars.forEach(car->result.add(car.getCar()));
             session.getTransaction().commit();
+            session.close();
             return result;
         }
         catch (Exception e){
             logger.error("Failed querying for users cars!",e);
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             return new ArrayList<>();
         }
     }
@@ -95,7 +105,7 @@ public class CarDAO {
     public static void deleteCar(Car car){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             UsersCars usersCar = session.
@@ -112,10 +122,14 @@ public class CarDAO {
         }
         catch (Exception e){
             logger.error("Failed to delete user-car association", e);
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
         }
 
         Session session2 = WPLSessionFactory.getDBSession();
-        try(session2){
+        try{
             session2.beginTransaction();
 
             logger.info("Deleting car "+car);
@@ -123,9 +137,15 @@ public class CarDAO {
             session2.delete(car);
 
             session2.getTransaction().commit();
+
+            session2.close();
         }
         catch (Exception e){
             logger.error("Failed to delete car "+car, e);
+            if(session2.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
         }
 
         logger.info("Deletion of car "+car+" successfull!");
@@ -134,7 +154,7 @@ public class CarDAO {
     private static Set<CarType> getAllCarTypes(){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             Set<CarType> carTypes = session.
@@ -144,10 +164,15 @@ public class CarDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return carTypes;
         }
         catch (Exception e){
             logger.error("Error while fetching car types!", e);
+            if(session.isOpen()){
+                session.close();
+            }
             return new HashSet<>();
         }
     }
@@ -174,14 +199,18 @@ public class CarDAO {
 
     public static CarType deleteCarType(CarType carType){
         Session session = WPLSessionFactory.getDBSession();
-        try(session){
+        try{
             session.beginTransaction();
 
             session.delete(carType);
 
             session.getTransaction().commit();
+            session.close();
         }
         catch (Exception e){
+            if(session.isOpen()){
+                session.close();
+            }
             logger.error("Error trying to delete carType "+carType, e);
         }
         return carType;

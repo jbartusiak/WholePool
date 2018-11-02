@@ -67,12 +67,14 @@ class BlockedDAOTest {
             logger.info("Unsupported exception caught with message "+e.getMessage());
 
             Session session = WPLSessionFactory.getDBSession();
-            try(session){
+            try{
                 session.beginTransaction();
                 session.delete(blockedUsers);
                 session.getTransaction().commit();
+                session.close();
             }
             catch (Exception ex){
+                session.close();
                 fail(ex);
             }
         }
