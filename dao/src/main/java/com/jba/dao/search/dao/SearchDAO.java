@@ -26,7 +26,7 @@ public class SearchDAO {
     public static Route getRouteById(int id){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             Route result = session.
@@ -36,10 +36,14 @@ public class SearchDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return result;
         }
         catch (Exception e){
             logger.error("Error retrieving Route of id "+id);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -51,17 +55,21 @@ public class SearchDAO {
     public static List<Route> getAllRoutes(){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             List<Route> results = session.
                     createQuery("from Route", Route.class).
                     getResultList();
 
+            session.close();
+
             return results;
         }
         catch (Exception e){
             logger.error("Error occured while getting Routes",e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }

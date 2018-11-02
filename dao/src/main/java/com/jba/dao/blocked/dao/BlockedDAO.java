@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import javax.persistence.NoResultException;
-import java.sql.Date;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Set;
@@ -23,22 +22,6 @@ public class BlockedDAO {
     public static BlockStatus addNewBlockStatus(String name, boolean reversible) {
         BlockStatus blockStatus = new BlockStatus(name, reversible);
         return (BlockStatus) DBUtils.saveOrUpdate(blockStatus);
-/*
-        Session session = WPLSessionFactory.getDBSession();
-
-        try(session){
-            session.beginTransaction();
-
-            session.save(blockStatus);
-
-            session.getTransaction().commit();
-
-            return blockStatus;
-        }
-        catch (Exception e){
-            logger.error("Error ",e);
-            throw e;
-        }*/
     }
 
     public static BlockStatus deleteBlockStatus(BlockStatus s){
@@ -46,7 +29,7 @@ public class BlockedDAO {
 
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             if(blockadesToBeDeleted!=null) {
@@ -63,10 +46,16 @@ public class BlockedDAO {
             session.delete(s);
 
             session.getTransaction().commit();
+
+            session.close();
             return s;
         }
         catch (Exception e){
             logger.error("Error deleting BlockStatus "+s, e);
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             throw e;
         }
     }
@@ -91,7 +80,7 @@ public class BlockedDAO {
     public static BlockedUsers getUserBlockedStatus(User user) {
         Session session = WPLSessionFactory.getDBSession();
 
-        try (session) {
+        try  {
             session.beginTransaction();
 
             BlockedUsers blockedUser = session.createQuery("from BlockedUsers b where b.user=:user", BlockedUsers.class).
@@ -100,14 +89,23 @@ public class BlockedDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return blockedUser;
         }
         catch (NoResultException e){
             logger.info("User "+user+" is not locked.");
+            if(session.isOpen()){
+                session.close();
+            }
             return null;
         }
         catch (Exception e) {
             logger.debug("Error trying to get users " + user + " block status");
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             throw e;
         }
     }
@@ -120,19 +118,28 @@ public class BlockedDAO {
         BlockedUsers blockedUser = getUserBlockedStatus(user);
 
         if (blockedUser == null) {
+            session.getTransaction().commit();
+            session.close();
             throw new UnsupportedOperationException("This user is not locked, so he cannot be unlocked");
         }
 
         if (!blockedUser.getBlockStatus().isReversible()) {
+            session.getTransaction().commit();
+            session.close();
             throw new UnsupportedOperationException("This users lock is permanent!");
         }
 
-        try (session) {
+        try {
             session.delete(blockedUser);
             session.getTransaction().commit();
+            session.close();
         }
         catch (Exception e) {
             logger.error("Errror removing users lock!",e);
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             throw e;
         }
         return user;

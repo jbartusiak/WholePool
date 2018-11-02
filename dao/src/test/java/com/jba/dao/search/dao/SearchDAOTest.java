@@ -62,13 +62,15 @@ class SearchDAOTest {
         }
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
             session.delete(searchHistory);
             session.delete(search);
             session.getTransaction().commit();
+            session.close();
         }
         catch (Exception e){
+            session.close();
             fail(e);
         }
     }

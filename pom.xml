@@ -10,19 +10,21 @@
         <daoModuleVersion>1.0</daoModuleVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>10</java.version>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.targer>1.8</maven.compiler.targer>
     </properties>
+
+    <groupId>com.jba</groupId>
+    <artifactId>wholepool-base</artifactId>
+    <version>2.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.5.RELEASE</version>
     </parent>
-
-    <groupId>com.jba</groupId>
-    <artifactId>Wholepool</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
     <modules>
         <module>dao</module>
@@ -32,19 +34,4 @@
 
     <name>WholePool Base</name>
     <description>Base package for WholePool application</description>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.10</source>
-                        <target>1.10</target>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 </project>
