@@ -25,7 +25,7 @@ public class RideDAO {
     public static Ride getRideById(int id){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             Ride result = session.
@@ -35,14 +35,21 @@ public class RideDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return result;
         }
         catch(NoResultException e){
             logger.info("No item found of id "+id);
+            if(session.isOpen()){
+                session.close();
+            }
             return null;
         }
         catch (Exception e){
             logger.error("Error getting ride of id "+id, e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -50,7 +57,7 @@ public class RideDAO {
     public static Set<Ride> getAllRides(){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             Set<Ride> rides = session.
@@ -60,14 +67,20 @@ public class RideDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return rides;
         }
         catch (NoResultException e){
             logger.info("There are no rides registered yet!");
+            if(session.isOpen())
+                session.close();
             return new HashSet<Ride>();
         }
         catch (Exception e){
             logger.error("Error getting all rides", e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -84,7 +97,7 @@ public class RideDAO {
 
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             Set<Ride> result = session.
@@ -99,14 +112,20 @@ public class RideDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return result;
         }
         catch (NoResultException e){
             logger.info("There are no entries of given criteria");
+            if(session.isOpen())
+                session.close();
             return new HashSet<Ride>();
         }
         catch (Exception e){
             logger.error("Error retrieving entries!", e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -114,7 +133,7 @@ public class RideDAO {
     public static RideDetails getRideDetials(Ride ride){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             RideDetails details = session
@@ -122,14 +141,22 @@ public class RideDAO {
                     .setParameter("ride",ride)
                     .getSingleResult();
 
+            session.getTransaction().commit();
+
+            session.close();
+
             return details;
         }
         catch (NoResultException e){
             logger.info("There are no rides of this id!");
+            if(session.isOpen())
+                session.close();
             return null;
         }
         catch (Exception e){
             logger.error("Error occured while trying to fetch ride retails.");
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -151,15 +178,21 @@ public class RideDAO {
 
         Session deleteRideDetailsSession = WPLSessionFactory.getDBSession();
 
-        try(deleteRideDetailsSession){
+        try{
             deleteRideDetailsSession.beginTransaction();
 
             deleteRideDetailsSession.delete(ride.getRideDetails());
 
             deleteRideDetailsSession.getTransaction().commit();
+
+            deleteRideDetailsSession.close();
         }
         catch (Exception e){
             logger.error("Error occured deleting ride details",e);
+            if(deleteRideDetailsSession.isOpen()){
+                deleteRideDetailsSession.getTransaction().rollback();
+                deleteRideDetailsSession.close();
+            }
             throw e;
         }
 
@@ -167,7 +200,7 @@ public class RideDAO {
 
         Session searchForOfferedRidesAndDeleteThemSession = WPLSessionFactory.getDBSession();
 
-        try(searchForOfferedRidesAndDeleteThemSession){
+        try{
             searchForOfferedRidesAndDeleteThemSession.beginTransaction();
             List<OfferedRides> offeredRidesList = searchForOfferedRidesAndDeleteThemSession.
                     createQuery("from OfferedRides r where r.ride=:ride", OfferedRides.class).
@@ -177,12 +210,21 @@ public class RideDAO {
             offeredRidesList.forEach(offeredRide -> searchForOfferedRidesAndDeleteThemSession.delete(offeredRide));
 
             searchForOfferedRidesAndDeleteThemSession.getTransaction().commit();
+
+            searchForOfferedRidesAndDeleteThemSession.close();
         }
         catch(NoResultException e){
+            if(searchForOfferedRidesAndDeleteThemSession.isOpen()){
+                searchForOfferedRidesAndDeleteThemSession.close();
+            }
             logger.info("No user-ride associations found for this ride");
         }
         catch (Exception e){
             logger.error("Error occured deleting user-ride associations",e);
+            if(searchForOfferedRidesAndDeleteThemSession.isOpen()){
+                searchForOfferedRidesAndDeleteThemSession.getTransaction().rollback();
+                searchForOfferedRidesAndDeleteThemSession.close();
+            }
             throw e;
         }
 
@@ -190,7 +232,7 @@ public class RideDAO {
 
         Session deletePassengersSession = WPLSessionFactory.getDBSession();
 
-        try(deletePassengersSession){
+        try{
             deletePassengersSession.beginTransaction();
 
             List<RidePassangers> passangersList = deletePassengersSession.
@@ -203,12 +245,20 @@ public class RideDAO {
             }
 
             deletePassengersSession.getTransaction().commit();
+
+            deletePassengersSession.close();
         }
         catch (NoResultException e){
             logger.info("There are no passengers for this ride");
+            if(deletePassengersSession.isOpen())
+                deletePassengersSession.close();
         }
         catch (Exception e){
             logger.error("Error deleting passangers for this ride", e);
+            if(deletePassengersSession.isOpen()){
+                deletePassengersSession.getTransaction().rollback();
+                deletePassengersSession.close();
+            }
             throw e;
         }
 
@@ -216,24 +266,30 @@ public class RideDAO {
 
         Session deleteRideSession = WPLSessionFactory.getDBSession();
 
-        try(deleteRideSession){
+        try{
             deleteRideSession.beginTransaction();
 
             deleteRideSession.delete(ride);
 
             deleteRideSession.getTransaction().commit();
 
+            deleteRideSession.close();
+
             return ride;
         }
         catch (Exception e){
             logger.error("Error occured while trying delete this ride", e);
+            if(deleteRideSession.isOpen()){
+                deleteRideSession.getTransaction().rollback();
+                deleteRideSession.close();
+            }
             throw e;
         }
     }
 
     public static RidePassangers registerToRide(User user, Ride ride) throws UnsupportedOperationException{
         Session session = WPLSessionFactory.getDBSession();
-        try(session){
+        try{
             session.beginTransaction();
 
             long count = session.
@@ -251,9 +307,14 @@ public class RideDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return ridePassangers;
         }
         catch (UnsupportedOperationException e){
+            if(session.isOpen()){
+                session.close();
+            }
             throw new UnsupportedOperationException("There are no more free places for this ride!");
         }
     }
@@ -261,7 +322,7 @@ public class RideDAO {
     public static RidePassangers unregisterFromRide(User user, Ride ride){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             RidePassangers rp = session.
@@ -274,14 +335,22 @@ public class RideDAO {
 
             session.getTransaction().commit();
 
+            session.close();
+
             return rp;
         }
         catch (NoResultException e){
             logger.info("User "+user+" is not registered for ride "+ride);
+            if(session.isOpen())
+                session.close();
             return null;
         }
         catch (Exception e){
             logger.error("Error occured deleting passanger!", e);
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             throw e;
         }
     }
@@ -289,7 +358,7 @@ public class RideDAO {
     public static Set<Ride> getRidesByUser(User user){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             List<OfferedRides> offeredRides = session.
@@ -303,10 +372,13 @@ public class RideDAO {
             }
 
             session.getTransaction().commit();
+            session.close();
             return result;
         }
         catch (NoResultException e){
             logger.info("User "+user+" did not offer any rides!");
+            if(session.isOpen())
+                session.close();
             return new HashSet<Ride>();
         }
     }

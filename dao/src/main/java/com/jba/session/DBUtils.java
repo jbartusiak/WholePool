@@ -9,7 +9,7 @@ public class DBUtils {
     public static Object saveOrUpdate(Object object){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
             session.saveOrUpdate(object);
             session.getTransaction().commit();

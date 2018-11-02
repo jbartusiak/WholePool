@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.jba</groupId>
-		<artifactId>wholepool</artifactId>
-		<version>1.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.jba</groupId>
+		<artifactId>wholepool-base</artifactId>
+		<version>2.0-SNAPSHOT</version>
+    </parent>
 
 	<artifactId>wholepool-rest</artifactId>
 	<version>${restModuleVersion}</version>
@@ -19,41 +19,13 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>10</java.version>
 	</properties>
 
-    <profiles>
-        <profile>
-            <id>devSkipDocker</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>dockerfile-maven-plugin</artifactId>
-                        <version>1.4.4</version>
-                        <executions>
-                            <execution>
-                                <id>dockerize</id>
-                                <phase>none</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
-
     <dependencies>
-		<!--<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -67,7 +39,7 @@
         <dependency>
             <groupId>com.jba</groupId>
             <artifactId>wholepool-dao</artifactId>
-            <version>1.0</version>
+            <version>${daoModuleVersion}</version>
         </dependency>
 	</dependencies>
 
@@ -77,36 +49,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.4</version>
-                <configuration>
-					<skip>false</skip>
-                    <repository>${project.artifactId}</repository>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                    <skip>false</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>dockerize</id>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.activation</groupId>
-                        <artifactId>activation</artifactId>
-                        <version>1.1.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
 		</plugins>
 	</build>
-
 
 </project>
