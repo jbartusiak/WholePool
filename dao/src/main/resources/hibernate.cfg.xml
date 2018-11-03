@@ -22,32 +22,7 @@
 		<!-- Set the current session context -->
 		<property name="current_session_context_class">thread</property>
 
-        <!-- Entities -->
-        <mapping class="com.jba.dao.blocked.entity.BlockStatus"/>
-        <mapping class="com.jba.dao.blocked.entity.BlockedUsers"/>
-
-        <mapping class="com.jba.dao.user.enitity.User"/>
-        <mapping class="com.jba.dao.user.enitity.UserType"/>
-
-        <mapping class="com.jba.dao.preferences.entity.Preference"/>
-        <mapping class="com.jba.dao.preferences.entity.UsersPreference"/>
-
-        <mapping class="com.jba.dao.cars.entity.CarType"/>
-        <mapping class="com.jba.dao.cars.entity.Car"/>
-        <mapping class="com.jba.dao.cars.entity.UsersCars"/>
-
-        <mapping class="com.jba.dao.source.entity.Source"/>
-
-        <mapping class="com.jba.dao.ride.enitity.RideDetails"/>
-        <mapping class="com.jba.dao.ride.enitity.Ride"/>
-        <mapping class="com.jba.dao.ride.enitity.OfferedRides"/>
-        <mapping class="com.jba.dao.ride.enitity.RidePassangers"/>
-
-        <mapping class="com.jba.dao.route.entity.Route"/>
-        <mapping class="com.jba.dao.route.entity.PopularRoute"/>
-
-        <mapping class="com.jba.dao.search.entity.Search"/>
-        <mapping class="com.jba.dao.search.entity.SearchHistory"/>
+        <mapping class="com.jba."
 
     </session-factory>
 
