@@ -22,7 +22,7 @@ public class UserDAO {
 
     public static User getUserById(int id){
         Session session = WPLSessionFactory.getDBSession();
-        try(session) {
+        try {
             session.beginTransaction();
 
             List<User> users = session.
@@ -31,6 +31,9 @@ public class UserDAO {
                     getResultList();
 
             session.getTransaction().commit();
+
+            session.close();
+
             if(users.size()==0){
                 throw new IllegalArgumentException("No users found with id: "+id);
             }
@@ -42,13 +45,15 @@ public class UserDAO {
         }
         catch (Exception e){
             logger.error("Error getting user with id: "+id);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
 
     public static User getUserByEmail(String email){
         Session session = WPLSessionFactory.getDBSession();
-        try(session) {
+        try {
             session.beginTransaction();
 
             List<User> users = session.
@@ -57,6 +62,8 @@ public class UserDAO {
                     getResultList();
 
             session.getTransaction().commit();
+
+            session.close();
 
             if(users.size()==0){
                 throw new IllegalArgumentException("No user found with email: "+email);
@@ -69,13 +76,15 @@ public class UserDAO {
         }
         catch (Exception e){
             logger.error("Error getting user with email: "+email);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
 
     public static User getUserByName(String name){
         Session session = WPLSessionFactory.getDBSession();
-        try(session) {
+        try {
             session.beginTransaction();
 
             List<User> users = session.
@@ -84,6 +93,7 @@ public class UserDAO {
                     getResultList();
 
             session.getTransaction().commit();
+            session.close();
             if(users.size()==0){
                 throw new IllegalArgumentException("No users found with name: "+name);
             }
@@ -95,6 +105,8 @@ public class UserDAO {
         }
         catch (Exception e){
             logger.error("Error getting user with name: "+name);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -111,7 +123,7 @@ public class UserDAO {
 
     public static UsersPreference setPreference(User user, Preference preference, String value){
         Session session = WPLSessionFactory.getDBSession();
-        try(session) {
+        try {
             session.beginTransaction();
 
             UsersPreference usersPreference = new UsersPreference(user, preference, value);
@@ -119,10 +131,16 @@ public class UserDAO {
             session.save(usersPreference);
             session.getTransaction().commit();
 
+            session.close();
+
             return usersPreference;
         }
         catch (Exception e){
             logger.error("Error setting preference "+preference.toString()+" to user "+user.toString());
+            if(session.isOpen()){
+                session.getTransaction().rollback();
+                session.close();
+            }
             throw e;
         }
     }
@@ -130,7 +148,7 @@ public class UserDAO {
     public static Map<String,String> getUsersPreferences(User user){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session) {
+        try {
             session.beginTransaction();
             int userId = user.getUserId();
 
@@ -146,10 +164,15 @@ public class UserDAO {
             );
 
             session.getTransaction().commit();
+
+            session.close();
+
             return result;
         }
         catch (Exception e){
             logger.error("Error retrieving users preferences!", e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }

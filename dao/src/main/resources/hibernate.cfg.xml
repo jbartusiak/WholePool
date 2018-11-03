@@ -21,7 +21,6 @@
 
 		<!-- Set the current session context -->
 		<property name="current_session_context_class">thread</property>
-        <property name="hibernate.default_schema">wholepool</property>
 
         <!-- Entities -->
         <mapping class="com.jba.dao.blocked.entity.BlockStatus"/>

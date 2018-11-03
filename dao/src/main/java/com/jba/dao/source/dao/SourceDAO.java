@@ -16,7 +16,7 @@ public class SourceDAO {
 
     public static Source getSourceByName(String name){
         Session session = WPLSessionFactory.getDBSession();
-        try(session){
+        try{
             session.beginTransaction();
 
             List<Source> sourceList = session
@@ -24,6 +24,8 @@ public class SourceDAO {
                     .setParameter("name", name).getResultList();
 
             session.getTransaction().commit();
+
+            session.close();
 
             if(sourceList.size()==0){
                 throw new IllegalArgumentException("No sources found of name "+name);
@@ -37,6 +39,8 @@ public class SourceDAO {
         }
         catch (Exception e){
             logger.error("Error retrieving source with name+ "+name, e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
@@ -57,17 +61,21 @@ public class SourceDAO {
     public static Source deleteSource(Source source){
         Session session = WPLSessionFactory.getDBSession();
 
-        try(session){
+        try{
             session.beginTransaction();
 
             session.delete(source);
 
             session.getTransaction().commit();
 
+            session.close();
+
             return source;
         }
         catch (Exception e){
             logger.error("Error trying to delete item "+source,e);
+            if(session.isOpen())
+                session.close();
             throw e;
         }
     }
