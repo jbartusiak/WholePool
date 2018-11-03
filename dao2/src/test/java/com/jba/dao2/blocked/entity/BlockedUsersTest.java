@@ -1,39 +1,40 @@
-package com.jba.daodeprecated.blocked.entity;
+package com.jba.dao2.blocked.entity;
 
-import com.jba.WPLSessionFactory;
+import com.jba.dao2.Dao2Application;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hibernate.SessionFactory;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class BlockedUsersTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { Dao2Application.class })
+@WebAppConfiguration
+public class BlockedUsersTest {
 
-    private Session session;
-
-    @BeforeEach
-    void setUp() {
-        session = WPLSessionFactory.getDBSession();
-    }
+    @Autowired
+    SessionFactory sessionFactory;
 
     @Test
-    void shouldNotCrashAndReturnShowNumberOfRecords(){
-        session.beginTransaction();
-        int count = ((Long) session.createQuery("select count(*) from BlockedUsers ").getSingleResult()).intValue();
+    @Transactional
+    public void shouldNotCrashAndReturnShowNumberOfRecords(){
+        Session session = sessionFactory.getCurrentSession();
+
+        int count = session.createQuery("select count(*) from BlockedUsers ", Long.class).getSingleResult().intValue();
         System.out.println("Select count(*) from BlockedUsers result: "+count);
-        List<BlockedUsers> blockedUsers = session.createQuery("from BlockedUsers ").getResultList();
+        List<BlockedUsers> blockedUsers = session.createQuery("from BlockedUsers ", BlockedUsers.class).getResultList();
         System.out.println("Result set count: "+blockedUsers.size());
 
         blockedUsers.forEach(blocked-> System.out.println(blocked.toString()));
 
         assertEquals(count, blockedUsers.size());
-    }
-
-    @AfterEach
-    void tearDown() {
-        WPLSessionFactory.closeAndFinalize();
     }
 }

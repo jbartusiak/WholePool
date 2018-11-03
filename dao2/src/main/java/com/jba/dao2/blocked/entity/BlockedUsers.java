@@ -1,6 +1,6 @@
-package com.jba.daodeprecated.blocked.entity;
+package com.jba.dao2.blocked.entity;
 
-import com.jba.daodeprecated.user.enitity.User;
+import com.jba.dao2.user.enitity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
