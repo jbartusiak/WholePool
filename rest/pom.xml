@@ -31,12 +31,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.jba</groupId>
-            <artifactId>wholepool-dao</artifactId>
-            <version>${daoModuleVersion}</version>
-        </dependency>
-	</dependencies>
+		<dependency>
+			<groupId>com.jba</groupId>
+			<artifactId>wholepool-dao</artifactId>
+			<version>${daoModuleVersion}</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--<dependency>
+			<groupId>com.jba</groupId>
+			<artifactId>wholepool-dao</artifactId>
+			<version>${daoModuleVersion}</version>
+		</dependency>-->
+    </dependencies>
 
 	<build>
 		<plugins>

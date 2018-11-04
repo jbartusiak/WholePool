@@ -7,7 +7,7 @@
     <version>${daoModuleVersion}</version>
     <packaging>jar</packaging>
 
-    <name>dao</name>
+    <name>WholePool DAO Package</name>
     <description>Fixed DAO package</description>
 
     <parent>
