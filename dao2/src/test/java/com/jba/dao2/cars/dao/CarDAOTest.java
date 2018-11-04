@@ -4,6 +4,7 @@ import com.jba.dao2.Dao2Application;
 import com.jba.dao2.cars.entity.Car;
 import com.jba.dao2.cars.entity.CarType;
 import com.jba.dao2.user.dao.UserDAO;
+import com.jba.dao2.user.dao.UserDAOMySQLRepository;
 import com.jba.dao2.user.enitity.User;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;

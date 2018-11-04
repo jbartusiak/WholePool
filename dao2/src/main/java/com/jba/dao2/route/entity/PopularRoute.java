@@ -36,4 +36,10 @@ public class PopularRoute implements Serializable {
     @NonNull
     private long useCount;
 
+    public static PopularRoute of(int id){
+        PopularRoute popularRoute = new PopularRoute();
+        popularRoute.setRideId(Route.of(id));
+        return popularRoute;
+    }
+
 }

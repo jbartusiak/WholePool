@@ -14,7 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Java6Assertions.fail;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { Dao2Application.class })
@@ -38,6 +41,7 @@ public class UsersPreferenceTest {
         try {
             System.out.println("Saving users preference");
             session.save(usersPreference);
+            session.getTransaction().commit();
         }
         catch(Exception e){
             fail(e.getMessage());
@@ -51,6 +55,10 @@ public class UsersPreferenceTest {
     public void selectTest(){
         Session session = sessionFactory.getCurrentSession();
 
-        UsersPreference fromDB = session.createQuery("from UsersPreference where user.id=1 and preference.id=1", UsersPreference.class).getResultList().get(0);
+        List<UsersPreference> fromDB = session.
+                createQuery("from UsersPreference where user.id=1 and preference.id=1", UsersPreference.class).
+                getResultList();
+
+        assertNotNull(fromDB);
     }
 }
