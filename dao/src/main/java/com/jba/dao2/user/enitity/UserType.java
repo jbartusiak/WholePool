@@ -1,5 +1,6 @@
 package com.jba.dao2.user.enitity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
@@ -20,6 +21,7 @@ public class UserType {
 
     @OneToMany(mappedBy = "userType")
     @ToString.Exclude
+    @JsonIgnore
     private Set<User> usersOfThisType;
 
     public UserType(){}

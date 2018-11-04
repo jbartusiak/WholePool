@@ -31,10 +31,4 @@ public class RestApplication {
 	public String hello(){
 		return "hello";
 	}
-
-	@RequestMapping("/DAO")
-	public String test(){
-		BlockedUsers bo = blockedDAO.getUserBlockedStatus(User.of(2));
-		return bo.getBlockReasonDescription();
-	}
 }

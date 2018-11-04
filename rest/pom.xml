@@ -42,7 +42,8 @@
 			<artifactId>wholepool-dao</artifactId>
 			<version>${daoModuleVersion}</version>
 		</dependency>-->
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+	</dependencies>
 
 	<build>
 		<plugins>

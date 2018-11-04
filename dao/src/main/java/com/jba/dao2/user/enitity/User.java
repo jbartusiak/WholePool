@@ -1,5 +1,6 @@
 package com.jba.dao2.user.enitity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jba.dao2.blocked.entity.BlockedUsers;
 import com.jba.dao2.ride.enitity.RidePassangers;
 import lombok.*;
@@ -20,7 +21,7 @@ public class User {
     @Column(name="pk_user_id")
     private int userId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
     @JoinColumn(name="fk_user_type_id")
     private UserType userType;
@@ -31,6 +32,7 @@ public class User {
 
     @Column(name="user_password_hash")
     @NonNull
+    @JsonIgnore
     private String passwordHash;
 
     @Column(name="user_first_name")
@@ -51,10 +53,12 @@ public class User {
 
     @OneToMany(mappedBy = "blockedBy")
     @ToString.Exclude
+    @JsonIgnore
     private Set<BlockedUsers> blockedByThisUser;
 
     @OneToMany(mappedBy = "passenger")
     @ToString.Exclude
+    @JsonIgnore
     private Set<RidePassangers> isPassengerAtRides;
 
     public static User of(int id){
