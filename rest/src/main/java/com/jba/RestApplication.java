@@ -1,7 +1,10 @@
 package com.jba;
 
-import com.jba.dao2.Dao2Application;
+import com.jba.dao2.DAOConfig;
+import com.jba.dao2.blocked.dao.BlockedDAO;
 import com.jba.dao2.blocked.dao.BlockedDAOMySQLRepository;
+import com.jba.dao2.blocked.entity.BlockedUsers;
+import com.jba.dao2.user.enitity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 @Configuration
-@Import(Dao2Application.class)
+@Import(DAOConfig.class)
 @RestController
 public class RestApplication {
 
 	@Autowired
-    BlockedDAOMySQLRepository blockedDAOMySQLRepository;
+	BlockedDAO blockedDAO;
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestApplication.class, args);
@@ -27,5 +30,11 @@ public class RestApplication {
 	@RequestMapping("/")
 	public String hello(){
 		return "hello";
+	}
+
+	@RequestMapping("/DAO")
+	public String test(){
+		BlockedUsers user = blockedDAO.getUserBlockedStatus(User.of(2));
+		return user.getBlockReasonDescription();
 	}
 }
