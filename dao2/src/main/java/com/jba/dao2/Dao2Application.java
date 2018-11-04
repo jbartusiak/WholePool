@@ -1,6 +1,5 @@
 package com.jba.dao2;
 
-import com.jba.dao2.blocked.dao.BlockedDAO;
 import com.jba.dao2.blocked.entity.BlockStatus;
 import com.jba.dao2.blocked.entity.BlockedUsers;
 import com.jba.dao2.cars.entity.Car;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;

@@ -1,27 +1,32 @@
-package com.jba.daodeprecated.ride.enitity;
+package com.jba.dao2.ride.enitity;
 
-import com.jba.daodeprecated.user.enitity.User;
-import com.jba.daodeprecated.user.enitity.UserType;
-import com.jba.WPLSessionFactory;
+import com.jba.dao2.Dao2Application;
+import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hibernate.SessionFactory;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 
-class RidePassangersTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = { Dao2Application.class })
+@WebAppConfiguration
+public class RidePassangersTest {
 
-    private Session session;
-
-    @BeforeEach
-    void setUp() {
-        session= WPLSessionFactory.getDBSession();
-    }
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Test
-    void createDBObject(){
-        session.beginTransaction();
+    @Transactional
+    public void createDBObject(){
+        Session session = sessionFactory.getCurrentSession();
 
         Ride ride = session.createQuery("from Ride",Ride.class).getResultList().get(0);
         System.out.println(ride.toString());
@@ -43,17 +48,8 @@ class RidePassangersTest {
 
         session.save(passangers);
 
-        session.getTransaction().commit();
-
-        session.beginTransaction();
         session.delete(passangers);
         session.delete(passangers2);
         session.delete(user2);
-        session.getTransaction().commit();
-    }
-
-    @AfterEach
-    void tearDown() {
-        WPLSessionFactory.closeAndFinalize();
     }
 }

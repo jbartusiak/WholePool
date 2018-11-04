@@ -50,10 +50,10 @@
 
         <mapping class="com.jba.daodeprecated.source.entity.Source"/>
 
-        <mapping class="com.jba.daodeprecated.ride.enitity.RideDetails"/>
-        <mapping class="com.jba.daodeprecated.ride.enitity.Ride"/>
-        <mapping class="com.jba.daodeprecated.ride.enitity.OfferedRides"/>
-        <mapping class="com.jba.daodeprecated.ride.enitity.RidePassangers"/>
+        <mapping class="com.jba.dao2.ride.enitity.RideDetails"/>
+        <mapping class="com.jba.dao2.ride.enitity.Ride"/>
+        <mapping class="com.jba.dao2.ride.enitity.OfferedRides"/>
+        <mapping class="com.jba.dao2.ride.enitity.RidePassangers"/>
 
         <mapping class="com.jba.daodeprecated.route.entity.Route"/>
         <mapping class="com.jba.daodeprecated.route.entity.PopularRoute"/>

@@ -38,10 +38,8 @@ public class UsersPreferenceTest {
         try {
             System.out.println("Saving users preference");
             session.save(usersPreference);
-            session.getTransaction().commit();
         }
         catch(Exception e){
-            session.getTransaction().rollback();
             fail(e.getMessage());
         }
 
