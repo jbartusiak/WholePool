@@ -4,17 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wholepool-dao</artifactId>
-    <version>${daoModuleVersion}</version>
+    <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>WholePool DAO Package</name>
     <description>Fixed DAO package</description>
 
     <parent>
-        <groupId>com.jba</groupId>
-        <artifactId>wholepool-base</artifactId>
-        <version>2.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.0.RELEASE</version>
     </parent>
 
     <properties>
@@ -76,8 +75,36 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>task</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.0.RELEASE</version>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>exec</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
