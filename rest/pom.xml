@@ -32,9 +32,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
+			<groupId>com.jba</groupId>
 			<artifactId>wholepool-dao</artifactId>
-			<version>2.0</version>
+			<version>1.2</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
