@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +31,10 @@ public class RestApplication {
 	@RequestMapping("/")
 	public String hello(){
 		return "hello";
+	}
+
+	@RequestMapping("/BU/{id}")
+	public BlockedUsers blockedUsers(@PathVariable("id") int id){
+		return blockedDAO.getUserBlockedStatus(User.of(id));
 	}
 }
