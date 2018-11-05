@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.jba</groupId>
     <artifactId>wholepool-dao</artifactId>
-    <version>${daoModuleVersion}</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>WholePool DAO Package</name>
     <description>Fixed DAO package</description>
 
     <parent>
-        <groupId>com.jba</groupId>
-        <artifactId>wholepool-base</artifactId>
-        <version>2.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.0.RELEASE</version>
     </parent>
 
     <properties>
