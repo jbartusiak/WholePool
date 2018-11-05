@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>com.jba</groupId>
 			<artifactId>wholepool-dao</artifactId>
-			<version>${daoModuleVersion}</version>
+			<version>1.2</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
