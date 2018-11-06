@@ -23,4 +23,10 @@ public class Preference {
     @Column(name = "PREFERENCE_TYPE")
     @NonNull
     private String preferenceType;
+
+    public static Preference of(int id){
+        Preference preference = new Preference();
+        preference.setPreferenceId(id);
+        return preference;
+    }
 }
