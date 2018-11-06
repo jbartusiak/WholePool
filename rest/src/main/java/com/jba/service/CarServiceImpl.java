@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -25,6 +26,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public CarType updateCarType(CarType carType) {
         return carDAO.updateCarType(carType);
+    }
+
+    @Override
+    public List<CarType> getAllCarTypes() {
+        return carDAO.getAllCarTypes().stream().collect(Collectors.toList());
     }
 
     @Override
