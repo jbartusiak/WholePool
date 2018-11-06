@@ -18,6 +18,8 @@ public interface UserService {
     boolean verifyPasswordHash(User user, String hash);
     User addNewUser(User user);
     Map<String, String> getUsersPreferences(User user);
+    List<Preference> getAllPreferences();
+    Preference getPreferenceById(long id);
     UsersPreference addPreference(User user, Preference preference, String value);
     UsersPreference updatePreference(User user, Preference preference, String value);
     boolean deletePreference(UsersPreference usersPreference);

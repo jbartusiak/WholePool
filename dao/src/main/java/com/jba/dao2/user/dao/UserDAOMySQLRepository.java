@@ -8,13 +8,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class UserDAOMySQLRepository implements UserDAO{
+@EnableTransactionManagement
+public class UserDAOMySQLRepository implements UserDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -28,7 +31,7 @@ public class UserDAOMySQLRepository implements UserDAO{
         return session.createQuery("from User", User.class).getResultList();
     }
 
-    public User getUserById(int id){
+    public User getUserById(int id) {
         Session session = sessionFactory.getCurrentSession();
         try {
             List<User> users = session.
@@ -36,22 +39,20 @@ public class UserDAOMySQLRepository implements UserDAO{
                     setParameter("id", id).
                     getResultList();
 
-            if(users.size()==0){
-                throw new IllegalArgumentException("No users found with id: "+id);
-            }
-            else if (users.size() > 1) {
+            if (users.size() == 0) {
+                throw new IllegalArgumentException("No users found with id: " + id);
+            } else if (users.size() > 1) {
                 throw new IllegalArgumentException("There are more than one users of this id");
             } else {
                 return users.get(0);
             }
-        }
-        catch (Exception e){
-            logger.error("Error getting user with id: "+id);
+        } catch (Exception e) {
+            logger.error("Error getting user with id: " + id);
             throw e;
         }
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) {
         Session session = sessionFactory.getCurrentSession();
         try {
             List<User> users = session.
@@ -59,22 +60,20 @@ public class UserDAOMySQLRepository implements UserDAO{
                     setParameter("email", email).
                     getResultList();
 
-            if(users.size()==0){
-                throw new IllegalArgumentException("No user found with email: "+email);
-            }
-            else if (users.size() > 1) {
+            if (users.size() == 0) {
+                throw new IllegalArgumentException("No user found with email: " + email);
+            } else if (users.size() > 1) {
                 throw new IllegalArgumentException("There are more than one users of this email");
             } else {
                 return users.get(0);
             }
-        }
-        catch (Exception e){
-            logger.error("Error getting user with email: "+email);
+        } catch (Exception e) {
+            logger.error("Error getting user with email: " + email);
             throw e;
         }
     }
 
-    public User getUserByName(String name){
+    public User getUserByName(String name) {
         Session session = sessionFactory.getCurrentSession();
         try {
             List<User> users = session.
@@ -82,50 +81,58 @@ public class UserDAOMySQLRepository implements UserDAO{
                     setParameter("name", name).
                     getResultList();
 
-            if(users.size()==0){
-                throw new IllegalArgumentException("No users found with name: "+name);
-            }
-            else if (users.size() > 1) {
+            if (users.size() == 0) {
+                throw new IllegalArgumentException("No users found with name: " + name);
+            } else if (users.size() > 1) {
                 throw new IllegalArgumentException("There are more than one users of this name");
             } else {
                 return users.get(0);
             }
-        }
-        catch (Exception e){
-            logger.error("Error getting user with name: "+name);
+        } catch (Exception e) {
+            logger.error("Error getting user with name: " + name);
             throw e;
         }
     }
 
-    public String getUserPasswordHash(User user){
+    public String getUserPasswordHash(User user) {
         User fromDB = getUserById(user.getUserId());
 
         return fromDB.getPasswordHash();
     }
 
-    public void updateUserData(User user){
+    public void updateUserData(User user) {
         Session session = sessionFactory.getCurrentSession();
 
         session.saveOrUpdate(user);
     }
 
-    public UsersPreference setPreference(User user, Preference preference, String value){
+    public List<Preference> getAllPreferences() {
         Session session = sessionFactory.getCurrentSession();
-        try {
-            UsersPreference usersPreference = new UsersPreference(user, preference, value);
-
-            session.saveOrUpdate(usersPreference);
-            session.getTransaction().commit();
-
-            return usersPreference;
-        }
-        catch (Exception e){
-            logger.error("Error setting preference "+preference.toString()+" to user "+user.toString());
-            throw e;
-        }
+        return session.createQuery("from Preference", Preference.class).getResultList();
     }
 
-    public Map<String,String> getUsersPreferences(User user){
+    @Override
+    public Preference getPreferenceById(long id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session
+                .createQuery("from Preference p where p.id=:id", Preference.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
+    @Transactional
+    public UsersPreference setPreference(User user, Preference preference, String value) {
+        Session session = sessionFactory.getCurrentSession();
+
+        UsersPreference usersPreference = new UsersPreference(user, preference, value);
+
+        session.saveOrUpdate(usersPreference);
+
+        return usersPreference;
+    }
+
+    public Map<String, String> getUsersPreferences(User user) {
         Session session = sessionFactory.getCurrentSession();
 
         try {
@@ -143,8 +150,7 @@ public class UserDAOMySQLRepository implements UserDAO{
             );
 
             return result;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Error retrieving users preferences!", e);
             throw e;
         }
@@ -156,20 +162,19 @@ public class UserDAOMySQLRepository implements UserDAO{
 
         try {
             session.delete(usersPreference);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    public User addNewUser(User user){
+    public User addNewUser(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(user);
         return user;
     }
 
-    public void resetPassword(User user, String passwordHash){
+    public void resetPassword(User user, String passwordHash) {
         user.setPasswordHash(passwordHash);
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(user);

@@ -61,8 +61,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Preference> getAllPreferences() {
+        return userDAO.getAllPreferences();
+    }
+
+    @Override
+    public Preference getPreferenceById(long id) {
+        return userDAO.getPreferenceById(id);
+    }
+
+    @Override
     public UsersPreference addPreference(User user, Preference preference, String value) {
-        preference.setPreferenceId(0);
+        user = getUser(user.getUserId());
+        preference = getPreferenceById(preference.getPreferenceId());
 
         return userDAO.setPreference(user, preference, value);
     }

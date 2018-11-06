@@ -21,6 +21,12 @@ public interface UserDAO {
     User getUserById(int id);
 
     @Transactional
+    List<Preference> getAllPreferences();
+
+    @Transactional
+    Preference getPreferenceById(long id);
+
+    @Transactional
     User getUserByEmail(String email);
 
     @Transactional
