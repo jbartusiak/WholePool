@@ -38,6 +38,12 @@ public class CarDAOMySQLRepository implements CarDAO {
         return car;
     }
 
+    @Override
+    public List<Car> getAllCars() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from Car", Car.class).getResultList();
+    }
+
     public CarType addNewCarType(CarType type) {
         logger.info("Persisting " + type);
         Session session = sessionFactory.getCurrentSession();

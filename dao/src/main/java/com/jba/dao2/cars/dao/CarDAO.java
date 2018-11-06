@@ -22,6 +22,9 @@ public interface CarDAO {
     CarType updateCarType(CarType carType);
 
     @Transactional
+    List<Car> getAllCars();
+
+    @Transactional
     Car getCarById(int id);
 
     @Transactional
