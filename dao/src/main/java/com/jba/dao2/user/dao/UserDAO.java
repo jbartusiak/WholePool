@@ -4,13 +4,19 @@ import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.enitity.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
+@EnableTransactionManagement
 public interface UserDAO {
-    
+
+    @Transactional
+    List<User> getAllUsers();
+
     @Transactional
     User getUserById(int id);
 
@@ -21,7 +27,7 @@ public interface UserDAO {
     User getUserByName(String name);
 
     @Transactional
-    boolean verifyUserPasswordHash(User user, String hash);
+    String getUserPasswordHash(User user);
 
     @Transactional
     void updateUserData(User user);
@@ -31,6 +37,9 @@ public interface UserDAO {
 
     @Transactional
     Map<String,String> getUsersPreferences(User user);
+
+    @Transactional
+    boolean deletePreference(UsersPreference usersPreference);
 
     @Transactional
     User addNewUser(User user);

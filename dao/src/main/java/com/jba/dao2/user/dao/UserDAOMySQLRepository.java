@@ -21,6 +21,13 @@ public class UserDAOMySQLRepository implements UserDAO{
 
     private final static Logger logger = Logger.getLogger(UserDAOMySQLRepository.class);
 
+    @Override
+    public List<User> getAllUsers() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("from User", User.class).getResultList();
+    }
+
     public User getUserById(int id){
         Session session = sessionFactory.getCurrentSession();
         try {
@@ -90,10 +97,10 @@ public class UserDAOMySQLRepository implements UserDAO{
         }
     }
 
-    public boolean verifyUserPasswordHash(User user, String hash){
+    public String getUserPasswordHash(User user){
         User fromDB = getUserById(user.getUserId());
 
-        return fromDB.getPasswordHash().equals(hash);
+        return user.getPasswordHash();
     }
 
     public void updateUserData(User user){
@@ -143,9 +150,22 @@ public class UserDAOMySQLRepository implements UserDAO{
         }
     }
 
+    @Override
+    public boolean deletePreference(UsersPreference usersPreference) {
+        Session session = sessionFactory.getCurrentSession();
+
+        try {
+            session.delete(usersPreference);
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
     public User addNewUser(User user){
         Session session = sessionFactory.getCurrentSession();
-        session.save(user);
+        session.saveOrUpdate(user);
         return user;
     }
 

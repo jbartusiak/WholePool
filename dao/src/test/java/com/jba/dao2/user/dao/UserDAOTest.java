@@ -68,9 +68,12 @@ public class UserDAOTest {
     }
 
     @Test
-    public void verifyUserPasswordHash() {
+    public void getUserPasswordHash() {
         logger.info("Assuming password hash for userid=1 is PLACEHOLDER");
-        assertTrue(userDAO.verifyUserPasswordHash(userDAO.getUserById(1), "PLACEHOLDER"));
+        User fromDB = userDAO.getUserById(1);
+        String password = userDAO.getUserPasswordHash(fromDB);
+
+        assertEquals(password, "PLACEHOLDER");
     }
 
     @Test
