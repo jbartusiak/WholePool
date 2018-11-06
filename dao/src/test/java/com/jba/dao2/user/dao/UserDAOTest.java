@@ -109,8 +109,7 @@ public class UserDAOTest {
         Map<String,String> preferences = userDAO.getUsersPreferences(user);
 
         assertNotEquals(preferences.size(),0);
-
-        session.beginTransaction();
+        
         session.delete(usersPreference);
         session.getTransaction().commit();
     }
