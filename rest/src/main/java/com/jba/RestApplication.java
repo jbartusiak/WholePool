@@ -2,7 +2,6 @@ package com.jba;
 
 import com.jba.dao2.DAOConfig;
 import com.jba.dao2.blocked.dao.BlockedDAO;
-import com.jba.dao2.blocked.entity.BlockStatus;
 import com.jba.dao2.blocked.entity.BlockedUsers;
 import com.jba.dao2.user.enitity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +27,13 @@ public class RestApplication {
 		SpringApplication.run(RestApplication.class, args);
 	}
 
-	@RequestMapping("/")
-	public String hello(){
-		return "hello";
-	}
+    @RequestMapping("/")
+    public String hello() {
+        return "hello";
+    }
 
-	@RequestMapping("/BU/{id}")
-	public BlockedUsers blockedUsers(@PathVariable("id") int id){
-		return blockedDAO.getUserBlockedStatus(User.of(id));
-	}
+    @RequestMapping("/BU/{id}")
+    public BlockedUsers blockedUsers(@PathVariable("id") int id) {
+        return blockedDAO.getUserBlockedStatus(User.of(id));
+    }
 }
