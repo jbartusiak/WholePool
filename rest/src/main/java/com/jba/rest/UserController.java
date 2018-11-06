@@ -43,5 +43,20 @@ public class UserController {
         return new WPLResponse<>(HttpStatus.CREATED, userService.addNewUser(user));
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUser(
+            @RequestBody(required = true) User user
+    ){
+        userService.updateUser(user);
+    }
 
+    @GetMapping("/verify")
+    @ResponseStatus(HttpStatus.OK)
+    public WPLResponse verifyUserPasswordHash(
+            @RequestParam(value = "userId", required = true) Integer userId,
+            @RequestParam(value = "hash", required = true) String hash
+    ){
+        return new WPLResponse<>(HttpStatus.OK, userService.verifyPasswordHash(User.of(userId),hash));
+    }
 }

@@ -100,7 +100,7 @@ public class UserDAOMySQLRepository implements UserDAO{
     public String getUserPasswordHash(User user){
         User fromDB = getUserById(user.getUserId());
 
-        return user.getPasswordHash();
+        return fromDB.getPasswordHash();
     }
 
     public void updateUserData(User user){
