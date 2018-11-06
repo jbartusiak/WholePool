@@ -80,11 +80,8 @@ public class UserController {
     public WPLResponse addUserPreference(
             @PathVariable(name = "userId", required = true) Integer userId,
             @RequestParam(name = "value", required = true) String prefValue,
-            @RequestBody(required = true) JsonNode preference
+            @RequestParam(name = "preferenceId") Integer preferenceId
     ) {
-
-        int preferenceId = preference.get("preferenceId").asInt();
-
         UsersPreference result = userService.addPreference(User.of(userId), Preference.of(preferenceId), prefValue);
 
         return new WPLResponse<>(HttpStatus.OK, result);

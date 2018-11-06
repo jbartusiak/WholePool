@@ -4,6 +4,7 @@ import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
+import com.jba.service.ifs.PreferenceService;
 import com.jba.service.ifs.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private PreferenceService preferenceService;
 
     @Autowired
     private UserDAO userDAO;
@@ -61,25 +65,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Preference> getAllPreferences() {
-        return userDAO.getAllPreferences();
-    }
-
-    @Override
-    public Preference getPreferenceById(long id) {
-        return userDAO.getPreferenceById(id);
-    }
-
-    @Override
     public UsersPreference addPreference(User user, Preference preference, String value) {
         user = getUser(user.getUserId());
-        preference = getPreferenceById(preference.getPreferenceId());
+        preference = preferenceService.getPreferenceById(preference.getPreferenceId());
 
         return userDAO.setPreference(user, preference, value);
     }
 
     @Override
     public UsersPreference updatePreference(User user, Preference preference, String value) {
+        user = getUser(user.getUserId());
+        preference = preferenceService.getPreferenceById(preference.getPreferenceId());
+
         return userDAO.setPreference(user, preference, value);
     }
 
