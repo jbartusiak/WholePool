@@ -87,4 +87,12 @@ public class UserController {
         return new WPLResponse<>(HttpStatus.OK, result);
 
     }
+
+    @DeleteMapping("/preferences")
+    @ResponseStatus(HttpStatus.OK)
+    public WPLResponse deleteUsersPreference(
+            @RequestBody(required = true) UsersPreference usersPreference
+    ){
+        return new WPLResponse<>(HttpStatus.OK, userService.deletePreference(usersPreference));
+    }
 }
