@@ -44,7 +44,8 @@ public class LockServiceImpl implements LockService {
     }
 
     @Override
-    public BlockedUsers blockUser(Integer userIdToBeBlocked, Integer userIdPerformingBlock, Integer blockStatusId, String reasonDescription){
+    public BlockedUsers blockUser(Integer userIdToBeBlocked, Integer userIdPerformingBlock, Integer blockStatusId, String reasonDescription) {
+
         return blockedDAO
                 .blockUser(
                         userService.getUser(userIdToBeBlocked),
@@ -52,30 +53,29 @@ public class LockServiceImpl implements LockService {
                         BlockStatus.of(blockStatusId),
                         reasonDescription
                 );
+
     }
 
     @Override
     public BlockedUsers getUserBlockedStatus(Integer userId) {
         BlockedUsers result = blockedDAO
-                    .getUserBlockedStatus(
-                            userService.getUser(userId)
-                    );
-        if(result==null){
-            throw new NoResultException("User "+userId+" is not locked!");
-        }
-        else return result;
+                .getUserBlockedStatus(
+                        userService.getUser(userId)
+                );
+        if (result == null) {
+            throw new NoResultException("User " + userId + " is not locked!");
+        } else return result;
     }
 
     @Override
-    public User unlockUser(Integer userId) throws UnsupportedOperationException{
+    public User unlockUser(Integer userId) throws UnsupportedOperationException {
         try {
             return blockedDAO.unlockUser(
                     userService.getUser(userId),
                     false
             );
-        }
-        catch (UnsupportedOperationException e){
-            throw new UserLockedPermanentlyException(e);
+        } catch (UnsupportedOperationException e) {
+            throw e;
         }
     }
 
