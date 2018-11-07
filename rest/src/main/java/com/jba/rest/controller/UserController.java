@@ -1,4 +1,4 @@
-package com.jba.rest;
+package com.jba.rest.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
