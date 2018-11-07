@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.NoResultException;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -21,6 +22,15 @@ public class BlockedDAOMySQLRepository implements BlockedDAO{
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Override
+    public List<BlockStatus> getAllBlockStatuses() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.
+                createQuery("from BlockStatus", BlockStatus.class).
+                getResultList();
+    }
 
     public BlockStatus addNewBlockStatus(String name, boolean reversible) {
         BlockStatus blockStatus = new BlockStatus(name, reversible);
@@ -75,6 +85,15 @@ public class BlockedDAOMySQLRepository implements BlockedDAO{
         session.saveOrUpdate(blockedUsers);
 
         return blockedUsers;
+    }
+
+    @Override
+    public List<BlockedUsers> getAllBlockedUsers() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.
+                createQuery("from BlockedUsers", BlockedUsers.class).
+                getResultList();
     }
 
     public BlockedUsers getUserBlockedStatus(User user) {

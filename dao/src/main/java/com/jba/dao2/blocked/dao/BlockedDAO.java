@@ -6,8 +6,13 @@ import com.jba.dao2.user.enitity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface BlockedDAO {
+
+    @Transactional
+    List<BlockStatus> getAllBlockStatuses();
 
     @Transactional
     BlockStatus addNewBlockStatus(String name, boolean reversible);
@@ -17,6 +22,9 @@ public interface BlockedDAO {
 
     @Transactional
     BlockedUsers blockUser(User userToBeBlocked, User userPerformingBlock, BlockStatus blockType, String reasonDescription);
+
+    @Transactional
+    List<BlockedUsers> getAllBlockedUsers();
 
     @Transactional
     BlockedUsers getUserBlockedStatus(User user);

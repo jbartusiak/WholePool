@@ -1,5 +1,6 @@
 package com.jba.dao2.blocked.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,11 +28,16 @@ public class BlockStatus {
 
     @OneToMany(mappedBy = "blockStatus", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private Set<BlockedUsers> usersWithThisStatus;
 
     public static BlockStatus of(int id){
         BlockStatus blockStatus = new BlockStatus();
         blockStatus.setBlockStatusId(id);
         return blockStatus;
+    }
+
+    public BlockStatus(int id){
+        blockStatusId=id;
     }
 }
