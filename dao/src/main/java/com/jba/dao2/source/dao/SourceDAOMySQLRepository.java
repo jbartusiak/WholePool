@@ -19,6 +19,15 @@ public class SourceDAOMySQLRepository implements SourceDAO{
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Override
+    public List<Source> getAllSources() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.
+                createQuery("from Source s", Source.class).
+                getResultList();
+    }
+
     public Source getSourceByName(String name){
         Session session = sessionFactory.getCurrentSession();
         try{
