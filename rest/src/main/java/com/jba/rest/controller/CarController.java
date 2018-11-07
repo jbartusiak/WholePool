@@ -34,13 +34,22 @@ public class CarController {
             return new WPLResponse<>(HttpStatus.OK, carService.getAllCars());
     }
 
-    @PostMapping("/new")
+    @PostMapping("/user")
     @ResponseStatus(HttpStatus.CREATED)
     public WPLResponse addUsersCar(
             @RequestParam(value = "userId", required = true) Integer userId,
             @RequestBody(required = true) Car car
     ){
         return new WPLResponse<>(HttpStatus.CREATED, carService.addUsersCar(userService.getUser(userId), car));
+    }
+
+    @DeleteMapping("/user")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUsersCar(
+            @RequestParam(value = "userId", required = true) Integer userId,
+            @RequestParam(value = "carId", required = true) Integer carId
+    ){
+        carService.deleteUsersCar(User.of(userId), Car.of(carId));
     }
 
 
