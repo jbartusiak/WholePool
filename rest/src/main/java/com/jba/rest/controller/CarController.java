@@ -1,6 +1,7 @@
 package com.jba.rest.controller;
 
 import com.jba.dao2.cars.entity.CarType;
+import com.jba.dao2.user.enitity.User;
 import com.jba.entity.WPLResponse;
 import com.jba.service.ifs.CarService;
 import com.jba.service.ifs.UserService;
@@ -21,12 +22,15 @@ public class CarController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse getCar(
-            @RequestParam(value = "carId", required = false) Integer carId
+            @RequestParam(value = "carId", required = false) Integer carId,
+            @RequestParam(value = "userId", required = false) Integer userId
     ) {
-        if (carId == null)
-            return new WPLResponse<>(HttpStatus.OK, carService.getAllCars());
-        else
+        if (carId != null)
             return new WPLResponse<>(HttpStatus.OK, carService.getCarById(carId));
+        else if (userId != null)
+            return new WPLResponse<>(HttpStatus.OK, carService.getUsersCars(User.of(userId)));
+        else
+            return new WPLResponse<>(HttpStatus.OK, carService.getAllCars());
     }
 
     @GetMapping("/type")
