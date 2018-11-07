@@ -36,4 +36,8 @@ public class BlockStatus {
         blockStatus.setBlockStatusId(id);
         return blockStatus;
     }
+
+    public BlockStatus(int id){
+        blockStatusId=id;
+    }
 }

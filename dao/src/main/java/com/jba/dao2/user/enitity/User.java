@@ -67,4 +67,8 @@ public class User {
         user.setUserId(id);
         return user;
     }
+
+    public User(int id){
+        this.userId=id;
+    }
 }

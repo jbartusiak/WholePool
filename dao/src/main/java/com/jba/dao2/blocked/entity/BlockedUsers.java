@@ -1,6 +1,7 @@
 package com.jba.dao2.blocked.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jba.dao2.user.enitity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class BlockedUsers implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NonNull
     @JoinColumn(name="fk_blocked_status_id")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private BlockStatus blockStatus;
 
     @Column(name = "blocked_date")

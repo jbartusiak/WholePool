@@ -47,4 +47,17 @@ public class BlockController {
         else
             return new WPLResponse<>(HttpStatus.OK, lockService.getUserBlockedStatus(userId));
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse lockUser(
+            @RequestBody(required = true) BlockedUsers blockedUsers
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, lockService.blockUser(
+                blockedUsers.getUser().getUserId(),
+                blockedUsers.getBlockedBy().getUserId(),
+                blockedUsers.getBlockStatus().getBlockStatusId(),
+                blockedUsers.getBlockReasonDescription()
+        ));
+    }
 }
