@@ -161,6 +161,7 @@ public class CarDAOTest {
             logger.info("Removing "+random+" position.");
 
             int deletedCarId = cars.get(random).getCarId();
+            carDAO.deleteUsersCar(User.of(1), cars.get(random));
             carDAO.deleteCar(cars.get(random));
         }
         catch (Exception e){

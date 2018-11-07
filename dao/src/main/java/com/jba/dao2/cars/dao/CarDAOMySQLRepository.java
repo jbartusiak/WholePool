@@ -101,31 +101,29 @@ public class CarDAOMySQLRepository implements CarDAO {
         }
     }
 
-    public void deleteCar(Car car) {
+    @Override
+    public void deleteUsersCar(User user, Car car) {
         Session session = sessionFactory.getCurrentSession();
 
         int carId = car.getCarId();
 
-        try {
-            UsersCars usersCars = session.
-                    createQuery("from UsersCars u where u.car=:car", UsersCars.class).
-                    setParameter("car", car).
-                    getSingleResult();
+        UsersCars usersCars = session.
+                createQuery("from UsersCars u where u.car=:car", UsersCars.class).
+                setParameter("car", car).
+                getSingleResult();
 
-            logger.info("Deleting user-car association: " + usersCars);
+        logger.info("Deleting user-car association: " + usersCars);
 
-            session.delete(usersCars);
-        } catch (Exception e) {
-            logger.error("Failed to delete user-car association", e);
-        }
+        session.delete(usersCars);
+    }
 
-        Session session2 = sessionFactory.getCurrentSession();
-        try {
-            logger.info("Deleting car " + car);
-            session2.delete(Car.of(carId));
-        } catch (Exception e) {
-            logger.error("Failed to delete car " + car, e);
-        }
+    @Override
+    public void deleteCar(Car car) {
+        Session session = sessionFactory.getCurrentSession();
+
+        logger.info("Deleting car " + car.getCarId());
+        session.delete(Car.of(car.getCarId()));
+
         logger.info("Deletion of car " + car + " successfull!");
     }
 
