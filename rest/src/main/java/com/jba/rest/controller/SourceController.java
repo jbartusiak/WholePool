@@ -1,5 +1,6 @@
 package com.jba.rest.controller;
 
+import com.jba.dao2.source.entity.Source;
 import com.jba.entity.WPLResponse;
 import com.jba.service.ifs.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,11 @@ public class SourceController {
             return new WPLResponse<>(HttpStatus.OK, sourceService.getSourceByName(sourceName));
     }
 
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse addSource(
+            @RequestBody(required = true) Source source
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, sourceService.addSource(source));
+    }
 }
