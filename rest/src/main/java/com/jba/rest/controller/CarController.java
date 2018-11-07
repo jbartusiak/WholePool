@@ -1,5 +1,6 @@
 package com.jba.rest.controller;
 
+import com.jba.dao2.cars.entity.Car;
 import com.jba.dao2.cars.entity.CarType;
 import com.jba.dao2.user.enitity.User;
 import com.jba.entity.WPLResponse;
@@ -32,6 +33,16 @@ public class CarController {
         else
             return new WPLResponse<>(HttpStatus.OK, carService.getAllCars());
     }
+
+    @PostMapping("/new")
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse addUsersCar(
+            @RequestParam(value = "userId", required = true) Integer userId,
+            @RequestBody(required = true) Car car
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, carService.addUsersCar(userService.getUser(userId), car));
+    }
+
 
     @GetMapping("/type")
     @ResponseStatus(HttpStatus.OK)
