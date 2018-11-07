@@ -33,8 +33,8 @@ public class LockServiceImpl implements LockService {
     }
 
     @Override
-    public BlockStatus deleteBlockStatus(BlockStatus blockStatus) {
-        return blockedDAO.deleteBlockStatus(blockStatus);
+    public BlockStatus deleteBlockStatus(Integer blockStatus) {
+        return blockedDAO.deleteBlockStatus(BlockStatus.of(blockStatus));
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 public interface LockService {
     List<BlockStatus> getAllBlockStatuses();
     BlockStatus addNewBlockStatus(BlockStatus blockStatus);
-    BlockStatus deleteBlockStatus(BlockStatus blockStatus);
+    BlockStatus deleteBlockStatus(Integer blockStatusId);
     List<BlockedUsers> getAllBlockedUsers();
     BlockedUsers blockUser(Integer userIdToBeBlocked, Integer userIdPerformingBlock, Integer blockStatusId, String reasonDescription);
     BlockedUsers getUserBlockedStatus(Integer userId);
