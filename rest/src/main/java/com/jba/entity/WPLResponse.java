@@ -23,4 +23,21 @@ public class WPLResponse<TYPE> {
         type = result.getClass().getSimpleName();
         this.result=result;
     }
+
+    public WPLResponse(HttpStatus status, TYPE result, Class objectsContainedInArray){
+        statusCode=status.value();
+        message=status.getReasonPhrase();
+        timestamp=formatter.format(new Date());
+        if(result.getClass().getSimpleName().contains("List")){
+            type = "List<"+objectsContainedInArray.getSimpleName()+">";
+        }
+        else if(result.getClass().getSimpleName().contains("Set")){
+            type = "Set<"+objectsContainedInArray.getSimpleName()+">";
+        }
+        else if(result.getClass().getSimpleName().contains("Map")){
+            type = "Map<"+objectsContainedInArray.getSimpleName()+">";
+        }
+        else type = objectsContainedInArray.getSimpleName();
+        this.result=result;
+    }
 }

@@ -11,6 +11,7 @@ import com.jba.service.ifs.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -55,10 +56,14 @@ public class LockServiceImpl implements LockService {
 
     @Override
     public BlockedUsers getUserBlockedStatus(Integer userId) {
-        return blockedDAO
-                .getUserBlockedStatus(
-                        userService.getUser(userId)
-                );
+        BlockedUsers result = blockedDAO
+                    .getUserBlockedStatus(
+                            userService.getUser(userId)
+                    );
+        if(result==null){
+            throw new NoResultException("User "+userId+" is not locked!");
+        }
+        else return result;
     }
 
     @Override

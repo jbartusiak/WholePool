@@ -23,7 +23,6 @@ public class BlockedUsers implements Serializable {
     @NonNull
     @OneToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="fk_blocked_user_id")
-    @JsonIgnore
     private User user;
 
     @Id

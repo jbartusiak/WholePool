@@ -1,6 +1,7 @@
 package com.jba.rest.controller;
 
 import com.jba.dao2.blocked.entity.BlockStatus;
+import com.jba.dao2.blocked.entity.BlockedUsers;
 import com.jba.entity.WPLResponse;
 import com.jba.service.ifs.LockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class BlockController {
     @GetMapping("/type")
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse getLockTypes(){
-        return new WPLResponse<>(HttpStatus.OK, lockService.getAllBlockStatuses());
+        return new WPLResponse<>(HttpStatus.OK, lockService.getAllBlockStatuses(), BlockStatus.class);
     }
 
     @PostMapping("/type")
@@ -34,5 +35,16 @@ public class BlockController {
             @RequestParam(name = "lockTypeId") Integer lockTypeId
     ){
         lockService.deleteBlockStatus(lockTypeId);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public WPLResponse getUsersLockStaus(
+            @RequestParam(name = "userId", required = false) Integer userId
+    ){
+        if(userId==null)
+            return new WPLResponse<>(HttpStatus.OK, lockService.getAllBlockedUsers(), BlockedUsers.class);
+        else
+            return new WPLResponse<>(HttpStatus.OK, lockService.getUserBlockedStatus(userId));
     }
 }
