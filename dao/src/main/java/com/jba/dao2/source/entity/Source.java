@@ -30,4 +30,10 @@ public class Source {
         this.searchBaseUrl=searchBaseUrl;
         this.resultsParseRules=resultsParseRules;
     }
+
+    public static Source of(int id){
+        Source source = new Source();
+        source.setSourceId(id);
+        return source;
+    }
 }

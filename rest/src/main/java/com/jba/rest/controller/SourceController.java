@@ -40,4 +40,12 @@ public class SourceController {
     ){
         return new WPLResponse<>(HttpStatus.ACCEPTED, sourceService.editSource(source));
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSource(
+            @RequestParam(required = true) Integer sourceId
+    ){
+        sourceService.deleteSource(Source.of(sourceId));
+    }
 }
