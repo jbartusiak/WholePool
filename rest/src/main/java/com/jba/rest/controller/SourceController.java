@@ -32,4 +32,12 @@ public class SourceController {
     ){
         return new WPLResponse<>(HttpStatus.CREATED, sourceService.addSource(source));
     }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public WPLResponse editSource(
+            @RequestBody(required = true) Source source
+    ){
+        return new WPLResponse<>(HttpStatus.ACCEPTED, sourceService.editSource(source));
+    }
 }

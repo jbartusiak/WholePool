@@ -9,7 +9,10 @@ import java.util.List;
 public interface SourceService {
     List<Source> getAllSources();
     Source getSourceByName(String name);
+
+    @Deprecated
     Source addSource(String sourceName, String searchBaseURL, String resultsParseRules);
+
     Source addSource(Source source);
     Source editSource(Source source);
     Source deleteSource(Source source);
