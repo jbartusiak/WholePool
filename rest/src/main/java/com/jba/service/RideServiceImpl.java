@@ -41,8 +41,8 @@ public class RideServiceImpl implements RideService {
         return rideDAO
                 .findRideByCriteria(
                         searchCriteria.getRoute(),
-                        Optional.of(searchCriteria.getDOD()),
-                        Optional.of(searchCriteria.getDOA())
+                        searchCriteria.getDOD(),
+                        searchCriteria.getDOA()
                 ).stream().collect(Collectors.toList());
     }
 

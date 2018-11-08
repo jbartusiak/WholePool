@@ -5,6 +5,7 @@ import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.ride.enitity.RidePassangers;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +26,10 @@ public interface RideDAO {
     List<Ride> getAllRides();
 
     @Transactional
-    Set<Ride> findRideByCriteria(
+    List<Ride> findRideByCriteria(
             Route route,
-            Optional<Date> dateOfDeparture,
-            Optional<Date> dateOfArrival
+            @Nullable Date dateOfDeparture,
+            @Nullable Date dateOfArrival
     );
 
     @Transactional

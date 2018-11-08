@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -67,47 +68,36 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
-    public Set<Ride> findRideByCriteria(
+    public List<Ride> findRideByCriteria(
             Route route,
-            Optional<Date> dateOfDeparture,
-            Optional<Date> dateOfArrival
+            @Nullable Date dateOfDeparture,
+            @Nullable Date dateOfArrival
     ){
         RideDetails rideDetails = new RideDetails();
 
-        dateOfDeparture.ifPresent(date -> rideDetails.setDateOfDeparture(date));
-        dateOfArrival.ifPresent(date -> rideDetails.setDateOfArrival(date));
+        if(dateOfDeparture!=null) rideDetails.setDateOfDeparture(dateOfDeparture);
+        if(dateOfArrival!=null) rideDetails.setDateOfArrival(dateOfArrival);
 
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
-            Set<Ride> result = session.
+            List<Ride> result = session.
                     createQuery(
-                            "select rd.rideId from RideDetails rd where rd.dateOfArrival=:doa or rd.dateOfDeparture=:dod and rd.rideId.routeForThisRide=:route",
+                            "select rd.rideId from RideDetails rd where rd.rideId.routeForThisRide=:route and (rd.dateOfDeparture=:dod or rd.dateOfArrival=:doa)",
                             Ride.class).
                     setParameter("doa", rideDetails.getDateOfArrival()).
                     setParameter("dod", rideDetails.getDateOfDeparture()).
                     setParameter("route", route).
-                    getResultStream().
-                    collect(Collectors.toSet());
-
-            session.getTransaction().commit();
-
-            session.close();
+                    getResultList();
 
             return result;
         }
         catch (NoResultException e){
             logger.info("There are no entries of given criteria");
-            if(session.isOpen())
-                session.close();
-            return new HashSet<Ride>();
+            return new ArrayList<Ride>();
         }
         catch (Exception e){
             logger.error("Error retrieving entries!", e);
-            if(session.isOpen())
-                session.close();
             throw e;
         }
     }
