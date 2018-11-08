@@ -1,11 +1,14 @@
 package com.jba.dao2.source.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Source")
 public class Source {
 
@@ -23,7 +26,9 @@ public class Source {
     @Column(name = "SOURCE_RESULT_PARSE_RULES")
     private String resultsParseRules;
 
-    public Source(){}
+    public Source(int id){
+        this.sourceId=id;
+    }
 
     public Source(String sourceName, String searchBaseUrl, String resultsParseRules){
         this.sourceName=sourceName;
