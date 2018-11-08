@@ -19,5 +19,7 @@ public interface SearchService {
     SearchHistory registerNewSearch(Integer userId, Search search);
     List<SearchHistory> getUsersSearchHistory(Integer userId);
     PopularRoute getPopularRouteById(Integer id);
+
+    @Deprecated
     PopularRoute getPopularRouteByRoute(Integer routeId);
 }
