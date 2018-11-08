@@ -230,6 +230,16 @@ public class RideDAOMySQLRepository implements RideDAO{
         return ride;
     }
 
+    @Override
+    public List<User> getRidePassengers(Ride ride) {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.
+                createQuery("select rp.passenger from RidePassangers rp where rp.ride=:ride", User.class).
+                setParameter("ride", ride).
+                getResultList();
+    }
+
     public RidePassangers registerToRide(User user, Ride ride) throws UnsupportedOperationException{
         Session session = sessionFactory.getCurrentSession();
         try{

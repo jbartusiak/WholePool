@@ -54,6 +54,9 @@ public interface RideDAO {
     Ride deleteRideDetails(Ride ride);
 
     @Transactional
+    List<User> getRidePassengers(Ride ride);
+
+    @Transactional
     RidePassangers registerToRide(User user, Ride ride) throws UnsupportedOperationException;
 
     @Transactional

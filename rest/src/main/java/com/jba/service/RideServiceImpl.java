@@ -70,6 +70,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<User> getPassangersForRide(Integer rideId) {
+        return rideDAO.getRidePassengers(getRideById(rideId));
+    }
+
+    @Override
     public RidePassangers registerToRide(Integer userId, Integer rideId) throws UnsupportedOperationException {
         return rideDAO.registerToRide(
                 userService.getUser(userId),
