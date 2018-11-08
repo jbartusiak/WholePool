@@ -1,5 +1,6 @@
 package com.jba.rest.controller;
 
+import com.jba.dao2.route.entity.Route;
 import com.jba.entity.WPLResponse;
 import com.jba.service.ifs.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,13 @@ public class RouteController {
         if(routeId!=null)
             return new WPLResponse<>(HttpStatus.OK, searchService.getRouteById(routeId));
         else return new WPLResponse<>(HttpStatus.OK,searchService.getAllRoutes());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse addRoute(
+            @RequestBody(required = true) Route route
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, searchService.addRoute(route));
     }
 }
