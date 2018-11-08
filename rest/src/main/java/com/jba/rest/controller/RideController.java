@@ -68,4 +68,22 @@ public class RideController {
     ){
         rideService.deleteRide(rideId);
     }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse registerToRide(
+        @RequestParam(name="userId", required = true) Integer userId,
+        @RequestParam(name = "rideId", required = true) Integer rideId
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, rideService.registerToRide(userId, rideId));
+    }
+
+    @DeleteMapping("/register")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unregisterFromRide(
+            @RequestParam(name = "userId", required = true) Integer userId,
+            @RequestParam(name = "rideId", required = true) Integer rideId
+    ){
+        rideService.unregisterFromRide(userId, rideId);
+    }
 }

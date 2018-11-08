@@ -219,7 +219,9 @@ public class RideDAOMySQLRepository implements RideDAO{
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.delete(ride.getRideDetails());
+            if(ride.getRideDetails()!=null) {
+                session.delete(ride.getRideDetails());
+            }
         }
         catch (Exception e){
             logger.error("Error occured deleting ride details",e);
@@ -231,8 +233,6 @@ public class RideDAOMySQLRepository implements RideDAO{
     public RidePassangers registerToRide(User user, Ride ride) throws UnsupportedOperationException{
         Session session = sessionFactory.getCurrentSession();
         try{
-            session.beginTransaction();
-
             long count = session.
                     createQuery("select count(rp) from RidePassangers rp where rp.ride=:ride", Long.class).
                     setParameter("ride", ride).
@@ -245,17 +245,9 @@ public class RideDAOMySQLRepository implements RideDAO{
             RidePassangers ridePassangers = new RidePassangers(user,ride);
 
             session.save(ridePassangers);
-
-            session.getTransaction().commit();
-
-            session.close();
-
             return ridePassangers;
         }
         catch (UnsupportedOperationException e){
-            if(session.isOpen()){
-                session.close();
-            }
             throw new UnsupportedOperationException("There are no more free places for this ride!");
         }
     }
