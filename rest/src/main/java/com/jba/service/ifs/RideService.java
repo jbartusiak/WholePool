@@ -14,7 +14,10 @@ public interface RideService {
     Ride getRideById(Integer rideId);
     List<Ride> getAllRides();
     List<Ride> findRideByCriteria(SearchCriteria searchCriteria);
+
+    @Deprecated
     RideDetails getRideDetials(Integer rideId);
+
     Ride addRide(Integer userOffererId, Ride ride);
     RideDetails addRideDetails(Integer rideId, RideDetails rideDetails);
     Ride deleteRide(Integer rideId);

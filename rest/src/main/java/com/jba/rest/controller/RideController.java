@@ -41,4 +41,13 @@ public class RideController {
 
         return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(searchCriteria), Ride.class);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse addRide(
+            @RequestParam(name = "userId", required = true) Integer userId,
+            @RequestBody(required = true) Ride ride
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, rideService.addRide(userId, ride));
+    }
 }

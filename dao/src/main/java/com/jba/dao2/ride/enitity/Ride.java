@@ -28,7 +28,6 @@ public class Ride {
     @ManyToOne
     @JoinColumn(name = "FK_RIDE_ROUTE_ID")
     @NonNull
-    @JsonIgnore
     private Route routeForThisRide;
 
     @Column(name = "RIDE_CAN_SMOKE")
