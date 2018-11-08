@@ -4,7 +4,6 @@ import com.jba.dao2.route.entity.PopularRoute;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.search.entity.Search;
 import com.jba.dao2.search.entity.SearchHistory;
-import com.jba.dao2.user.enitity.User;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
