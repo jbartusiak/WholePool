@@ -44,8 +44,8 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public PopularRoute updatePopularRoute(Route route, PopularRoute popularRoute) {
-        return searchDAO.updatePopularRoute(route, popularRoute);
+    public PopularRoute updatePopularRoute(Integer routeId, PopularRoute popularRoute) {
+        return searchDAO.updatePopularRoute(getRouteById(routeId), popularRoute);
     }
 
     @Override

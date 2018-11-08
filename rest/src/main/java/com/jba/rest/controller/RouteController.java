@@ -1,5 +1,6 @@
 package com.jba.rest.controller;
 
+import com.jba.dao2.route.entity.PopularRoute;
 import com.jba.dao2.route.entity.Route;
 import com.jba.entity.WPLResponse;
 import com.jba.rest.exception.SearchCriteriaNotSpecifiedException;
@@ -49,5 +50,13 @@ public class RouteController {
         if(routeId==null)
             return new WPLResponse<>(HttpStatus.OK, searchService.getAllPopularRoutes());
         else return new WPLResponse<>(HttpStatus.OK, searchService.getPopularRouteById(routeId));
+    }
+
+    @PutMapping("/popular")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public WPLResponse updatePopularRoute(
+            @RequestBody(required = true) PopularRoute popularRoute
+    ){
+        return new WPLResponse<>(HttpStatus.ACCEPTED, searchService.updatePopularRoute(popularRoute.getRideId().getRouteId(), popularRoute));
     }
 }

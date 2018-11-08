@@ -15,7 +15,7 @@ public interface SearchService {
     List<Route> getAllRoutes();
     Route addRoute(Route route);
     Route updateRoute(Route route);
-    PopularRoute updatePopularRoute(Route route, @Nullable PopularRoute popularRoute);
+    PopularRoute updatePopularRoute(Integer routeId, @Nullable PopularRoute popularRoute);
     SearchHistory registerNewSearch(Integer userId, Search search);
     List<SearchHistory> getUsersSearchHistory(Integer userId);
     PopularRoute getPopularRouteById(Integer id);
