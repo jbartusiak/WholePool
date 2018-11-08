@@ -63,6 +63,9 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public Ride deleteRide(Integer rideId) {
+        rideDAO.deleteRideDetails(getRideById(rideId));
+        rideDAO.deleteOfferedRides(getRideById(rideId));
+        rideDAO.removePassengers(getRideById(rideId));
         return rideDAO.deleteRide(getRideById(rideId));
     }
 

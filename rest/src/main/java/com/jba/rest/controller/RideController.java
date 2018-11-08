@@ -60,4 +60,12 @@ public class RideController {
     ){
         return new WPLResponse<>(HttpStatus.CREATED, rideService.addRideDetails(rideId, rideDetails));
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRide(
+            @RequestParam(name="rideId", required = true) Integer rideId
+    ){
+        rideService.deleteRide(rideId);
+    }
 }

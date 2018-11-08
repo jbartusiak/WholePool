@@ -149,117 +149,83 @@ public class RideDAOMySQLRepository implements RideDAO{
     }
 
     public Ride deleteRide(Ride ride){
-        logger.info("Deleting ride details if present");
+        logger.info("Deleting the ride itself");
 
-        Session deleteRideDetailsSession = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         try{
-            deleteRideDetailsSession.beginTransaction();
-
-            deleteRideDetailsSession.delete(ride.getRideDetails());
-
-            deleteRideDetailsSession.getTransaction().commit();
-
-            deleteRideDetailsSession.close();
+            session.delete(ride);
+            return ride;
         }
         catch (Exception e){
-            logger.error("Error occured deleting ride details",e);
-            if(deleteRideDetailsSession.isOpen()){
-                deleteRideDetailsSession.getTransaction().rollback();
-                deleteRideDetailsSession.close();
-            }
+            logger.error("Error occured while trying delete this ride", e);
             throw e;
         }
+    }
 
+    @Override
+    public Ride deleteOfferedRides(Ride ride) {
         logger.info("Deleting user-ride associations");
 
-        Session searchForOfferedRidesAndDeleteThemSession = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         try{
-            searchForOfferedRidesAndDeleteThemSession.beginTransaction();
-            List<OfferedRides> offeredRidesList = searchForOfferedRidesAndDeleteThemSession.
+            List<OfferedRides> offeredRidesList = session.
                     createQuery("from OfferedRides r where r.ride=:ride", OfferedRides.class).
                     setParameter("ride", ride).
                     getResultList();
 
-            offeredRidesList.forEach(offeredRide -> searchForOfferedRidesAndDeleteThemSession.delete(offeredRide));
-
-            searchForOfferedRidesAndDeleteThemSession.getTransaction().commit();
-
-            searchForOfferedRidesAndDeleteThemSession.close();
+            offeredRidesList.forEach(offeredRide -> session.delete(offeredRide));
         }
         catch(NoResultException e){
-            if(searchForOfferedRidesAndDeleteThemSession.isOpen()){
-                searchForOfferedRidesAndDeleteThemSession.close();
-            }
             logger.info("No user-ride associations found for this ride");
         }
         catch (Exception e){
             logger.error("Error occured deleting user-ride associations",e);
-            if(searchForOfferedRidesAndDeleteThemSession.isOpen()){
-                searchForOfferedRidesAndDeleteThemSession.getTransaction().rollback();
-                searchForOfferedRidesAndDeleteThemSession.close();
-            }
             throw e;
         }
 
-        logger.info("Deleting ride passengers");
+        return ride;
+    }
 
-        Session deletePassengersSession = sessionFactory.getCurrentSession();
+    @Override
+    public Ride removePassengers(Ride ride) {
+        Session session = sessionFactory.getCurrentSession();
 
         try{
-            deletePassengersSession.beginTransaction();
-
-            List<RidePassangers> passangersList = deletePassengersSession.
+            List<RidePassangers> passangersList = session.
                     createQuery("from RidePassangers pas where pas.ride=:ride", RidePassangers.class).
                     setParameter("ride",ride).
                     getResultList();
 
             for(RidePassangers passanger:passangersList){
-                deletePassengersSession.delete(passanger);
+                session.delete(passanger);
             }
-
-            deletePassengersSession.getTransaction().commit();
-
-            deletePassengersSession.close();
         }
         catch (NoResultException e){
             logger.info("There are no passengers for this ride");
-            if(deletePassengersSession.isOpen())
-                deletePassengersSession.close();
         }
         catch (Exception e){
             logger.error("Error deleting passangers for this ride", e);
-            if(deletePassengersSession.isOpen()){
-                deletePassengersSession.getTransaction().rollback();
-                deletePassengersSession.close();
-            }
             throw e;
         }
+        return ride;
+    }
 
-        logger.info("Deleting the ride itself");
+    @Override
+    public Ride deleteRideDetails(Ride ride) {
+        logger.info("Deleting ride details if present");
 
-        Session deleteRideSession = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
         try{
-            deleteRideSession.beginTransaction();
-
-            deleteRideSession.delete(ride);
-
-            deleteRideSession.getTransaction().commit();
-
-            deleteRideSession.close();
-
-            return ride;
+            session.delete(ride.getRideDetails());
         }
         catch (Exception e){
-            logger.error("Error occured while trying delete this ride", e);
-            if(deleteRideSession.isOpen()){
-                deleteRideSession.getTransaction().rollback();
-                deleteRideSession.close();
-            }
+            logger.error("Error occured deleting ride details",e);
             throw e;
         }
+        return ride;
     }
 
     public RidePassangers registerToRide(User user, Ride ride) throws UnsupportedOperationException{
