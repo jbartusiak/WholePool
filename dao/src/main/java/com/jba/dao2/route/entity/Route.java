@@ -47,6 +47,10 @@ public class Route {
         return route;
     }
 
+    public Route(int id){
+        this.routeId=id;
+    }
+
     @OneToMany(mappedBy = "routeForThisRide")
     @JsonIgnore
     @ToString.Exclude
