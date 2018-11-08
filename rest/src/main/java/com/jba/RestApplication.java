@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class, scanBasePackages = "com.jba")
 @Configuration
-@Import(DAOConfig.class)
+@Import({DAOConfig.class, SwaggerConfig.class})
 @RestController
 public class RestApplication {
 
@@ -26,14 +26,4 @@ public class RestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestApplication.class, args);
 	}
-
-    @RequestMapping("/")
-    public String hello() {
-        return "hello";
-    }
-
-    @RequestMapping("/BU/{id}")
-    public BlockedUsers blockedUsers(@PathVariable("id") int id) {
-        return blockedDAO.getUserBlockedStatus(User.of(id));
-    }
 }

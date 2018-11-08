@@ -37,7 +37,7 @@ public class WPLResponse<TYPE> {
         else if(result.getClass().getSimpleName().contains("Map")){
             type = "Map<"+objectsContainedInArray.getSimpleName()+">";
         }
-        else type = objectsContainedInArray.getSimpleName();
+        else type = result.getClass().getSimpleName();
         this.result=result;
     }
 }
