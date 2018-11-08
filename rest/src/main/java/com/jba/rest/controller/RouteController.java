@@ -30,4 +30,12 @@ public class RouteController {
     ){
         return new WPLResponse<>(HttpStatus.CREATED, searchService.addRoute(route));
     }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public WPLResponse editRoute(
+            @RequestBody(required = true) Route route
+    ){
+        return new WPLResponse<>(HttpStatus.ACCEPTED, searchService.updateRoute(route));
+    }
 }
