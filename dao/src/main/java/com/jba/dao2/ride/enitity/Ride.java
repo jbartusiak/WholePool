@@ -1,5 +1,6 @@
 package com.jba.dao2.ride.enitity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.source.entity.Source;
 import lombok.*;
@@ -27,6 +28,7 @@ public class Ride {
     @ManyToOne
     @JoinColumn(name = "FK_RIDE_ROUTE_ID")
     @NonNull
+    @JsonIgnore
     private Route routeForThisRide;
 
     @Column(name = "RIDE_CAN_SMOKE")
@@ -43,6 +45,7 @@ public class Ride {
 
     @OneToMany(mappedBy = "ride")
     @ToString.Exclude
+    @JsonIgnore
     private Set<RidePassangers> passengers;
 
     @OneToOne(mappedBy = "rideId")

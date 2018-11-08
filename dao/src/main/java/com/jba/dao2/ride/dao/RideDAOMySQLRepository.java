@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.NoResultException;
 import java.sql.Date;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
+@EnableTransactionManagement
 public class RideDAOMySQLRepository implements RideDAO{
 
     private final static Logger logger = Logger.getLogger(RideDAOMySQLRepository.class);
@@ -30,61 +32,37 @@ public class RideDAOMySQLRepository implements RideDAO{
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
             Ride result = session.
                     createQuery("from Ride r where r.id=:id", Ride.class).
                     setParameter("id", id).
                     getSingleResult();
 
-            session.getTransaction().commit();
-
-            session.close();
-
             return result;
         }
         catch(NoResultException e){
             logger.info("No item found of id "+id);
-            if(session.isOpen()){
-                session.close();
-            }
             return null;
         }
         catch (Exception e){
             logger.error("Error getting ride of id "+id, e);
-            if(session.isOpen())
-                session.close();
             throw e;
         }
     }
 
-    public Set<Ride> getAllRides(){
+    public List<Ride> getAllRides(){
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
-            Set<Ride> rides = session.
+            return session.
                     createQuery("From Ride", Ride.class).
-                    getResultStream().
-                    collect(Collectors.toSet());
-
-            session.getTransaction().commit();
-
-            session.close();
-
-            return rides;
+                    getResultList();
         }
         catch (NoResultException e){
             logger.info("There are no rides registered yet!");
-            if(session.isOpen())
-                session.close();
-            return new HashSet<Ride>();
+            return new ArrayList<>();
         }
         catch (Exception e){
             logger.error("Error getting all rides", e);
-            if(session.isOpen())
-                session.close();
             throw e;
         }
     }

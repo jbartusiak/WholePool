@@ -32,7 +32,7 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public Set<Ride> getAllRides() {
+    public List<Ride> getAllRides() {
         return rideDAO.getAllRides();
     }
 

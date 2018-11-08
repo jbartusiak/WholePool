@@ -12,7 +12,7 @@ import java.util.Set;
 @Service
 public interface RideService {
     Ride getRideById(Integer rideId);
-    Set<Ride> getAllRides();
+    List<Ride> getAllRides();
     List<Ride> findRideByCriteria(SearchCriteria searchCriteria);
     RideDetails getRideDetials(Integer rideId);
     Ride addRide(Integer userOffererId, Ride ride);
