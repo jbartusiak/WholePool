@@ -22,7 +22,7 @@ public class RouteController {
     ){
         if(routeId!=null)
             return new WPLResponse<>(HttpStatus.OK, searchService.getRouteById(routeId));
-        else return new WPLResponse<>(HttpStatus.OK,searchService.getAllRoutes());
+        else return new WPLResponse<>(HttpStatus.OK,searchService.getAllRoutes(), Route.class);
     }
 
     @PostMapping
@@ -48,7 +48,7 @@ public class RouteController {
     ) throws SearchCriteriaNotSpecifiedException
     {
         if(routeId==null)
-            return new WPLResponse<>(HttpStatus.OK, searchService.getAllPopularRoutes());
+            return new WPLResponse<>(HttpStatus.OK, searchService.getAllPopularRoutes(), PopularRoute.class);
         else return new WPLResponse<>(HttpStatus.OK, searchService.getPopularRouteById(routeId));
     }
 
