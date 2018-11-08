@@ -4,12 +4,14 @@ import com.jba.dao2.cars.entity.Car;
 import com.jba.dao2.cars.entity.CarType;
 import com.jba.dao2.user.enitity.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
 
 @Repository
+@EnableTransactionManagement
 public interface CarDAO {
 
     @Transactional
@@ -22,6 +24,9 @@ public interface CarDAO {
     CarType updateCarType(CarType carType);
 
     @Transactional
+    List<Car> getAllCars();
+
+    @Transactional
     Car getCarById(int id);
 
     @Transactional
@@ -29,6 +34,9 @@ public interface CarDAO {
 
     @Transactional
     List<Car> getUsersCars(User user);
+
+    @Transactional
+    void deleteUsersCar(User user, Car car);
 
     @Transactional
     void deleteCar(Car car);

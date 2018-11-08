@@ -1,5 +1,6 @@
 package com.jba.dao2.ride.enitity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class RideDetails implements Serializable {
     @Id
     @OneToOne
     @JoinColumn(name = "FK_RIDE_ID")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NonNull
     private Ride rideId;
 

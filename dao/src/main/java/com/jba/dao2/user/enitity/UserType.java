@@ -2,6 +2,7 @@ package com.jba.dao2.user.enitity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name="UserType")
 public class UserType {
 
@@ -24,7 +26,9 @@ public class UserType {
     @JsonIgnore
     private Set<User> usersOfThisType;
 
-    public UserType(){}
+    public UserType(int id){
+        setTypeId(id);
+    }
 
     public UserType(String typeName){
         this.typeName=typeName;

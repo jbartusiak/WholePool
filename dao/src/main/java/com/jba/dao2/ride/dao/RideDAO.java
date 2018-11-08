@@ -5,27 +5,31 @@ import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.ride.enitity.RidePassangers;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
+@EnableTransactionManagement
 public interface RideDAO {
 
     @Transactional
     Ride getRideById(int id);
 
     @Transactional
-    Set<Ride> getAllRides();
+    List<Ride> getAllRides();
 
     @Transactional
-    Set<Ride> findRideByCriteria(
+    List<Ride> findRideByCriteria(
             Route route,
-            Optional<Date> dateOfDeparture,
-            Optional<Date> dateOfArrival
+            @Nullable Date dateOfDeparture,
+            @Nullable Date dateOfArrival
     );
 
     @Transactional
@@ -41,11 +45,23 @@ public interface RideDAO {
     Ride deleteRide(Ride ride);
 
     @Transactional
+    Ride deleteOfferedRides(Ride ride);
+
+    @Transactional
+    Ride removePassengers(Ride ride);
+
+    @Transactional
+    Ride deleteRideDetails(Ride ride);
+
+    @Transactional
+    List<User> getRidePassengers(Ride ride);
+
+    @Transactional
     RidePassangers registerToRide(User user, Ride ride) throws UnsupportedOperationException;
 
     @Transactional
     RidePassangers unregisterFromRide(User user, Ride ride);
 
     @Transactional
-    Set<Ride> getRidesByUser(User user);
+    List<Ride> getRidesByUser(User user);
 }

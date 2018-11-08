@@ -1,6 +1,7 @@
 package com.jba.dao2.user.enitity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jba.dao2.blocked.entity.BlockedUsers;
 import com.jba.dao2.ride.enitity.RidePassangers;
 import lombok.*;
@@ -32,7 +33,7 @@ public class User {
 
     @Column(name="user_password_hash")
     @NonNull
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
 
     @Column(name="user_first_name")
@@ -65,5 +66,9 @@ public class User {
         User user = new User();
         user.setUserId(id);
         return user;
+    }
+
+    public User(int id){
+        this.userId=id;
     }
 }

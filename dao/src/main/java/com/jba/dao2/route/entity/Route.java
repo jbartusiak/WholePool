@@ -1,5 +1,6 @@
 package com.jba.dao2.route.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.search.entity.Search;
 import lombok.*;
@@ -46,11 +47,17 @@ public class Route {
         return route;
     }
 
+    public Route(int id){
+        this.routeId=id;
+    }
+
     @OneToMany(mappedBy = "routeForThisRide")
+    @JsonIgnore
     @ToString.Exclude
     private Set<Ride> ridesThatTakePlaceOnThisRoute;
 
     @OneToMany(mappedBy = "route")
     @ToString.Exclude
+    @JsonIgnore
     private Set<Search> existsInSearches;
 }

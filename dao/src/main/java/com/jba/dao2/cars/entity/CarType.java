@@ -10,6 +10,10 @@ import javax.persistence.*;
 @Table(name = "CarType")
 public class CarType {
 
+    public CarType(int carTypeId){
+        this.carTypeId=carTypeId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PK_CAR_TYPE_ID")
