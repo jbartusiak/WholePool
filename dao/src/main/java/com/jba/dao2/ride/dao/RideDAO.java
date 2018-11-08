@@ -60,5 +60,5 @@ public interface RideDAO {
     RidePassangers unregisterFromRide(User user, Ride ride);
 
     @Transactional
-    Set<Ride> getRidesByUser(User user);
+    List<Ride> getRidesByUser(User user);
 }

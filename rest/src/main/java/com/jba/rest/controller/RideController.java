@@ -22,10 +22,14 @@ public class RideController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse getRide(
-            @RequestParam(name = "rideId", required = false) Integer rideId
+            @RequestParam(name = "rideId", required = false) Integer rideId,
+            @RequestParam(name = "userId", required = false) Integer userId
     ){
         if(rideId!=null)
             return new WPLResponse<>(HttpStatus.OK, rideService.getRideById(rideId));
+        else if (userId!=null){
+            return new WPLResponse<>(HttpStatus.OK, rideService.getRidesByUser(userId), Ride.class);
+        }
         else return new WPLResponse<>(HttpStatus.OK, rideService.getAllRides(), Ride.class);
     }
 

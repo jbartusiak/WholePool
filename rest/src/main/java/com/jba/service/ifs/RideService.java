@@ -16,12 +16,12 @@ public interface RideService {
     List<Ride> findRideByCriteria(SearchCriteria searchCriteria);
 
     @Deprecated
-    RideDetails getRideDetials(Integer rideId);
+    RideDetails getRideDetails(Integer rideId);
 
     Ride addRide(Integer userOffererId, Ride ride);
     RideDetails addRideDetails(Integer rideId, RideDetails rideDetails);
     Ride deleteRide(Integer rideId);
     RidePassangers registerToRide(Integer userId, Integer rideId) throws UnsupportedOperationException;
     RidePassangers unregisterFromRide(Integer userId, Integer rideId);
-    Set<Ride> getRidesByUser(Integer userId);
+    List<Ride> getRidesByUser(Integer userId);
 }

@@ -275,31 +275,26 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
-    public Set<Ride> getRidesByUser(User user){
+    public List<Ride> getRidesByUser(User user){
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
             List<OfferedRides> offeredRides = session.
                     createQuery("From OfferedRides o where o.offerer=:user", OfferedRides.class).
                     setParameter("user",user).
                     getResultList();
 
-            Set<Ride> result = new HashSet<>();
-            for(OfferedRides offer: offeredRides){
+            List<Ride> result = new ArrayList<>();
+
+            for (OfferedRides offer: offeredRides){
                 result.add(offer.getRide());
             }
 
-            session.getTransaction().commit();
-            session.close();
             return result;
         }
         catch (NoResultException e){
             logger.info("User "+user+" did not offer any rides!");
-            if(session.isOpen())
-                session.close();
-            return new HashSet<Ride>();
+            throw new NoResultException("User "+user.getUserId()+" did not offer any rides!");
         }
     }
 }
