@@ -41,4 +41,7 @@ public interface SearchDAO {
     @Transactional
     PopularRoute getPopularRouteByRoute(Route route);
 
+    @Transactional
+    List<SearchHistory> getUsersSearchHistory(User user);
+
 }
