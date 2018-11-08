@@ -1,6 +1,7 @@
 package com.jba.rest.controller;
 
 import com.jba.dao2.ride.enitity.Ride;
+import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
 import com.jba.entity.WPLResponse;
 import com.jba.service.entity.SearchCriteria;
@@ -49,5 +50,14 @@ public class RideController {
             @RequestBody(required = true) Ride ride
     ){
         return new WPLResponse<>(HttpStatus.CREATED, rideService.addRide(userId, ride));
+    }
+
+    @PostMapping("/details")
+    @ResponseStatus(HttpStatus.CREATED)
+    public WPLResponse addRideDetails(
+            @RequestParam(name="rideId", required = true) Integer rideId,
+            @RequestBody(required = true) RideDetails rideDetails
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, rideService.addRideDetails(rideId, rideDetails));
     }
 }
