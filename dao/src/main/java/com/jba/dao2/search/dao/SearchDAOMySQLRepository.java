@@ -118,6 +118,15 @@ public class SearchDAOMySQLRepository implements SearchDAO{
     }
 
     @Override
+    public List<PopularRoute> getAllPopularRoutes() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.
+                createQuery("from PopularRoute", PopularRoute.class).
+                getResultList();
+    }
+
+    @Override
     public List<SearchHistory> getUsersSearchHistory(User user) {
         Session session = sessionFactory.getCurrentSession();
 

@@ -64,6 +64,11 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
+    public List<PopularRoute> getAllPopularRoutes() {
+        return searchDAO.getAllPopularRoutes();
+    }
+
+    @Override
     public PopularRoute getPopularRouteByRoute(Integer routeId) {
         return searchDAO.getPopularRouteByRoute(getRouteById(routeId));
     }

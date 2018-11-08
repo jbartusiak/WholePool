@@ -43,9 +43,11 @@ public class RouteController {
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse getPopularRoute(
-            @RequestParam(name="routeId", required = true) Integer routeId
+            @RequestParam(name="routeId", required = false) Integer routeId
     ) throws SearchCriteriaNotSpecifiedException
     {
-        return new WPLResponse<>(HttpStatus.OK, searchService.getPopularRouteById(routeId));
+        if(routeId==null)
+            return new WPLResponse<>(HttpStatus.OK, searchService.getAllPopularRoutes());
+        else return new WPLResponse<>(HttpStatus.OK, searchService.getPopularRouteById(routeId));
     }
 }
