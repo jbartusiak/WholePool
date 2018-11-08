@@ -62,7 +62,7 @@ public class RideController {
     }
 
     @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteRide(
             @RequestParam(name="rideId", required = true) Integer rideId
     ){
@@ -79,7 +79,7 @@ public class RideController {
     }
 
     @DeleteMapping("/register")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void unregisterFromRide(
             @RequestParam(name = "userId", required = true) Integer userId,
             @RequestParam(name = "rideId", required = true) Integer rideId

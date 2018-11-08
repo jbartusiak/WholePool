@@ -256,8 +256,6 @@ public class RideDAOMySQLRepository implements RideDAO{
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
             RidePassangers rp = session.
                     createQuery("from RidePassangers rp where rp.ride=:ride and rp.passenger=:user", RidePassangers.class).
                     setParameter("ride", ride).
@@ -265,25 +263,14 @@ public class RideDAOMySQLRepository implements RideDAO{
                     getSingleResult();
 
             session.delete(rp);
-
-            session.getTransaction().commit();
-
-            session.close();
-
             return rp;
         }
         catch (NoResultException e){
             logger.info("User "+user+" is not registered for ride "+ride);
-            if(session.isOpen())
-                session.close();
-            return null;
+            throw new NoResultException("User "+user.getUserId()+" is not registered to ride "+ride.getRideId());
         }
         catch (Exception e){
             logger.error("Error occured deleting passanger!", e);
-            if(session.isOpen()){
-                session.getTransaction().rollback();
-                session.close();
-            }
             throw e;
         }
     }
