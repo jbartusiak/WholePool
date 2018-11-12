@@ -1,0 +1,29 @@
+:root{
+    --wholepool-dark-bg:#222629;
+    --wholepool-toxic-gr:#87C232;
+    --wholepool-light-grey:#6A6E71;
+    --wholepool-dark-grey:#474A4F;
+}
+
+body{
+    background-color: var(--wholepool-dark-bg);
+}
+
+.bg-dark{
+    background-color: var(--wholepool-dark-bg);
+}
+
+.header-title{
+    margin:0px;
+    padding: 20px;
+    background-color: var(--wholepool-dark-bg);
+    color: var(--wholepool-toxic-gr);
+    font-size: xx-large;
+}
+
+.header-subtitle{
+    position: absolute;
+    top:52px;
+    left:80px;
+    color: var(--wholepool-light-grey);
+}
