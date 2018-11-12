@@ -1,6 +1,8 @@
 branch-defaults:
   default:
     environment: wholepool-rest-env
+deploy:
+    artifact: target/wholepool-rest-1.0.jar
 environment-defaults:
   wholepool-rest-env:
     branch: null
