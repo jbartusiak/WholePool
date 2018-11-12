@@ -1,29 +1,30 @@
 package com.jba;
 
 import com.jba.dao2.DAOConfig;
-import com.jba.dao2.blocked.dao.BlockedDAO;
-import com.jba.dao2.blocked.entity.BlockedUsers;
-import com.jba.dao2.user.enitity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class, scanBasePackages = "com.jba")
 @Configuration
 @Import({DAOConfig.class, SwaggerConfig.class})
-@RestController
+@Controller
 public class RestApplication {
 
-    @Autowired
-    BlockedDAO blockedDAO;
+    public static void main(String[] args) {
+        SpringApplication.run(RestApplication.class, args);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(RestApplication.class, args);
-	}
+    @RequestMapping("/")
+    public String landingPage(){
+        return "index.html";
+    }
+
 }

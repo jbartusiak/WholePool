@@ -1,21 +1,22 @@
 branch-defaults:
   default:
-    environment: wholepool-rest-dev
-    group_suffix: null
-
+    environment: wholepool-rest-env
 deploy:
-    artifact: target/wholepool-rest-0.0.1-SNAPSHOT.jar
+    artifact: target/wholepool-rest-1.0.jar
+environment-defaults:
+  wholepool-rest-env:
+    branch: null
+    repository: null
 global:
   application_name: wholepool-rest
-  branch: null
-  default_ec2_keyname: aws-eb
-  default_platform: Java 8
+  default_ec2_keyname: null
+  default_platform: arn:aws:elasticbeanstalk:eu-west-3::platform/Java 8 running on
+    64bit Amazon Linux/2.7.6
   default_region: eu-west-3
   include_git_submodules: true
   instance_profile: null
   platform_name: null
   platform_version: null
   profile: eb-cli
-  repository: null
   sc: null
   workspace_type: Application
