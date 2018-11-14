@@ -15,7 +15,7 @@
 <jsp:include page="jspf/navbar.jsp"/>
 <div class="container">
     <div class="page-box">
-        <div class="jumbotron page-content-jumbotron">
+        <div class="jumbotron page-content-jumbotron text-align-start">
             <h1>Wholepool</h1>
             <span class="color-white">...twoje przejazdy w jednym miejscu.</span>
         </div>
