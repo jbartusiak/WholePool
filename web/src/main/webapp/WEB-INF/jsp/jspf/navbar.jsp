@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="navbar-brand">
-        <a id="wholepool-title" class="navbar-brand" href="#">
+        <a id="wholepool-title" class="navbar-brand" href="/">
             <img class="d-inline-block align-top" src="images/logo.png" height="50" width="50"/>&nbspWholepool
         </a>
 
