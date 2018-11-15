@@ -21,15 +21,15 @@
                     <div class="page-content">
                         <h3 class="text-align-center">Zaloguj się</h3>
                         <hr/>
-                        <form>
+                        <form action="/login" method="post">
                             <div class="form-group">
                                 <label for="userName">Adres e-mail lub nazwa użytkownika</label>
                                 <input type="email" class="form-control" id="userName" aria-describedby="userNameHelp"
-                                       placeholder="Wprowadź dane">
+                                       placeholder="Wprowadź dane" name="emailAddress">
                             </div>
                             <div class="form-group">
                                 <label for="password">Hasło</label>
-                                <input type="password" class="form-control" id="password" placeholder="Password">
+                                <input type="password" class="form-control" id="password" placeholder="Password" name="passwordHash">
                             </div>
                             <button type="submit" class="btn btn-lg btn-wholepool btn-block" style="margin-top:50px;">
                                 Zatwierdź
