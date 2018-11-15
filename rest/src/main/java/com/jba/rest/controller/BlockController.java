@@ -2,7 +2,7 @@ package com.jba.rest.controller;
 
 import com.jba.dao2.blocked.entity.BlockStatus;
 import com.jba.dao2.blocked.entity.BlockedUsers;
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.rest.exception.UserLockedPermanentlyException;
 import com.jba.service.ifs.LockService;
 import io.swagger.annotations.*;

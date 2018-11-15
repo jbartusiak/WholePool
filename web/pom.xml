@@ -50,12 +50,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.jba</groupId>
-            <artifactId>wholepool-rest</artifactId>
-            <version>${restModuleVersion}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.4</version>

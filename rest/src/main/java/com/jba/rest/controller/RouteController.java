@@ -2,7 +2,7 @@ package com.jba.rest.controller;
 
 import com.jba.dao2.route.entity.PopularRoute;
 import com.jba.dao2.route.entity.Route;
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.rest.exception.SearchCriteriaNotSpecifiedException;
 import com.jba.service.ifs.SearchService;
 import io.swagger.annotations.ApiOperation;
