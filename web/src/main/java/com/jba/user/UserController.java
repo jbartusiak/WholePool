@@ -12,4 +12,9 @@ public class UserController {
     public String setting(){
         return "user-settings";
     }
+
+    @GetMapping("/settings/data")
+    public String getDataSettings(){
+        return "user-settings-data";
+    }
 }

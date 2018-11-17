@@ -182,3 +182,12 @@ body{
 .fas{
     color:var(--orange);
 }
+
+.list-group-item a{
+    color:black;
+}
+
+.selected{
+    background-color:var(--fg-wholepool-accent);
+    font-weight:bold;
+}
