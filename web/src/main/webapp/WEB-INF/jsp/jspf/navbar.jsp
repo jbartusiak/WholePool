@@ -10,7 +10,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="navbar-brand">
         <a id="wholepool-title" class="navbar-brand" href="/">
-            <img class="d-inline-block align-top" src="images/logo.png" height="50" width="50"/>&nbspWholepool
+            <img class="d-inline-block align-top" src="/images/logo.png" height="50" width="50"/>&nbspWholepool
         </a>
 
     </div>
@@ -25,7 +25,7 @@
             </li>
             <c:if test="${sessionScope.get('scopedTarget.sessionInfo').getUserInSession()!=null}">
                 <li class="nav-item">
-                    <a class="nav-link" href="/myRides">Moje przejazdy</a>
+                    <a class="nav-link" href="/user/rides">Moje przejazdy</a>
                 </li>
             </c:if>
         </ul>
@@ -37,7 +37,7 @@
                 <c:if test="${sessionScope.get('scopedTarget.sessionInfo').getUserInSession()==null}">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    <img class="d-inline-block" src="images/logo.png" height="50" width="50"/>
+                    <img class="d-inline-block" src="/images/logo.png" height="50" width="50"/>
                 </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/login">Zaloguj się</a>
@@ -49,10 +49,10 @@
                 <c:if test="${sessionScope.get('scopedTarget.sessionInfo').getUserInSession()!=null}">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                       Cześć, ${sessionScope.get('scopedTarget.sessionInfo').getUserInSession().getFirstName()} <img class="d-inline-block" src="images/logo.png" height="50" width="50"/>
+                       Cześć, ${sessionScope.get('scopedTarget.sessionInfo').getUserInSession().getFirstName()} <img class="d-inline-block" src="/images/logo.png" height="50" width="50"/>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/settings">Ustawienia</a>
+                        <a class="dropdown-item" href="/user/settings">Ustawienia</a>
                         <a class="dropdown-item" href="/logout">Wyloguj się</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/help">Pomoc</a>
