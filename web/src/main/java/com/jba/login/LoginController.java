@@ -3,6 +3,7 @@ package com.jba.login;
 import com.jba.dao2.user.enitity.User;
 import com.jba.session.SessionInfo;
 import com.jba.utils.Deserializer;
+import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,13 @@ public class LoginController {
     @Value("${wholepool.rest.url.base.url}")
     private String wholepoolBaseUrl;
 
-    private final String usersBase = "/users";
+    private final String usersBase = "users";
 
     @Autowired
     SessionInfo userInSession;
 
     @GetMapping(value = "/login")
-    public String login(Model model){
-        RestTemplate restTemplate = new RestTemplate();
+    public String login(){
         return "login";
     }
 
@@ -34,16 +34,25 @@ public class LoginController {
     public String doLogin(User user){
         RestTemplate restTemplate = new RestTemplate();
 
-        String result = restTemplate.getForObject(wholepoolBaseUrl+usersBase+"?email="+user.getEmailAddress(), String.class);
+        String userSearchURL = RestRequestBuilder
+                .builder(wholepoolBaseUrl)
+                .addPathParam(usersBase)
+                .addParam("email", user.getEmailAddress())
+                .build();
+
+        String result = restTemplate.getForObject(userSearchURL, String.class);
 
         User userFromJson = Deserializer.getSingleItemFor(result, User.class);
 
         System.out.println(userFromJson.toString());
 
-        String verifyPasswordURL =
-                wholepoolBaseUrl+usersBase+"/verify?"+
-                "hash="+user.getPasswordHash()+"&"+
-                "userId="+userFromJson.getUserId();
+        String verifyPasswordURL = RestRequestBuilder
+                .builder(wholepoolBaseUrl)
+                .addPathParam(usersBase)
+                .addPathParam("verify")
+                .addParam("hash", user.getPasswordHash())
+                .addParam("userId", userFromJson.getUserId())
+                .build();
 
         String verifyPassword = restTemplate.getForObject(verifyPasswordURL, String.class);
 
