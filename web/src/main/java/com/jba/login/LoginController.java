@@ -1,10 +1,6 @@
 package com.jba.login;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jba.dao2.user.enitity.User;
-import com.jba.dao2.entity.WPLResponse;
 import com.jba.session.SessionInfo;
 import com.jba.utils.Deserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +19,10 @@ public class LoginController {
     @Value("${wholepool.rest.url.base.url}")
     private String wholepoolBaseUrl;
 
-
     private final String usersBase = "/users";
+
+    @Autowired
+    SessionInfo userInSession;
 
     @GetMapping(value = "/login")
     public String login(Model model){
@@ -33,7 +31,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login")
-    public String doLogin(User user, Model model){
+    public String doLogin(User user){
         RestTemplate restTemplate = new RestTemplate();
 
         String result = restTemplate.getForObject(wholepoolBaseUrl+usersBase+"?email="+user.getEmailAddress(), String.class);
@@ -41,7 +39,23 @@ public class LoginController {
         User userFromJson = Deserializer.getSingleItemFor(result, User.class);
 
         System.out.println(userFromJson.toString());
-        return "index";
+
+        String verifyPasswordURL =
+                wholepoolBaseUrl+usersBase+"/verify?"+
+                "hash="+user.getPasswordHash()+"&"+
+                "userId="+userFromJson.getUserId();
+
+        String verifyPassword = restTemplate.getForObject(verifyPasswordURL, String.class);
+
+        Boolean isPasswordCorrect = Deserializer.getSingleItemFor(verifyPassword, Boolean.class);
+
+        if(isPasswordCorrect){
+            userInSession.setUserInSession(userFromJson);
+            return "index";
+        }
+        else{
+            return "login";
+        }
     }
 
     @RequestMapping("/register")
@@ -49,8 +63,9 @@ public class LoginController {
         return "register";
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public String logout(){
-        return "logout";
+        userInSession.setUserInSession(null);
+        return "index";
     }
 }

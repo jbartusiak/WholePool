@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Jakub Bartusiak
@@ -32,6 +33,10 @@
                     <button type="button" class="btn btn-lg btn-wholepool btn-block">Zaloguj się</button>
                 </a>
             </div>
+            <%--<c:forEach items="${sessionScope}" var="item">
+                <div>${item.value.toString()}</div>
+                <div>${item.key.toString()}</div>
+            </c:forEach>--%>
         </div>
     </div>
 </div>
