@@ -25,7 +25,12 @@ public class Deserializer {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode node = mapper.readTree(response);
-            return (T[])mapper.readValue(node.get("result").toString(), type);
+
+            JsonNode resultNode = node.get("result");
+            String result = mapper.writeValueAsString(resultNode);
+
+            T[] items = (T[])mapper.readValue(result, type);
+            return items;
         }
         catch (Exception e){
             e.printStackTrace();
