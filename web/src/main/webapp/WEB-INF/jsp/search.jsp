@@ -41,12 +41,15 @@
             </div>
             <div class="form-group row">
                 <button type="button" class=" col-sm-12 btn btn-link text-body"
-                        style="padding-left:30px; padding-right:30px;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Więcej opcji wyszukiwania
+                        style="padding-left:30px; padding-right:30px;" data-toggle="collapse"
+                        data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Więcej
+                    opcji wyszukiwania
                 </button>
             </div>
             <div class="collapse" id="collapseExample">
                 <div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
                 </div>
             </div>
             <div class="form-group row">
@@ -61,12 +64,90 @@
 
 <div class="container-fluid" style="margin-top:-80px;">
     <div class="page-box" style="margin-left:100px; margin-right:100px;">
-        <div class="page-content">
-            <h3 class="text-align-center">Fajnie, że wpadłeś!</h3>
-            <span>Serwis Wholepool pomoźe Ci szybko odszukać przejazdy, które mogą Cię zainteresować. Aby rozpocząć, skorzystaj z przycisków na górze ekranu, zaloguj się lub załóż konto teraz!</span>
-        </div>
+        <ul class="list-group">
+
+            <li class="list-group-item">
+                <div class="container-fluid result">
+                    <a href="/search/offer/">
+                        <div class="row">
+                            <div class="col-lg-1 text-align-end">
+                                <span class="result-hour">19:00</span>
+                            </div>
+                            <div class="col-lg-2">
+                                <h2 class="result-place">Wrocław</h2>
+                            </div>
+                            <div class="col-lg-4">
+                                Oferowane przez <img src="images/logo.png" witdh="25px"
+                                                     height="25px"/><strong>username</strong>
+                            </div>
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-2 text-align-end">
+                                Cena: <strong> 25,00 PLN </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-1 text-align-end">
+                                <span class="result-hour">23:00</span>
+                            </div>
+                            <div class="col-lg-2">
+                                <h2 class="result-place">Warszawa</h2>
+                            </div>
+                            <div class="col-lg-4">
+                                Oferta z portalu <img src="images/logo.png" witdh="25px" height="25px"/><strong
+                                    style="color:var(--fg-wholepool-accent);">Wholepool</strong>
+                            </div>
+                            <div class="col-lg-3">
+
+                            </div>
+                            <div class="col-lg-2 text-align-end">
+                                <button type="button" class="btn btn-warning btn-wholepool">Zarezerwuj!</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="container-fluid result">
+                    <a href="/search/offer/">
+                        <div class="row">
+                            <div class="col-lg-1 text-align-end">
+                                <span class="result-hour">19:00</span>
+                            </div>
+                            <div class="col-lg-2">
+                                <h2 class="result-place">Wrocław</h2>
+                            </div>
+                            <div class="col-lg-4">
+                                Oferowane przez <img src="images/logo.png" witdh="25px"
+                                                     height="25px"/><strong>username</strong>
+                            </div>
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-2 text-align-end">
+                                Cena: <strong> 25,00 PLN </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-1 text-align-end">
+                                <span class="result-hour">23:00</span>
+                            </div>
+                            <div class="col-lg-2">
+                                <h2 class="result-place">Warszawa</h2>
+                            </div>
+                            <div class="col-lg-4">
+                                Oferta z portalu <img src="images/logo.png" witdh="25px" height="25px"/><strong
+                                    style="color:var(--fg-wholepool-accent);">Wholepool</strong>
+                            </div>
+                            <div class="col-lg-3">
+
+                            </div>
+                            <div class="col-lg-2 text-align-end">
+                                <button type="button" class="btn btn-warning btn-wholepool">Zarezerwuj!</button>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
-
 </body>
 </html>
