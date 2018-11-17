@@ -1,4 +1,4 @@
-package com.jba.entity;
+package com.jba.dao2.entity;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

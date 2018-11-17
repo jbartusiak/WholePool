@@ -1,6 +1,6 @@
 package com.jba.rest.controller;
 
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.service.ifs.PreferenceService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

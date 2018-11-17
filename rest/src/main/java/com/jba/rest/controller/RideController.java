@@ -4,7 +4,7 @@ import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.service.entity.SearchCriteria;
 import com.jba.service.ifs.RideService;
 import io.swagger.annotations.ApiOperation;

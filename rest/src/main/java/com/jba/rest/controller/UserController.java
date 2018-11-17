@@ -1,26 +1,15 @@
 package com.jba.rest.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
-import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.service.ifs.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,7 +30,7 @@ public class UserController {
             @ApiParam(name = "name", value="A String referring to User entity", required = false,
                     type = "String")
             @RequestParam(value = "name", required = false) String name,
-            @ApiParam(name = "name", value="A String referring to User entity", required = false,
+            @ApiParam(name = "email", value="A String referring to User entity", required = false,
                     type = "String")
             @RequestParam(value = "email", required = false) String email) {
         if (id != null)
