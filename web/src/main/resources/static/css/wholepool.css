@@ -29,7 +29,6 @@
     background-color:var(--bg-wholepool-dark) important ;
 }
 
-
 .link-no-deco{
     text-decoration: none;
 }
@@ -37,6 +36,7 @@
 .link-no-deco:hover{
     text-decoration: none;
 }
+
 
 body{
     background-color: var(--bg-wholepool-dark);
@@ -52,6 +52,9 @@ body{
 .result a{
     color:#000;
     text-decoration:none;
+}
+.result a span{
+
 }
 
 .result-hour{
@@ -102,6 +105,15 @@ body{
     background-position: right bottom;
 }
 
+.page-content-jumbotron-v2{
+    padding-left:100px;
+    text-align:start;
+    padding-bottom:30px;
+    border-radius:8px 8px 0 0;
+    background:var(--gray-dark);
+    color:var(--fg-wholepool-accent);
+}
+
 .text-align-center{
     text-align:center;
 }
@@ -127,5 +139,55 @@ body{
     background-color:var(--fg-wholepool-accent);
     border:none;
     border-radius:10px;
+    font-weight:bold;
+}
+
+.hr-color{
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid var(--fg-wholepool-accent);
+    margin: 1em 0;
+    padding: 0;
+}
+
+.x-large-font{
+    font-size:x-large;
+    text-decoration:none;
+}
+
+.x-large-font a{
+    color:#605B56;
+    font-size:x-large;
+    text-decoration:none;
+}
+
+.x-large-font a:hover{
+    color:var(--cyan);
+    font-size:x-large;
+    text-decoration:none;
+}
+
+.xx-large-font{
+    font-size:xx-large;
+    text-decoration:none;
+}
+
+.xx-large-font a{
+    color:#605B56;
+    font-size:xx-large;
+    text-decoration:none;
+}
+
+.fas{
+    color:var(--orange);
+}
+
+.list-group-item a{
+    color:black;
+}
+
+.selected{
+    background-color:var(--fg-wholepool-accent);
     font-weight:bold;
 }
