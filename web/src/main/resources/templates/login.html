@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Zaloguj się</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-4">
+            <div class="page-box">
+                <div class="page-content">
+                    <h3 class="text-align-center">Zaloguj się</h3>
+                    <hr/>
+                    <form action="/login" method="post">
+                        <div class="form-group">
+                            <label for="userName">Adres e-mail lub nazwa użytkownika</label>
+                            <input type="email" class="form-control" id="userName" aria-describedby="userNameHelp"
+                                   placeholder="Wprowadź dane" name="emailAddress">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Hasło</label>
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   name="passwordHash">
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-wholepool btn-block" style="margin-top:50px;">
+                            Zatwierdź
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div class="page-box">
+                <div class="page-content">
+                    <h3 class="text-align-center">Zarejestruj się!</h3>
+                    <hr/>
+                    <span>Nie posiadasz konta? Załóż je w kilka sekund.</span>
+                    <div style="margin-top:50px;padding:0px 100px 0px 100px">
+                        <a href="/register" style="text-decoration:none">
+                            <button type="button" class="btn btn-lg btn-wholepool btn-block">Załóż konto</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+</body>
+</html>
