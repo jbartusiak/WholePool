@@ -1,0 +1,88 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container">
+    <div class="page-box">
+        <div class="jumbotron page-content-jumbotron">
+            <h1><span th:text="${ride.getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span> &gt; <span
+                    th:text="${ride.getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></h1>
+            <span class="color-white">Odjazd: <span th:text="${ride.getRideDetails().getDateOfDeparture()}">##PLACEHOLDER##</span>, przyjazd: <span
+                    th:text="${ride.getRideDetails().getDateOfArrival()}">##PLACEHOLDER##</span></span>
+        </div>
+        <div class="text-align-end" style="padding:1em">Oferta z portalu <strong>Wholepool</strong></div>
+        <div class="row" style="padding:1em">
+            <div class="col-md-6">
+                <h3>Cena za miejsce: <span th:text="${ride.getRideDetails().getPrice()}">##PLACEHOLDER##</span></h3>
+                <div class="row">
+						<span class="col-md-4">
+							<strong>Miejsce odjazdu:</strong>
+						</span>
+                    <span class="col-md-8">
+							<span th:text="${ride.getRouteForThisRide().getRouteFromLocation()}" >##PLACEHOLDER##</span>
+						</span>
+                </div>
+                <div class="row">
+						<span class="col-md-4">
+							<strong>Miejsce przyjazdu:</strong>
+						</span>
+                    <span class="col-md-8">
+							<span th:text="${ride.getRouteForThisRide().getRouteToLocation()}" >##PLACEHOLDER##</span>
+						</span>
+                </div>
+                <div class="row">
+						<span class="col-md-4">
+							<strong>Czas przejazdu:</strong>
+						</span>
+                    <span class="col-md-8">
+							<span th:text="${ride.getRideDetails().getTravelTime()}">##PLACEHOLDER##min</span>
+						</span>
+                </div>
+
+                <h4 style="margin-top:1em">opis przejazdu:</h4>
+                <div th:text="${ride.getRideDetails().getDescription()}">LOREM IPSUM</div>
+
+                <h4 style="margin-top:1em">kierowca:</h4>
+
+            </div>
+            <div class="col-md-6">
+                <iframe style="width:100%; height:100%; max-height:500px; border:0" frameborder="0"
+                        src="https://www.google.com/maps/embed/v1/directions?origin=Wroc%C5%82aw&destination=Legnica&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0"></iframe>
+            </div>
+        </div>
+        <div style="padding:2em">
+            <h3>Pasażerowie</h3>
+            <hr/>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="user-registered"><img src="/images/logo.png" class="img-fluid"
+                                                      style="height:25px; width:25px;"></img>USER
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="user-registered"><img src="/images/logo.png" class="img-fluid"
+                                                      style="height:25px; width:25px;"></img>USER
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:1em">
+                <div class="col-md-6">
+                    <div class="user-registered"><img src="/images/logo.png" class="img-fluid"
+                                                      style="height:25px; width:25px;"></img>USER
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="user-registered"><img src="/images/logo.png" class="img-fluid"
+                                                      style="height:25px; width:25px;"></img>USER
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
