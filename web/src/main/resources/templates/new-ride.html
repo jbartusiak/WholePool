@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+    <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0 '></script>
+    <script src="/js/locationpicker.jquery.js"></script>
+</head>
+
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+
+<div class="container-fluid">
+    <div class="page-box" style="margin-left:15em; margin-right:15em;margin-bottom:5em;">
+        <div class="jumbotron page-content-jumbotron-v2" style="padding:50px">
+            <h1 class="text-align-center">Dodaj nowy przejazd</h1>
+        </div>
+        <div style="padding:3em">
+            <form style="padding-left:50px; padding-right:50px;">
+                <div class="form-group row">
+                    <label for="inputEmail4" id="id12" class="col-sm-2 col-form-label">Miejsce odjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control " id="address-picker-from" placeholder="wybierz">
+                    </div>
+                    <label for="inputEmail4" id="address-picker-to" class="col-sm-2 col-form-label">Miejsce
+                        przjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="inputEmail4" placeholder="wybierz">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Data odjazdu</label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="inputEmail4" placeholder="Email">
+                    </div>
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Godzina odjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="inputEmail4" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Czas przejazdu (w przybliżeniu)</label>
+                    <div class="col-sm-4">
+                        <input type="number" min=1 class="form-control" id="inputEmail4" placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Ilość miejsc</label>
+                    <div class="col-sm-4">
+                        <input type="number" min=1 class="form-control" id="inputEmail4" placeholder="wolne miejsca">
+                    </div>
+                    <label for="inputEmail4" class="col-sm-2 col-form-label">Cena za miejsce (PLN)</label>
+                    <div class="col-sm-4">
+                        <input type="number" step="0.01" min="0.00" class="form-control" id="inputEmail4"
+                               placeholder="Email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <button type="button" class=" col-sm-12 btn btn-link text-body"
+                            style="padding-left:30px; padding-right:30px;" data-toggle="collapse"
+                            data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Zmodyfikuj swoje preferencje
+                    </button>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div>
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+                        proident.
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <button type="button" class="btn btn-md btn-wholepool btn-warning"
+                            style="padding-left:30px; padding-right:30px; text-align:center;">Szukaj
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="somecomponent" style="width: 500px; height: 400px;"></div>
+<script>
+    $('#somecomponent').locationpicker({
+        enableAutocomplete: true,
+        enableReverseGeocode: true,
+        radius: 0,
+        inputBinding: {
+            locationNameInput: $('#address-picker-from')
+        },
+        onchanged: function (currentLocation, radius, isMarkerDropped) {
+            var addressComponents = $(this).locationpicker('map').location.addressComponents;
+            console.log(currentLocation);  //latlon
+            updateControls(addressComponents); //Data
+        }
+    });
+
+    function updateControls(addressComponents) {
+        console.log(addressComponents);
+    }
+</script>
+
+</body>
+</html>
