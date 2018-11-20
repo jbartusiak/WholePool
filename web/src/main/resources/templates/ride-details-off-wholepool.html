@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container">
+    <div class="page-box">
+        <div class="jumbotron page-content-jumbotron">
+            <h1><span th:text="${ride.getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span> &gt; <span
+                    th:text="${ride.getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></h1>
+            <span class="color-white">Odjazd: <span th:text="${ride.getRideDetails().getDateOfDeparture()}">##PLACEHOLDER##</span>, przyjazd: <span
+                    th:text="${ride.getRideDetails().getDateOfArrival()}">##PLACEHOLDER##</span></span>
+        </div>
+        <div style="margin-top:10px; margin-bottom:1em; padding:0px 100px 0px 100px">
+            <div style="padding:1em;">
+            <a th:href="${ride.getDirectURL()}" style="text-decoration:none">
+                
+                <button type="button" class="btn btn-lg btn-wholepool btn-block" style="margin:1em">Przejdź do oferty
+                    (strona zewnętrzna)
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

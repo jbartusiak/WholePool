@@ -32,12 +32,24 @@ public class RideController {
             Ride ride = Deserializer.getSingleItemFor(result, Ride.class);
 
             model.addAttribute("ride", ride);
+
+
+            if(ride.getSourceId().getSourceName().equals("localhost")) {
+
+                return "ride-details";
+            }
+            else{
+                return "ride-details-off-wholepool";
+            }
         }
         catch (Exception e){
             model.addAttribute("message", "Przejazd o numerze "+rideId+" nie został odnaleziony.");
             return "404";
         }
+    }
 
-        return "ride-details";
+    @GetMapping("/ride/add")
+    public String addNewRide(){
+        return "new-ride";
     }
 }
