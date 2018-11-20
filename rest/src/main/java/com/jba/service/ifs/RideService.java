@@ -25,4 +25,5 @@ public interface RideService {
     RidePassangers registerToRide(Integer userId, Integer rideId) throws UnsupportedOperationException;
     RidePassangers unregisterFromRide(Integer userId, Integer rideId);
     List<Ride> getRidesByUser(Integer userId);
+    User getRideOfferer(Integer rideId);
 }
