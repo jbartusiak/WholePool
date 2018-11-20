@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -28,11 +27,17 @@ public class RideController {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        String result = restTemplate.getForObject(getRideQuery, String.class);
+        try {
+            String result = restTemplate.getForObject(getRideQuery, String.class);
+            Ride ride = Deserializer.getSingleItemFor(result, Ride.class);
 
-        Ride ride = Deserializer.getSingleItemFor(result, Ride.class);
+            model.addAttribute("ride", ride);
+        }
+        catch (Exception e){
+            model.addAttribute("message", "Przejazd o numerze "+rideId+" nie został odnaleziony.");
+            return "404";
+        }
 
-        model.addAttribute("ride", ride);
         return "ride-details";
     }
 }
