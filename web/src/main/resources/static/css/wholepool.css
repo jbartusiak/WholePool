@@ -191,3 +191,12 @@ body{
     background-color:var(--fg-wholepool-accent);
     font-weight:bold;
 }
+
+
+.user-registered{
+    color: var(--white);
+    background:black;
+    border:5px dashed #f9CE29;
+    padding:1em;
+    border-radius:0.8em;
+}
