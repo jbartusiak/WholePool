@@ -44,6 +44,13 @@ public class RideController {
         else return new WPLResponse<>(HttpStatus.OK, rideService.getAllRides(), Ride.class);
     }
 
+    @GetMapping("/offerer")
+    public WPLResponse getRideOfferer(
+        @RequestParam(name="rideId", required = true) Integer rideId
+    ){
+        return new WPLResponse<>(HttpStatus.OK, rideService.getRideOfferer(rideId));
+    }
+
     @ApiOperation(value = "Find ride(s)", notes = "Finds ride(s) matching the criteria. Consumes routeId, " +
             "dateOfDeparture and dateOfArrival parameters. Only routeId is required to run the search.")
     @GetMapping("/find")
@@ -145,4 +152,6 @@ public class RideController {
     ){
         rideService.unregisterFromRide(userId, rideId);
     }
+
+
 }

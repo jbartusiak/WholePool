@@ -307,4 +307,16 @@ public class RideDAOMySQLRepository implements RideDAO{
             throw new NoResultException("User "+user.getUserId()+" did not offer any rides!");
         }
     }
+
+    @Override
+    public User getRideOfferer(Ride ride) {
+        Session session = sessionFactory.getCurrentSession();
+
+        OfferedRides offeredRides = session.
+                createQuery("from OfferedRides o where o.ride=:ride", OfferedRides.class).
+                setParameter("ride", ride).
+                getSingleResult();
+
+        return offeredRides.getOfferer();
+    }
 }

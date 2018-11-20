@@ -94,4 +94,9 @@ public class RideServiceImpl implements RideService {
     public List<Ride> getRidesByUser(Integer userId) {
         return rideDAO.getRidesByUser(User.of(userId));
     }
+
+    @Override
+    public User getRideOfferer(Integer rideId) {
+        return rideDAO.getRideOfferer(getRideById(rideId));
+    }
 }
