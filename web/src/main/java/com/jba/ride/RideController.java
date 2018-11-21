@@ -25,6 +25,10 @@ public class RideController {
 
     @Value("${wholepool.rest.url.base.url}")
     String WPLRestURL;
+    @Value("${message.403}")
+    String msg403;
+    @Value("${message.404}")
+    String msg404;
 
     String rideBaseURL = "ride";
 
@@ -67,7 +71,7 @@ public class RideController {
     public String getNewRideView(HttpSession session, Model model){
 
         if(session.getAttribute("user")==null)
-            return "new-ride";
+            return "403";
 
         model.addAttribute("form", new NewRideForm());
 
@@ -75,7 +79,11 @@ public class RideController {
     }
 
     @PostMapping("/ride/add")
-    public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session){
+    public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, Model model){
+        if(session.getAttribute("user")==null){
+            model.addAttribute("message")
+            return "403";
+        }
         System.out.println(form);
 
         User userInSession = (User) session.getAttribute("user");
