@@ -200,3 +200,21 @@ body{
     padding:1em;
     border-radius:0.8em;
 }
+
+
+.map-widget{
+    display:none;
+    height:500px;
+    width:500px;
+}
+
+.form-control:focus{
+    border-color: var(--fg-wholepool-accent);
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.has-error .form-control:focus{
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
