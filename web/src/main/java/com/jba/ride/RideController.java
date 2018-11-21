@@ -62,16 +62,20 @@ public class RideController {
             }
         }
         catch (Exception e){
+            model.addAttribute("status", 404);
             model.addAttribute("message", "Przejazd o numerze "+rideId+" nie został odnaleziony.");
-            return "404";
+            return "error";
         }
     }
 
     @GetMapping("/ride/add")
     public String getNewRideView(HttpSession session, Model model){
 
-        if(session.getAttribute("user")==null)
-            return "403";
+        if(session.getAttribute("user")==null) {
+            model.addAttribute("status", 403);
+            model.addAttribute("message", msg403);
+            return "error";
+        }
 
         model.addAttribute("form", new NewRideForm());
 
@@ -81,8 +85,9 @@ public class RideController {
     @PostMapping("/ride/add")
     public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, Model model){
         if(session.getAttribute("user")==null){
-            model.addAttribute("message")
-            return "403";
+            model.addAttribute("status", 403);
+            model.addAttribute("message", msg403);
+            return "error";
         }
         System.out.println(form);
 
