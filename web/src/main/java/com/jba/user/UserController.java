@@ -2,9 +2,11 @@ package com.jba.user;
 
 import com.jba.dao2.cars.entity.Car;
 import com.jba.dao2.cars.entity.CarType;
+import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    UserDAO userDAO;
 
     @Value("${wholepool.rest.url.base.url}")
     String WPLBaseURL;
@@ -38,7 +43,11 @@ public class UserController {
     }
 
     @GetMapping("/settings/accountType")
-    public String getAccountType(){return "user-settings-accountType";}
+    public String getAccountType(Model model){
+
+
+        return "user-settings-accountType";
+    }
 
     @GetMapping("/settings/changePassword")
     public String getChangePassword(){

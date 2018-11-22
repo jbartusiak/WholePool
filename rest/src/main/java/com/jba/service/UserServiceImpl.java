@@ -4,6 +4,7 @@ import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import com.jba.service.ifs.PreferenceService;
 import com.jba.service.ifs.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,11 @@ public class UserServiceImpl implements UserService {
     public boolean verifyPasswordHash(User user, String hash) {
         String usersHash = userDAO.getUserPasswordHash(user);
         return usersHash.equals(hash);
+    }
+
+    @Override
+    public List<UserType> getUserTypes() {
+        return userDAO.getUserTypes();
     }
 
     @Override

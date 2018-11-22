@@ -78,6 +78,12 @@ public class UserController {
         return new WPLResponse<>(HttpStatus.OK, userService.verifyPasswordHash(User.of(userId), hash));
     }
 
+    @ApiOperation(value = "Get user types")
+    @GetMapping("/type")
+    public WPLResponse getUserTypes(){
+        return new WPLResponse<>(HttpStatus.OK, userService.getUserTypes());
+    }
+
     @ApiOperation(value = "Get users preferences", notes = "Fetches users preferences from the database")
     @GetMapping("/preferences")
     @ResponseStatus(HttpStatus.OK)

@@ -3,6 +3,7 @@ package com.jba.service.ifs;
 import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public interface UserService {
     User getUserByEmail(String email);
     User updateUser(User user);
     boolean verifyPasswordHash(User user, String hash);
+    List<UserType> getUserTypes();
     User addNewUser(User user);
     Map<String, String> getUsersPreferences(User user);
     UsersPreference addPreference(User user, Preference preference, String value);
