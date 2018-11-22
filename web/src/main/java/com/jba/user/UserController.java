@@ -4,8 +4,10 @@ import com.jba.dao2.cars.entity.Car;
 import com.jba.dao2.cars.entity.CarType;
 import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,16 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+    Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
     UserDAO userDAO;
@@ -44,7 +52,26 @@ public class UserController {
 
     @GetMapping("/settings/accountType")
     public String getAccountType(Model model){
+        String getUserTypesRequest = RestRequestBuilder
+                .builder(WPLBaseURL)
+                .addPathParam("users")
+                .addPathParam("type")
+                .build();
 
+        RestTemplate template= new RestTemplate();
+
+        UserType[] userTypes = Deserializer.getResultArrayFor(template.getForObject(getUserTypesRequest, String.class), UserType[].class);
+
+        List<UserType> filtered = Arrays.stream(userTypes)
+                .filter(userType -> userType.getTypeName().equals("Pasażer")||userType.getTypeName().equals("Kierowca"))
+                .sorted(Comparator.comparing(UserType::getTypeId))
+                .collect(Collectors.toList());
+
+        model.addAttribute("userTypes", filtered);
+
+        filtered.forEach(
+                userType -> logger.debug(userType + "retrieved.")
+        );
 
         return "user-settings-accountType";
     }
@@ -55,7 +82,23 @@ public class UserController {
     }
 
     @GetMapping("/settings/myCars")
-    public String getCars(){return "user-settings-myCars";}
+    public String getCars(HttpSession session, Model model){
+        User user = (User) session.getAttribute("user");
+
+        String getCarsQuery = RestRequestBuilder
+                .builder(WPLBaseURL)
+                .addPathParam("cars")
+                .addParam("userId", user.getUserId())
+                .build();
+
+        RestTemplate template = new RestTemplate();
+
+        Car[] cars = Deserializer.getResultArrayFor(template.getForObject(getCarsQuery, String.class), Car[].class);
+
+        model.addAttribute("cars", cars);
+
+        return "user-settings-myCars";
+    }
 
     @GetMapping("/settings/addCar")
     public String getAddCar(Model model){

@@ -27,7 +27,14 @@
         <div class="col-lg-6">
             <div class="page-box">
                 <div class="page-content">
-                    AWDAWD
+                    <h2>Moje samochody</h2>
+                    <hr/>
+                    <div style="margin-top:1em; margin-bottom:1em"><strong>Poniżej znajdziesz listę swoich pojazdów.</strong><br>
+                        Możesz usuwać pojazdy, jeżeli zajdzie taka potrzeba.
+                    </div>
+                    <th:block th:each="car : ${cars}">
+                        <div th:text="${car.toString()}"></div>
+                    </th:block>
                 </div>
             </div>
         </div>
