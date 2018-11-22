@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container">
+    <div class="page-box" style="height:50%; display: flex;
+  justify-content: center;
+  align-items: center; border:5px dashed var(--fg-wholepool-accent); background-color:var(--bg-accent-dark); color:#FFF">
+        <div style="text-align:center">
+            <h1 style="font-weight:bolder"><i class="fas fa-skull" style="color:white"></i>&nbsp;<span th:text="${status]"></span>&nbsp;<i
+                    class="fas fa-skull" style="color:white"></i></h1>
+            <div th:text="${message}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
