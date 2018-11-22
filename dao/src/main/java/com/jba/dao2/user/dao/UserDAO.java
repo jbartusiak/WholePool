@@ -43,6 +43,9 @@ public interface UserDAO {
     void updateUserData(User user);
 
     @Transactional
+    void updateUserPasswordHash(User user, String hash);
+
+    @Transactional
     UsersPreference setPreference(User user, Preference preference, String value);
 
     @Transactional

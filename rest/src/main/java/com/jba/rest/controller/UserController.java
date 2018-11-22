@@ -78,6 +78,20 @@ public class UserController {
         return new WPLResponse<>(HttpStatus.OK, userService.verifyPasswordHash(User.of(userId), hash));
     }
 
+    @ApiOperation(value = "Update password", notes = "Update user password hash")
+    @PutMapping("/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUserPasswordHash(
+            @ApiParam(name = "userId", value="An Integer referring to User entity", required = true,
+                    type = "Integer")
+            @RequestParam(value = "userId", required = true) Integer userId,
+            @ApiParam(name = "hash", value="A String generated with login method", required = true,
+                    type = "String")
+            @RequestParam(value = "hash", required = true) String hash
+    ){
+        userService.updateUserPasswordHash(userId, hash);
+    }
+
     @ApiOperation(value = "Get user types")
     @GetMapping("/type")
     public WPLResponse getUserTypes(){

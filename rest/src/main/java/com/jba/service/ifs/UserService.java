@@ -16,6 +16,7 @@ public interface UserService {
     User getUserByUsername(String username);
     User getUserByEmail(String email);
     User updateUser(User user);
+    void updateUserPasswordHash(Integer userId, String hash);
     boolean verifyPasswordHash(User user, String hash);
     List<UserType> getUserTypes();
     User addNewUser(User user);

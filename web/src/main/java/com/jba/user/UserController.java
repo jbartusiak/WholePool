@@ -129,8 +129,32 @@ public class UserController {
     }
 
     @PostMapping("/settings/changePassword")
-    public String updatePassword(RedirectAttributes redirectAttributes){
-        return "redirect:/user/settings/confirm";
+    public String updatePassword(String password, String passwordConfirm, HttpSession session, RedirectAttributes redirectAttributes){
+        User userFromSession = (User) session.getAttribute("user");
+
+        logger.debug(password + "=" + passwordConfirm + "?");
+
+        if(password.equals(passwordConfirm)){
+            userFromSession.setPasswordHash(password);
+
+            String changePasswordRequest = RestRequestBuilder
+                    .builder(WPLBaseURL)
+                    .addPathParam("users")
+                    .addPathParam("password")
+                    .addParam("userId", userFromSession.getUserId())
+                    .addParam("hash", password)
+                    .build();
+
+            RestTemplate template = new RestTemplate();
+
+            template.put(changePasswordRequest, userFromSession);
+
+            redirectAttributes.addAttribute("message", "Twoje hasło zostało zmienione.");
+
+            return "redirect:/user/settings/confirm";
+        }
+
+        return "404";
     }
 
     @GetMapping("/settings/myCars")

@@ -108,6 +108,16 @@ public class UserDAOMySQLRepository implements UserDAO {
     }
 
     @Override
+    public void updateUserPasswordHash(User user, String hash) {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.createQuery("update User u set u.passwordHash=:hash where u.userId=:id")
+                .setParameter("hash", hash)
+                .setParameter("id", user.getUserId())
+                .executeUpdate();
+    }
+
+    @Override
     public List<UserType> getUserTypes() {
         Session session = sessionFactory.getCurrentSession();
 
