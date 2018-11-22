@@ -50,6 +50,53 @@ public class UserController {
         return "user-settings-data";
     }
 
+    @PostMapping("/settings/data")
+    public String updateUserData(User user, HttpSession session, RedirectAttributes redirectAttributes){
+        User userFromSession = (User) session.getAttribute("user");
+
+        logger.debug("User start values: "+userFromSession);
+        logger.debug("User from form: "+user);
+
+        if(!userFromSession.getUserName().equals(user.getUserName()))
+            userFromSession.setUserName(user.getUserName());
+        if(!userFromSession.getFirstName().equals(user.getFirstName()))
+            userFromSession.setFirstName(user.getFirstName());
+        if(!userFromSession.getLastName().equals(user.getLastName()))
+            userFromSession.setLastName(user.getLastName());
+        if(!userFromSession.getEmailAddress().equals(user.getEmailAddress()))
+            userFromSession.setEmailAddress(user.getEmailAddress());
+        if(!userFromSession.getDateOfBirth().equals(user.getDateOfBirth()))
+            userFromSession.setDateOfBirth(user.getDateOfBirth());
+
+        logger.debug("User data changed to: "+userFromSession);
+
+        String updateUserQuery = RestRequestBuilder
+                .builder(WPLBaseURL)
+                .addPathParam("users")
+                .build();
+
+        RestTemplate template = new RestTemplate();
+        template.put(updateUserQuery, userFromSession);
+        logger.info("Updated user data successfully");
+
+        String getUserQuery = RestRequestBuilder
+                .builder(WPLBaseURL)
+                .addPathParam("users")
+                .addParam("id", userFromSession.getUserId())
+                .build();
+
+        userFromSession = Deserializer.getSingleItemFor(template.getForObject(getUserQuery, String.class), User.class);
+
+        logger.info("Updating user data in session to "+userFromSession);
+
+        session.removeAttribute("user");
+        session.setAttribute("user", userFromSession);
+
+        redirectAttributes.addAttribute("message", "Twoje dane zostały zaktualizowane.");
+
+        return "redirect:/user/settings/confirm";
+    }
+
     @GetMapping("/settings/accountType")
     public String getAccountType(Model model){
         String getUserTypesRequest = RestRequestBuilder
@@ -79,6 +126,11 @@ public class UserController {
     @GetMapping("/settings/changePassword")
     public String getChangePassword(){
         return "user-settings-changePassword";
+    }
+
+    @PostMapping("/settings/changePassword")
+    public String updatePassword(RedirectAttributes redirectAttributes){
+        return "redirect:/user/settings/confirm";
     }
 
     @GetMapping("/settings/myCars")

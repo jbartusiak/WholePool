@@ -44,6 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
+        User fromDB = userDAO.getUserById(user.getUserId());
+        user.setPasswordHash(fromDB.getPasswordHash());
         userDAO.updateUserData(user);
         return user;
     }
