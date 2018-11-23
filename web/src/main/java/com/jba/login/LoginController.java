@@ -1,6 +1,7 @@
 package com.jba.login;
 
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -69,8 +71,35 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String doRegister(User user){
+    public String doRegister(User user, HttpSession session, RedirectAttributes redirectAttributes){
+        String postNewUserQuery = RestRequestBuilder
+                .builder(wholepoolBaseUrl)
+                .addPathParam("users")
+                .build();
 
+        RestTemplate template = new RestTemplate();
+
+        String hash = user.getPasswordHash();
+
+        user.setUserType(UserType.of(2));
+
+        user = Deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
+
+        user.setPasswordHash(hash);
+
+        String changePasswordRequest = RestRequestBuilder
+                .builder(wholepoolBaseUrl)
+                .addPathParam("users")
+                .addPathParam("password")
+                .addParam("userId", user.getUserId())
+                .addParam("hash", hash)
+                .build();
+
+        template.put(changePasswordRequest, user);
+
+        session.setAttribute("user", user);
+
+        redirectAttributes.addAttribute("message", "Twoje konto zostało utworzone!");
 
         return "redirect:/";
     }
