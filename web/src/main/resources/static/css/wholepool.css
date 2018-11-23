@@ -208,13 +208,14 @@ body{
     width:500px;
 }
 
-.form-control:focus{
+.form-control, .form-control:focus {
     border-color: var(--fg-wholepool-accent);
     box-shadow: none;
     -webkit-box-shadow: none;
 }
 
-.has-error .form-control:focus{
+.form-error, .form-error:focus{
     box-shadow: none;
     -webkit-box-shadow: none;
+    border-color: var(--danger);
 }

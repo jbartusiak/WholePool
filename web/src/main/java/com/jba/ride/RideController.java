@@ -97,6 +97,7 @@ public class RideController {
         RestTemplate template = new RestTemplate();
 
         Route route = new Route(form.getInputAddressFrom(), form.getInputAddressTo());
+
         String postRouteQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam("route")
                 .build();
