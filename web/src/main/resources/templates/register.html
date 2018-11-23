@@ -15,48 +15,66 @@
                 <div class="page-content">
                     <h3 class="text-align-center">Zarejestruj się</h3>
                     <hr/>
-                    <form>
+                    <form id="registrationForm" method="post" action>
                         <div class="form-group row">
-                            <label for="inputFirstName" class="col-lg-3 col-form-label">Imię</label>
+                            <label for="firstName" class="col-lg-3 col-form-label">Imię</label>
                             <div class="col-lg-9">
-                                <input type="text" name="firstname" class="form-control" id="inputFirstName"
-                                       placeholder="Imię">
+                                <input type="text" class="form-control" name="firstName" id="firstName"
+                                       placeholder="Imię" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputLastName" class="col-lg-3 col-form-label">Nazwisko</label>
+                            <label for="lastName" class="col-lg-3 col-form-label">Nazwisko</label>
                             <div class="col-lg-9">
-                                <input type="text" name="lastname" class="form-control" id="inputLastName"
-                                       placeholder="Nazwisko">
+                                <input type="text" name="lastName" class="form-control" id="lastName"
+                                       placeholder="Nazwisko" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputUsername" class="col-lg-3 col-form-label">Nazwa uźytkownika</label>
+                            <label for="userName" class="col-lg-3 col-form-label">Nazwa uźytkownika</label>
                             <div class="col-lg-9">
-                                <input type="text" name="username" class="form-control" id="inputUsername"
-                                       placeholder="Nazwa użytkownika">
+                                <input type="text" class="form-control" name="userName" id="userName"
+                                       placeholder="Nazwa użytkownika" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-lg-3 col-form-label">Adres e-mail</label>
+                            <label for="emailAddress" class="col-lg-3 col-form-label">Adres e-mail</label>
                             <div class="col-lg-9">
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Adres e-mail">
+                                <input type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="Adres e-mail" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputPassword" class="col-lg-3 col-form-label">Hasło</label>
+                            <label for="passwordHash" class="col-lg-3 col-form-label">Hasło</label>
                             <div class="col-lg-9">
-                                <input type="password" class="form-control" id="inputPassword" placeholder="Hasło">
+                                <input type="password" class="form-control" name="passwordHash" id="passwordHash" placeholder="Hasło" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputDOB" class="col-lg-3 col-form-label">Data urodzenia</label>
+                            <label for="dateOfBirth" class="col-lg-3 col-form-label">Data urodzenia</label>
                             <div class="col-lg-9">
-                                <input type="date" class="form-control" id="inputDOB">
+                                <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" required>
                             </div>
                         </div>
                         <input type="submit" class="btn-lg btn-wholepool btn-block"/>
                     </form>
+                    <script>
+                        $('#registrationForm').validate({
+                            highlight: function(element) {
+                                $(element).addClass("form-error");
+                            },
+                            unhighlight: function(element) {
+                                $(element).removeClass("form-error");
+                            },
+                            messages:{
+                                firstName:"Wprowadź swoje imię",
+                                lastName:"Wprowadź swoje nazwisko",
+                                userName:"Wprowadź nazwę użytkownika",
+                                emailAddress:"Wprowadź swój adres e-mail",
+                                passwordHash:"Wprowadź hasłó",
+                                dateOfBirth:"Wybierz datę urodzenia"
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>

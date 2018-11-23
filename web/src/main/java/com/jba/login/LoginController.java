@@ -63,9 +63,16 @@ public class LoginController {
         }
     }
 
-    @RequestMapping("/register")
+    @GetMapping("/register")
     public String register(){
         return "register";
+    }
+
+    @PostMapping("/register")
+    public String doRegister(User user){
+
+
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
