@@ -41,4 +41,19 @@ public class RideDetails implements Serializable {
     @NonNull
     private String description;
 
+    public void setDateOfDeparture(LocalDateTime localDateTime){
+        this.dateOfDeparture=localDateTime;
+    }
+
+    public void setDateOfDeparture(String localDateTime){
+        dateOfDeparture=LocalDateTime.parse(localDateTime);
+    }
+
+    public void setDateOfArrival(LocalDateTime localDateTime){
+        this.dateOfArrival=localDateTime;
+    }
+
+    public void setDateOfArrival(String localDateTime){
+        dateOfArrival=LocalDateTime.parse(localDateTime);
+    }
 }

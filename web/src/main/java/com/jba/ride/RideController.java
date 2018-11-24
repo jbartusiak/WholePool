@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Controller
 public class RideController {
@@ -114,8 +115,8 @@ public class RideController {
 
         ride = Deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
 
-        RideDetails rideDetails = new RideDetails(ride, Date.valueOf(form.getInputDOD()),
-                Date.valueOf(form.getInputDOD()), form.getInputTravelTime(), form.getInputPrice(), form.getInputDescription());
+        RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(form.getInputDOD()),
+                LocalDateTime.parse(form.getInputDOD()), form.getInputTravelTime(), form.getInputPrice(), form.getInputDescription());
 
         String postRideDetailsQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
