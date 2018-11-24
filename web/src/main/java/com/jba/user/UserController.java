@@ -123,6 +123,14 @@ public class UserController {
         return "user-settings-accountType";
     }
 
+    @PostMapping("/settings/accountType")
+    public String doChangeAccountType(UserType userType, RedirectAttributes redirectAttributes){
+
+
+        redirectAttributes.addAttribute("message", "Typ twoje konta został zmieniony z sukcesem!");
+        return "redirect:/user/settings/confirm";
+    }
+
     @GetMapping("/settings/changePassword")
     public String getChangePassword(){
         return "user-settings-changePassword";
