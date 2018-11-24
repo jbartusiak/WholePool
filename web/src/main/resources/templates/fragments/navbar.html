@@ -9,16 +9,18 @@
     <div class="navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/search">Wyszukaj przejazd</a>
+                <a class="nav-link" id="nav-search" href="/search">Wyszukaj przejazd</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/ride/add">Dodaj przejazd</a>
+            <li th:if="${session.user!=null}" class="nav-item">
+                <a class="nav-link" id="nav-addride" href="/ride/add">Dodaj przejazd</a>
             </li>
             <!--IF LOGGED IN-->
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/rides">Moje przejazdy</a>
-                </li>
-
+            <li th:if="${session.user!=null}" class="nav-item">
+                <a class="nav-link" id="nav-rides" href="/user/rides">Moje przejazdy</a>
+            </li>
+            <li th:if="${session.user!=null}" class="nav-item">
+                <a class="nav-link" id="nav-settings" href="/user/settings">Ustawienia</a>
+            </li>
         </ul>
     </div>
 
