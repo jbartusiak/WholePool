@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,13 +21,13 @@ public class RideDetails implements Serializable {
     @NonNull
     private Ride rideId;
 
-    @Column(name = "RIDE_DATE_OF_DEPARTURE")
+    @Column(name = "RIDE_DATE_OF_DEPARTURE", columnDefinition = "DATETIME")
     @NonNull
-    private Date dateOfDeparture;
+    private LocalDateTime dateOfDeparture;
 
-    @Column(name = "RIDE_DATE_OF_ARRIVAL")
+    @Column(name = "RIDE_DATE_OF_ARRIVAL", columnDefinition = "DATETIME")
     @NonNull
-    private Date dateOfArrival;
+    private LocalDateTime dateOfArrival;
 
     @Column(name="RIDE_TRAVEL_TIME")
     @NonNull
@@ -41,4 +41,19 @@ public class RideDetails implements Serializable {
     @NonNull
     private String description;
 
+    public void setDateOfDeparture(LocalDateTime localDateTime){
+        this.dateOfDeparture=localDateTime;
+    }
+
+    public void setDateOfDeparture(String localDateTime){
+        dateOfDeparture=LocalDateTime.parse(localDateTime);
+    }
+
+    public void setDateOfArrival(LocalDateTime localDateTime){
+        this.dateOfArrival=localDateTime;
+    }
+
+    public void setDateOfArrival(String localDateTime){
+        dateOfArrival=LocalDateTime.parse(localDateTime);
+    }
 }

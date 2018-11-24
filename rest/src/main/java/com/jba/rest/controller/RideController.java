@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/ride")
@@ -67,8 +68,8 @@ public class RideController {
             @RequestParam(name = "dateOfArrival", required = false) String dateOfArrival
     ){
         SearchCriteria searchCriteria = new SearchCriteria(Route.of(routeId));
-        if(dateOfDeparture!=null) searchCriteria.setDOD(Date.valueOf(dateOfDeparture));
-        if(dateOfArrival!=null) searchCriteria.setDOA(Date.valueOf(dateOfArrival));
+        if(dateOfDeparture!=null) searchCriteria.setDOD(LocalDateTime.parse(dateOfDeparture));
+        if(dateOfArrival!=null) searchCriteria.setDOA(LocalDateTime.parse(dateOfArrival));
 
         return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(searchCriteria), Ride.class);
     }

@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Repository
 @EnableTransactionManagement
@@ -28,8 +26,8 @@ public interface RideDAO {
     @Transactional
     List<Ride> findRideByCriteria(
             Route route,
-            @Nullable Date dateOfDeparture,
-            @Nullable Date dateOfArrival
+            @Nullable LocalDateTime dateOfDeparture,
+            @Nullable LocalDateTime dateOfArrival
     );
 
     @Transactional
