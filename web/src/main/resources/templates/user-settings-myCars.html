@@ -29,7 +29,8 @@
                 <div class="page-content">
                     <h2>Moje samochody</h2>
                     <hr/>
-                    <div style="margin-top:1em; margin-bottom:1em"><strong>Poniżej znajdziesz listę swoich pojazdów.</strong><br>
+                    <div style="margin-top:1em; margin-bottom:1em"><strong>Poniżej znajdziesz listę swoich
+                        pojazdów.</strong><br>
                         Możesz usuwać pojazdy, jeżeli zajdzie taka potrzeba.
                     </div>
                     <th:block th:each="car : ${cars}">
@@ -41,8 +42,9 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#nav-settings').addClass('active');
+        $('#userSettingsCars').addClass('active');
     });
 </script>
 </body>

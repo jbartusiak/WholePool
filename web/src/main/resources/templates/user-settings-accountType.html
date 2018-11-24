@@ -31,12 +31,14 @@
                         <h2>Zmiana typu konta</h2>
                         <hr/>
                         <div style="margin-top:1em; margin-bottom:1em"><strong>Zmień typ swojego konta.</strong><br>
-                            Jeżeli chcesz oferować przejazdy, zmień rodzaj konta na kierowcę. Po zmianie rodzaju konta, nie można jej przywrócić do statusu kierowcy
+                            Jeżeli chcesz oferować przejazdy, zmień rodzaj konta na kierowcę. Po zmianie rodzaju konta,
+                            nie można jej przywrócić do statusu kierowcy
                         </div>
                         <div class="form-group">
                             <label for="userType">Typ konta</label>
                             <div>
-                                <select id="userType" name="userType" aria-describedby="userTypeHelpBlock" class="custom-select">
+                                <select id="userType" name="userType" aria-describedby="userTypeHelpBlock"
+                                        class="custom-select">
                                     <option
                                             th:each="userType:${userTypes}"
                                             th:value="${userType.typeId}"
@@ -47,7 +49,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button name="submit" type="submit" class="btn-lg btn-wholepool btn-block">Zatwierdź</button>
+                            <button name="submit" type="submit" class="btn-lg btn-wholepool btn-block">Zatwierdź
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -56,8 +59,9 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#nav-settings').addClass('active');
+        $('#userSettingsAccountType').addClass('active');
     });
 </script>
 </body>
