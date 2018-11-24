@@ -13,7 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.time.Instant;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { DAOConfig.class })
@@ -34,7 +36,18 @@ public class RideDetailsTest {
         Ride ride = new Ride(source, route);
         session.save(ride);
 
-        RideDetails details = new RideDetails(ride,Date.valueOf("2018-01-01"),Date.valueOf("2018-02-02"),2000,2.0,"Description");
+        LocalDateTime departure = LocalDateTime.parse("2018-11-24T13:00:00");
+
+        LocalDateTime arrival = departure.plusHours(2);
+
+        RideDetails details = new RideDetails(
+                ride,
+                departure,
+                arrival,
+                2000,
+                2.0,
+                "Description"
+        );
 
         session.save(details);
     }

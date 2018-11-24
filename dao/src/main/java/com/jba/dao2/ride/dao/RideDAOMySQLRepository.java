@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.NoResultException;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,8 +71,8 @@ public class RideDAOMySQLRepository implements RideDAO{
 
     public List<Ride> findRideByCriteria(
             Route route,
-            @Nullable Date dateOfDeparture,
-            @Nullable Date dateOfArrival
+            @Nullable LocalDateTime dateOfDeparture,
+            @Nullable LocalDateTime dateOfArrival
     ){
         RideDetails rideDetails = new RideDetails();
 
@@ -136,6 +137,8 @@ public class RideDAOMySQLRepository implements RideDAO{
     public Ride addRide(User offerer, Ride ride){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(ride);
+        ride.getRideDetails().setRideId(ride);
+        session.saveOrUpdate(ride.getRideDetails());
         OfferedRides offeredRides = new OfferedRides(ride,offerer);
         session.saveOrUpdate(offeredRides);
         return ride;
