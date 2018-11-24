@@ -231,3 +231,8 @@ body{
     -webkit-box-shadow: none;
     border-color: var(--success);
 }
+
+.list-group-item.active{
+    background:#DDDDDD;
+    border-color:var(--fg-wholepool-accent);
+}

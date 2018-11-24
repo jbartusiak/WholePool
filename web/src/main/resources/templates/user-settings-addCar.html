@@ -35,15 +35,19 @@
                         </div>
                         <div class="form-group">
                             <label for="carName">Nazwa samochodu</label>
-                            <input id="carName" name="carName" placeholder="Np. Moje auto" type="text" class="form-control here">
+                            <input id="carName" name="carName" placeholder="Np. Moje auto" type="text"
+                                   class="form-control here">
                         </div>
                         <div class="form-group">
                             <label for="carProductionYear">Rok produkcji samochodu</label>
-                            <input id="carProductionYear" name="carProductionYear" placeholder="wprowadź rok produkcji" type="text" class="form-control here" required="required">
+                            <input id="carProductionYear" name="carProductionYear" placeholder="wprowadź rok produkcji"
+                                   type="text" class="form-control here" required="required">
                         </div>
                         <div class="form-group">
                             <label for="carRegistrationNumber">Numer rejestracyjny pojazdu</label>
-                            <input id="carRegistrationNumber" name="carRegistrationNumber" placeholder="wprowadź numer rejestracyjny" type="text" class="form-control here" required="required">
+                            <input id="carRegistrationNumber" name="carRegistrationNumber"
+                                   placeholder="wprowadź numer rejestracyjny" type="text" class="form-control here"
+                                   required="required">
                         </div>
                         <div class="form-group">
                             <label for="carTypeId">Typ pojazdu</label>
@@ -57,12 +61,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <button name="submit" type="submit" class="btn-lg btn-wholepool btn-block">Zatwierdź</button>
+                            <button name="submit" type="submit" class="btn-lg btn-wholepool btn-block">Zatwierdź
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#nav-settings').addClass('active');
+        $('#userSettingsAddCar').addClass('active');
+    });
+</script>
 </body>
 </html>
