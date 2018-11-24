@@ -58,7 +58,34 @@
                         <input type="submit" class="btn-lg btn-wholepool btn-block"/>
                     </form>
                     <script>
+                        $.validator.addMethod("pattern", function(value, element, param) {
+                            if (this.optional(element)) {
+                                return true;
+                            }
+                            if (typeof param === "string") {
+                                param = new RegExp("^(?:" + param + ")$");
+                            }
+                            return param.test(value);
+                        }, "Invalid regular expression format");
                         $('#registrationForm').validate({
+                            rules:{
+                                firstName:{
+                                    required:true,
+                                    pattern:/[A-Z][a-z].{1,29}/
+                                },
+                                lastName:{
+                                    required:true,
+                                    pattern:/[A-Z][a-z].{1,49}/
+                                },
+                                userName:{
+                                    required:true,
+                                    pattern:/^[^0-9][A-Za-z0-9].{4,9}$/
+                                },
+                                passwordHash:{
+                                    required:true,
+                                    pattern:/^[A-Za-z0-9].{7,59}$/
+                                }
+                            },
                             highlight: function(element) {
                                 $(element).addClass("form-error");
                                 $(element).removeClass("form-ok");
@@ -70,9 +97,11 @@
                             messages:{
                                 firstName:"Wprowadź swoje imię",
                                 lastName:"Wprowadź swoje nazwisko",
-                                userName:"Wprowadź nazwę użytkownika",
+                                userName:"Wprowadź nazwę użytkownika. Nazwa uźytkownika nie moźe zaczynać się od cyfry " +
+                                    "i może zawierać małe i duże litery oraz liczby.",
                                 emailAddress:"Wprowadź swój adres e-mail",
-                                passwordHash:"Wprowadź hasłó",
+                                passwordHash:"Wprowadź hasło. Hasło musi mieć co najmniej 8 znaków i może zawierać" +
+                                    " małe i duże litery, oraz cyfry.",
                                 dateOfBirth:"Wybierz datę urodzenia"
                             }
                         });
