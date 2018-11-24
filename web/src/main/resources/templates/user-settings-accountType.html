@@ -27,7 +27,7 @@
         <div class="col-lg-6">
             <div class="page-box">
                 <div class="page-content">
-                    <form action="/user/setting/accountType" method="post">
+                    <form action="/user/settings/accountType" method="post" id="accountTypeForm">
                         <h2>Zmiana typu konta</h2>
                         <hr/>
                         <div style="margin-top:1em; margin-bottom:1em"><strong>Zmień typ swojego konta.</strong><br>
@@ -53,6 +53,13 @@
                             </button>
                         </div>
                     </form>
+                    <script>
+                        $('#accountTypeForm').validate({
+                            messages:{
+                                userType:"Jesteś juź pasażerem!"
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>

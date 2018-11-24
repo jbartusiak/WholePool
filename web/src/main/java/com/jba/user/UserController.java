@@ -123,6 +123,34 @@ public class UserController {
         return "user-settings-accountType";
     }
 
+    @PostMapping("/settings/accountType")
+    public String doChangeAccountType(UserType userType, RedirectAttributes redirectAttributes, HttpSession session){
+        logger.debug("read: "+userType);
+
+        userType = UserType.of(Integer.parseInt(userType.getTypeName()));
+
+        User userFromSession = (User) session.getAttribute("user");
+
+        String changeAccountTypeRequest = RestRequestBuilder
+                .builder(WPLBaseURL)
+                .addPathParam("users")
+                .build();
+
+        userFromSession.setUserType(userType);
+
+        RestTemplate template = new RestTemplate();
+
+        logger.info("Updating user data");
+        template.put(changeAccountTypeRequest, userFromSession);
+
+        logger.info("Updating session info");
+        session.removeAttribute("user");
+        session.setAttribute("user", userFromSession);
+
+        redirectAttributes.addAttribute("message", "Typ twojego konta został zmieniony z sukcesem!");
+        return "redirect:/user/settings/confirm";
+    }
+
     @GetMapping("/settings/changePassword")
     public String getChangePassword(){
         return "user-settings-changePassword";
