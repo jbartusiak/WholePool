@@ -8,6 +8,7 @@ import com.jba.dao2.user.enitity.User;
 import com.jba.ride.form.NewRideForm;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,9 @@ public class RideController {
     @Value("${message.404}")
     String msg404;
 
+    @Autowired
+    Deserializer deserializer;
+
     String rideBaseURL = "ride";
 
     @ModelAttribute("greeting")
@@ -50,7 +54,7 @@ public class RideController {
 
         try {
             String result = restTemplate.getForObject(getRideQuery, String.class);
-            Ride ride = Deserializer.getSingleItemFor(result, Ride.class);
+            Ride ride = deserializer.getSingleItemFor(result, Ride.class);
 
             model.addAttribute("ride", ride);
 
@@ -103,7 +107,7 @@ public class RideController {
                 .addPathParam("route")
                 .build();
 
-        route = Deserializer.getSingleItemFor(template.postForObject(postRouteQuery, route, String.class), Route.class);
+        route = deserializer.getSingleItemFor(template.postForObject(postRouteQuery, route, String.class), Route.class);
 
         Ride ride = new Ride(Source.of(1), route);
         ride.setNrOfSeats(form.getInputAvailableSpots());
@@ -113,7 +117,7 @@ public class RideController {
                 .addParam("userId", userInSession.getUserId())
                 .build();
 
-        ride = Deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
+        ride = deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
 
         String departureDateTime = form.getInputDOD()+"T"+form.getInputHOD();
         String arrivalDateTime = form.getInputDOA()+"T"+form.getInputHOA();

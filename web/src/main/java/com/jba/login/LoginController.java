@@ -4,6 +4,7 @@ import com.jba.dao2.user.enitity.User;
 import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,9 @@ public class LoginController {
 
     private final String usersBase = "users";
 
+    @Autowired
+    Deserializer deserializer;
+
     @GetMapping(value = "/login")
     public String login(){
         return "login";
@@ -40,7 +44,7 @@ public class LoginController {
 
         String result = restTemplate.getForObject(userSearchURL, String.class);
 
-        User userFromJson = Deserializer.getSingleItemFor(result, User.class);
+        User userFromJson = deserializer.getSingleItemFor(result, User.class);
 
         System.out.println(userFromJson.toString());
 
@@ -54,7 +58,7 @@ public class LoginController {
 
         String verifyPassword = restTemplate.getForObject(verifyPasswordURL, String.class);
 
-        Boolean isPasswordCorrect = Deserializer.getSingleItemFor(verifyPassword, Boolean.class);
+        Boolean isPasswordCorrect = deserializer.getSingleItemFor(verifyPassword, Boolean.class);
 
         if(isPasswordCorrect){
             session.setAttribute("user", userFromJson);
@@ -83,7 +87,7 @@ public class LoginController {
 
         user.setUserType(UserType.of(2));
 
-        user = Deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
+        user = deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
 
         user.setPasswordHash(hash);
 
