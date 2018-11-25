@@ -74,7 +74,7 @@
                         <a th:href="@{'/ride/' + ${ride.rideId}}">
                             <div class="row">
                                 <div class="col-lg-1 text-align-end">
-                                    <span th:text="${ride.getDateOfDeparture()}"
+                                    <span th:text="${ride.getFormattedDate(0,null)}"
                                           class="result-hour"></span>
                                 </div>
                                 <div class="col-lg-3">
@@ -91,7 +91,7 @@
                             <div class="row">
                                 <div class="col-lg-1 text-align-end">
                                     <span class="result-hour"
-                                          th:text="${ride.getDateOfArrival()}"></span>
+                                          th:text="${ride.getFormattedDate(1, null)}"></span>
                                 </div>
                                 <div class="col-lg-3">
                                     <h3 class="result-place"

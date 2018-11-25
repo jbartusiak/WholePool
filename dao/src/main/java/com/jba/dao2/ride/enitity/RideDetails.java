@@ -1,10 +1,13 @@
 package com.jba.dao2.ride.enitity;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Data
 @Entity
@@ -38,4 +41,24 @@ public class RideDetails implements Serializable {
     @Column(name = "RIDE_DESCRIPTION")
     @NonNull
     private String description;
+
+    public String getFormattedDate(Integer choose, @Nullable String format){
+        if(format!=null){
+            DateTimeFormatter df= getFormatter(format);
+            if(choose==0)
+                return df.format(dateOfDeparture);
+            else
+                return df.format(dateOfArrival);
+        }
+        else{
+            DateTimeFormatter df= getFormatter("d MMMM");
+            if(choose==0)
+                return df.format(dateOfDeparture);
+            else return df.format(dateOfArrival);
+        }
+    }
+
+    private DateTimeFormatter getFormatter(String format){
+        return DateTimeFormatter.ofPattern(format, new Locale("pl"));
+    }
 }
