@@ -47,6 +47,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<RideDetails> getAllRideDetails() {
+        return rideDAO.getAllRideDetails();
+    }
+
+    @Override
     public RideDetails getRideDetails(Integer rideId) {
         return rideDAO.getRideDetials(getRideById(rideId));
     }

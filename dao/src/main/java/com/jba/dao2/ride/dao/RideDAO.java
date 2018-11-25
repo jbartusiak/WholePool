@@ -31,6 +31,9 @@ public interface RideDAO {
     );
 
     @Transactional
+    List<RideDetails> getAllRideDetails();
+
+    @Transactional
     RideDetails getRideDetials(Ride ride);
 
     @Transactional

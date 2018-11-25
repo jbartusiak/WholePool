@@ -103,20 +103,21 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
+    @Override
+    public List<RideDetails> getAllRideDetails() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("from RideDetails rd", RideDetails.class).getResultList();
+    }
+
     public RideDetails getRideDetials(Ride ride){
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
             RideDetails details = session
                     .createQuery("from RideDetails rd where rd.rideId=:ride", RideDetails.class)
                     .setParameter("ride",ride)
                     .getSingleResult();
-
-            session.getTransaction().commit();
-
-            session.close();
 
             return details;
         }
@@ -137,8 +138,6 @@ public class RideDAOMySQLRepository implements RideDAO{
     public Ride addRide(User offerer, Ride ride){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(ride);
-        ride.getRideDetails().setRideId(ride);
-        session.saveOrUpdate(ride.getRideDetails());
         OfferedRides offeredRides = new OfferedRides(ride,offerer);
         session.saveOrUpdate(offeredRides);
         return ride;
@@ -219,7 +218,7 @@ public class RideDAOMySQLRepository implements RideDAO{
     public Ride deleteRideDetails(Ride ride) {
         logger.info("Deleting ride details if present");
 
-        Session session = sessionFactory.getCurrentSession();
+        /*Session session = sessionFactory.getCurrentSession();
 
         try{
             if(ride.getRideDetails()!=null) {
@@ -229,7 +228,7 @@ public class RideDAOMySQLRepository implements RideDAO{
         catch (Exception e){
             logger.error("Error occured deleting ride details",e);
             throw e;
-        }
+        }*/
         return ride;
     }
 

@@ -1,11 +1,13 @@
 package com.jba.dao2.ride.enitity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Data
 @Entity
@@ -15,17 +17,16 @@ import java.time.LocalDateTime;
 public class RideDetails implements Serializable {
 
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FK_RIDE_ID")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NonNull
     private Ride rideId;
 
-    @Column(name = "RIDE_DATE_OF_DEPARTURE", columnDefinition = "DATETIME")
+    @Column(name = "RIDE_DATE_OF_DEPARTURE")
     @NonNull
     private LocalDateTime dateOfDeparture;
 
-    @Column(name = "RIDE_DATE_OF_ARRIVAL", columnDefinition = "DATETIME")
+    @Column(name = "RIDE_DATE_OF_ARRIVAL")
     @NonNull
     private LocalDateTime dateOfArrival;
 
@@ -41,19 +42,23 @@ public class RideDetails implements Serializable {
     @NonNull
     private String description;
 
-    public void setDateOfDeparture(LocalDateTime localDateTime){
-        this.dateOfDeparture=localDateTime;
+    public String getFormattedDate(Integer choose, @Nullable String format){
+        if(format!=null){
+            DateTimeFormatter df= getFormatter(format);
+            if(choose==0)
+                return df.format(dateOfDeparture);
+            else
+                return df.format(dateOfArrival);
+        }
+        else{
+            DateTimeFormatter df= getFormatter("d MMMM");
+            if(choose==0)
+                return df.format(dateOfDeparture);
+            else return df.format(dateOfArrival);
+        }
     }
 
-    public void setDateOfDeparture(String localDateTime){
-        dateOfDeparture=LocalDateTime.parse(localDateTime);
-    }
-
-    public void setDateOfArrival(LocalDateTime localDateTime){
-        this.dateOfArrival=localDateTime;
-    }
-
-    public void setDateOfArrival(String localDateTime){
-        dateOfArrival=LocalDateTime.parse(localDateTime);
+    private DateTimeFormatter getFormatter(String format){
+        return DateTimeFormatter.ofPattern(format, new Locale("pl"));
     }
 }

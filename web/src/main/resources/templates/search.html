@@ -71,31 +71,31 @@
             <th:block th:each="ride : ${rides}">
                 <li class="list-group-item">
                     <div class="container-fluid result">
-                        <a th:href="@{'/ride/' + ${ride.rideId}}">
+                        <a th:href="@{'/ride/' + ${ride.getRideId().rideId}}">
                             <div class="row">
                                 <div class="col-lg-1 text-align-end">
-                                    <span th:text="${ride.getRideDetails().getDateOfDeparture()}"
+                                    <span th:text="${ride.getFormattedDate(0,null)}"
                                           class="result-hour"></span>
                                 </div>
                                 <div class="col-lg-3">
                                     <h3 class="result-place"
-                                        th:text="${ride.getRouteForThisRide().getRouteFromLocation()}"></h3>
+                                        th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}"></h3>
                                 </div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-2 text-align-end">
-                                    Cena: <strong th:text="${ride.getRideDetails().getPrice()}"></strong><strong>
+                                    Cena: <strong th:text="${ride.getPrice()}"></strong><strong>
                                     PLN</strong>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-1 text-align-end">
                                     <span class="result-hour"
-                                          th:text="${ride.getRideDetails().getDateOfArrival()}"></span>
+                                          th:text="${ride.getFormattedDate(1, null)}"></span>
                                 </div>
                                 <div class="col-lg-3">
                                     <h3 class="result-place"
-                                        th:text="${ride.getRouteForThisRide().getRouteToLocation()}"></h3>
+                                        th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}"></h3>
                                 </div>
                                 <div class="col-lg-4">
                                     Oferta z portalu <img src="images/logo.png" witdh="25px" height="25px"/><strong

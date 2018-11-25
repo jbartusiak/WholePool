@@ -8,6 +8,7 @@ import com.jba.dao2.user.enitity.User;
 import com.jba.ride.form.NewRideForm;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,9 @@ public class RideController {
     @Value("${message.404}")
     String msg404;
 
+    @Autowired
+    Deserializer deserializer;
+
     String rideBaseURL = "ride";
 
     @ModelAttribute("greeting")
@@ -43,6 +47,7 @@ public class RideController {
     public String viewRideDetails(@PathVariable String rideId, Model model){
         String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
+                .addPathParam("details")
                 .addParam("rideId", rideId)
                 .build();
 
@@ -50,12 +55,12 @@ public class RideController {
 
         try {
             String result = restTemplate.getForObject(getRideQuery, String.class);
-            Ride ride = Deserializer.getSingleItemFor(result, Ride.class);
+            RideDetails ride = deserializer.getSingleItemFor(result, RideDetails.class);
 
             model.addAttribute("ride", ride);
 
 
-            if(ride.getSourceId().getSourceName().equals("localhost")) {
+            if(ride.getRideId().getSourceId().getSourceName().equals("localhost")) {
 
                 return "ride-details";
             }
@@ -73,11 +78,11 @@ public class RideController {
     @GetMapping("/ride/add")
     public String getNewRideView(HttpSession session, Model model){
 
-        if(session.getAttribute("user")==null) {
+        /*if(session.getAttribute("user")==null) {
             model.addAttribute("status", 403);
             model.addAttribute("message", msg403);
             return "error";
-        }
+        }*/
 
         model.addAttribute("form", new NewRideForm());
 
@@ -86,11 +91,11 @@ public class RideController {
 
     @PostMapping("/ride/add")
     public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, Model model){
-        if(session.getAttribute("user")==null){
+        /*if(session.getAttribute("user")==null){
             model.addAttribute("status", 403);
             model.addAttribute("message", msg403);
             return "error";
-        }
+        }*/
         System.out.println(form);
 
         User userInSession = (User) session.getAttribute("user");
@@ -103,7 +108,7 @@ public class RideController {
                 .addPathParam("route")
                 .build();
 
-        route = Deserializer.getSingleItemFor(template.postForObject(postRouteQuery, route, String.class), Route.class);
+        route = deserializer.getSingleItemFor(template.postForObject(postRouteQuery, route, String.class), Route.class);
 
         Ride ride = new Ride(Source.of(1), route);
         ride.setNrOfSeats(form.getInputAvailableSpots());
@@ -113,10 +118,13 @@ public class RideController {
                 .addParam("userId", userInSession.getUserId())
                 .build();
 
-        ride = Deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
+        ride = deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
 
-        RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(form.getInputDOD()),
-                LocalDateTime.parse(form.getInputDOD()), form.getInputTravelTime(), form.getInputPrice(), form.getInputDescription());
+        String departureDateTime = form.getInputDOD()+"T"+form.getInputHOD();
+        String arrivalDateTime = form.getInputDOA()+"T"+form.getInputHOA();
+
+        RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(departureDateTime),
+                LocalDateTime.parse(arrivalDateTime), 1, form.getInputPrice(), form.getInputDescription());
 
         String postRideDetailsQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
@@ -124,9 +132,8 @@ public class RideController {
                 .addParam("rideId", ride.getRideId())
                 .build();
 
-        rideDetails = Deserializer.getSingleItemFor(template.postForObject(postRideDetailsQuery, rideDetails, String.class), RideDetails.class);
+        template.postForObject(postRideDetailsQuery, rideDetails, String.class);
 
         return "redirect:/";
     }
-
 }

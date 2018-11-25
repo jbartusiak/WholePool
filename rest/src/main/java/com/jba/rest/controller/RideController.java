@@ -45,6 +45,18 @@ public class RideController {
         else return new WPLResponse<>(HttpStatus.OK, rideService.getAllRides(), Ride.class);
     }
 
+    @ApiOperation(value = "Get ride detail(s)", notes = "Fetches ride details from the database. If rideId is " +
+            "specified, returns only details for that given ride.")
+    @GetMapping("/details")
+    public WPLResponse getRideDetails(
+        @ApiParam(name="rideId", value = "An Integer reffering to Ride entity", required = false, type = "Integer")
+        @RequestParam(name="rideId", required = false) Integer rideId
+    ){
+        if(rideId!=null)
+            return new WPLResponse<>(HttpStatus.OK, rideService.getRideDetails(rideId));
+        return new WPLResponse<>(HttpStatus.OK, rideService.getAllRideDetails(), RideDetails.class);
+    }
+
     @GetMapping("/offerer")
     public WPLResponse getRideOfferer(
         @RequestParam(name="rideId", required = true) Integer rideId

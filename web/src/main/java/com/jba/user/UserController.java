@@ -37,6 +37,9 @@ public class UserController {
     @Value("${wholepool.rest.url.base.url}")
     String WPLBaseURL;
 
+    @Autowired
+    Deserializer deserializer;
+
     @GetMapping("/settings")
     public String setting(){
         return "user-settings";
@@ -85,7 +88,7 @@ public class UserController {
                 .addParam("id", userFromSession.getUserId())
                 .build();
 
-        userFromSession = Deserializer.getSingleItemFor(template.getForObject(getUserQuery, String.class), User.class);
+        userFromSession = deserializer.getSingleItemFor(template.getForObject(getUserQuery, String.class), User.class);
 
         logger.info("Updating user data in session to "+userFromSession);
 
@@ -107,7 +110,7 @@ public class UserController {
 
         RestTemplate template= new RestTemplate();
 
-        UserType[] userTypes = Deserializer.getResultArrayFor(template.getForObject(getUserTypesRequest, String.class), UserType[].class);
+        UserType[] userTypes = deserializer.getResultArrayFor(template.getForObject(getUserTypesRequest, String.class), UserType[].class);
 
         List<UserType> filtered = Arrays.stream(userTypes)
                 .filter(userType -> userType.getTypeName().equals("Pasażer")||userType.getTypeName().equals("Kierowca"))
@@ -197,7 +200,7 @@ public class UserController {
 
         RestTemplate template = new RestTemplate();
 
-        Car[] cars = Deserializer.getResultArrayFor(template.getForObject(getCarsQuery, String.class), Car[].class);
+        Car[] cars = deserializer.getResultArrayFor(template.getForObject(getCarsQuery, String.class), Car[].class);
 
         model.addAttribute("cars", cars);
 
@@ -214,7 +217,7 @@ public class UserController {
 
         RestTemplate template = new RestTemplate();
 
-        CarType[] carTypes = Deserializer.getResultArrayFor(template.getForObject(getCarTypesQuery, String.class), CarType[].class);
+        CarType[] carTypes = deserializer.getResultArrayFor(template.getForObject(getCarTypesQuery, String.class), CarType[].class);
 
         model.addAttribute("carTypes", carTypes);
 
@@ -238,7 +241,7 @@ public class UserController {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        Car result = Deserializer.getSingleItemFor(restTemplate.postForObject(postNewCarQuery, car, String.class), Car.class);
+        Car result = deserializer.getSingleItemFor(restTemplate.postForObject(postNewCarQuery, car, String.class), Car.class);
 
         redirectAttributes.addAttribute("message", "Auto o nr rejestracyjnym "+car.getCarRegistrationNumber()+" zostało zapisane");
 
