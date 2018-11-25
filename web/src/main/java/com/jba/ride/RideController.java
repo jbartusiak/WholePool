@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class RideController {
@@ -59,8 +60,31 @@ public class RideController {
 
             model.addAttribute("ride", ride);
 
-
             if(ride.getRideId().getSourceId().getSourceName().equals("localhost")) {
+                String getRideOffererQuery = RestRequestBuilder.builder(WPLRestURL)
+                        .addPathParam(rideBaseURL)
+                        .addPathParam("offerer")
+                        .addParam("rideId", ride.getRideId().getRideId())
+                        .build();
+
+                User offerer = deserializer.getSingleItemFor(restTemplate.getForObject(getRideOffererQuery, String.class), User.class);
+
+                model.addAttribute("offerer", offerer);
+
+                String getPassengersQuery = RestRequestBuilder.builder(WPLRestURL)
+                        .addPathParam(rideBaseURL)
+                        .addPathParam("passengers")
+                        .addParam("rideId", ride.getRideId().getRideId())
+                        .build();
+
+                User[] passengers = deserializer.getResultArrayFor(restTemplate.getForObject(getPassengersQuery, String.class), User[].class);
+
+                model.addAttribute("passengers", passengers);
+
+                if(passengers!=null)
+                    model.addAttribute("freeSeats", ride.getRideId().getNrOfSeats()-passengers.length);
+                else
+                    model.addAttribute("freeSeats", ride.getRideId().getNrOfSeats());
 
                 return "ride-details";
             }
