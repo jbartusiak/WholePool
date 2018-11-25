@@ -121,7 +121,8 @@ public class RideController {
         RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(departureDateTime),
                 LocalDateTime.parse(arrivalDateTime), 1, form.getInputPrice(), form.getInputDescription());
 
-        ride.setRideDetails(rideDetails);
+        //TODO: FIX
+        /*ride.setRideDetails(rideDetails);
 
         String postRideDetailsQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
@@ -129,7 +130,7 @@ public class RideController {
                 .addParam("rideId", ride.getRideId())
                 .build();
 
-        template.postForObject(postRideDetailsQuery, rideDetails, String.class);
+        template.postForObject(postRideDetailsQuery, rideDetails, String.class);*/
 
         return "redirect:/";
     }

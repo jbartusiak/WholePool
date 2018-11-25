@@ -224,7 +224,7 @@ public class RideDAOMySQLRepository implements RideDAO{
     public Ride deleteRideDetails(Ride ride) {
         logger.info("Deleting ride details if present");
 
-        Session session = sessionFactory.getCurrentSession();
+        /*Session session = sessionFactory.getCurrentSession();
 
         try{
             if(ride.getRideDetails()!=null) {
@@ -234,7 +234,7 @@ public class RideDAOMySQLRepository implements RideDAO{
         catch (Exception e){
             logger.error("Error occured deleting ride details",e);
             throw e;
-        }
+        }*/
         return ride;
     }
 

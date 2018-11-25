@@ -1,8 +1,5 @@
 package com.jba.dao2.ride.enitity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +14,7 @@ import java.time.LocalDateTime;
 public class RideDetails implements Serializable {
 
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FK_RIDE_ID")
     @NonNull
     private Ride rideId;
