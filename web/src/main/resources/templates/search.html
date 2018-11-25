@@ -71,7 +71,7 @@
             <th:block th:each="ride : ${rides}">
                 <li class="list-group-item">
                     <div class="container-fluid result">
-                        <a th:href="@{'/ride/' + ${ride.rideId}}">
+                        <a th:href="@{'/ride/' + ${ride.getRideId().rideId}}">
                             <div class="row">
                                 <div class="col-lg-1 text-align-end">
                                     <span th:text="${ride.getFormattedDate(0,null)}"

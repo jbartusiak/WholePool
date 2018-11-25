@@ -47,6 +47,7 @@ public class RideController {
     public String viewRideDetails(@PathVariable String rideId, Model model){
         String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
+                .addPathParam("details")
                 .addParam("rideId", rideId)
                 .build();
 
@@ -54,12 +55,12 @@ public class RideController {
 
         try {
             String result = restTemplate.getForObject(getRideQuery, String.class);
-            Ride ride = deserializer.getSingleItemFor(result, Ride.class);
+            RideDetails ride = deserializer.getSingleItemFor(result, RideDetails.class);
 
             model.addAttribute("ride", ride);
 
 
-            if(ride.getSourceId().getSourceName().equals("localhost")) {
+            if(ride.getRideId().getSourceId().getSourceName().equals("localhost")) {
 
                 return "ride-details";
             }

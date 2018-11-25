@@ -114,16 +114,10 @@ public class RideDAOMySQLRepository implements RideDAO{
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
             RideDetails details = session
                     .createQuery("from RideDetails rd where rd.rideId=:ride", RideDetails.class)
                     .setParameter("ride",ride)
                     .getSingleResult();
-
-            session.getTransaction().commit();
-
-            session.close();
 
             return details;
         }

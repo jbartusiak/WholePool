@@ -8,21 +8,21 @@
 <div class="container">
     <div class="page-box">
         <div class="jumbotron page-content-jumbotron">
-            <h1><span th:text="${ride.getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span> &gt; <span
-                    th:text="${ride.getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></h1>
-            <span class="color-white">Odjazd: <span th:text="${ride.getRideDetails().getDateOfDeparture()}">##PLACEHOLDER##</span>, przyjazd: <span
-                    th:text="${ride.getRideDetails().getDateOfArrival()}">##PLACEHOLDER##</span></span>
+            <h1><span th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span> &gt; <span
+                    th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></h1>
+            <span class="color-white">Odjazd: <span th:text="${ride.getFormattedDate(0,'d MMMM, H:mm')}">##PLACEHOLDER##</span>, przyjazd: <span
+                    th:text="${ride.getFormattedDate(1,'d MMMM, H:mm')}">##PLACEHOLDER##</span></span>
         </div>
         <div class="text-align-end" style="padding:1em">Oferta z portalu <strong>Wholepool</strong></div>
         <div class="row" style="padding:1em">
             <div class="col-md-6">
-                <h3>Cena za miejsce: <span th:text="${ride.getRideDetails().getPrice()}">##PLACEHOLDER##</span></h3>
+                <h3>Cena za miejsce: <span th:text="${ride.getPrice()}">##PLACEHOLDER##</span></h3>
                 <div class="row">
 						<span class="col-md-4">
 							<strong>Miejsce odjazdu:</strong>
 						</span>
                     <span class="col-md-8">
-							<span th:text="${ride.getRouteForThisRide().getRouteFromLocation()}" >##PLACEHOLDER##</span>
+							<span th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}" >##PLACEHOLDER##</span>
 						</span>
                 </div>
                 <div class="row">
@@ -30,7 +30,7 @@
 							<strong>Miejsce przyjazdu:</strong>
 						</span>
                     <span class="col-md-8">
-							<span th:text="${ride.getRouteForThisRide().getRouteToLocation()}" >##PLACEHOLDER##</span>
+							<span th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}" >##PLACEHOLDER##</span>
 						</span>
                 </div>
                 <div class="row">
@@ -38,20 +38,20 @@
 							<strong>Czas przejazdu:</strong>
 						</span>
                     <span class="col-md-8">
-							<span th:text="${ride.getRideDetails().getTravelTime()}">##PLACEHOLDER##min</span>
+							<span th:text="${ride.getTravelTime()}">##PLACEHOLDER##min</span>
 						</span>
                 </div>
 
                 <h4 style="margin-top:1em">opis przejazdu:</h4>
-                <div th:text="${ride.getRideDetails().getDescription()}">LOREM IPSUM</div>
+                <div th:text="${ride.getDescription()}">LOREM IPSUM</div>
 
                 <h4 style="margin-top:1em">kierowca:</h4>
 
             </div>
             <div class="col-md-6">
                 <iframe style="width:100%; height:100%; max-height:500px; border:0" frameborder="0"
-                        th:src="@{'https://www.google.com/maps/embed/v1/directions?origin=' + ${ride.getRouteForThisRide().getRouteFromLocation()} +
-                        '&destination=' + ${ride.getRouteForThisRide().getRouteToLocation()} +
+                        th:src="@{'https://www.google.com/maps/embed/v1/directions?origin=' + ${ride.getRideId().getRouteForThisRide().getRouteFromLocation()} +
+                        '&destination=' + ${ride.getRideId().getRouteForThisRide().getRouteToLocation()} +
                         '&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0'}"></iframe>
             </div>
         </div>
