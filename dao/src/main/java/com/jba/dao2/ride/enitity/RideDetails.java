@@ -1,5 +1,7 @@
 package com.jba.dao2.ride.enitity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -17,15 +19,14 @@ public class RideDetails implements Serializable {
     @Id
     @OneToOne
     @JoinColumn(name = "FK_RIDE_ID")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NonNull
     private Ride rideId;
 
-    @Column(name = "RIDE_DATE_OF_DEPARTURE", columnDefinition = "DATETIME")
+    @Column(name = "RIDE_DATE_OF_DEPARTURE")
     @NonNull
     private LocalDateTime dateOfDeparture;
 
-    @Column(name = "RIDE_DATE_OF_ARRIVAL", columnDefinition = "DATETIME")
+    @Column(name = "RIDE_DATE_OF_ARRIVAL")
     @NonNull
     private LocalDateTime dateOfArrival;
 
@@ -40,20 +41,4 @@ public class RideDetails implements Serializable {
     @Column(name = "RIDE_DESCRIPTION")
     @NonNull
     private String description;
-
-    public void setDateOfDeparture(LocalDateTime localDateTime){
-        this.dateOfDeparture=localDateTime;
-    }
-
-    public void setDateOfDeparture(String localDateTime){
-        dateOfDeparture=LocalDateTime.parse(localDateTime);
-    }
-
-    public void setDateOfArrival(LocalDateTime localDateTime){
-        this.dateOfArrival=localDateTime;
-    }
-
-    public void setDateOfArrival(String localDateTime){
-        dateOfArrival=LocalDateTime.parse(localDateTime);
-    }
 }

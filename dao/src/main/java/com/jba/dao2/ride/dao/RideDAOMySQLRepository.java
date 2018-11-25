@@ -103,6 +103,13 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
+    @Override
+    public List<RideDetails> getAllRideDetails() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("from RideDetails rd", RideDetails.class).getResultList();
+    }
+
     public RideDetails getRideDetials(Ride ride){
         Session session = sessionFactory.getCurrentSession();
 
@@ -137,8 +144,6 @@ public class RideDAOMySQLRepository implements RideDAO{
     public Ride addRide(User offerer, Ride ride){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(ride);
-        ride.getRideDetails().setRideId(ride);
-        session.saveOrUpdate(ride.getRideDetails());
         OfferedRides offeredRides = new OfferedRides(ride,offerer);
         session.saveOrUpdate(offeredRides);
         return ride;

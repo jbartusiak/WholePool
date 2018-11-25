@@ -73,11 +73,11 @@ public class RideController {
     @GetMapping("/ride/add")
     public String getNewRideView(HttpSession session, Model model){
 
-        if(session.getAttribute("user")==null) {
+        /*if(session.getAttribute("user")==null) {
             model.addAttribute("status", 403);
             model.addAttribute("message", msg403);
             return "error";
-        }
+        }*/
 
         model.addAttribute("form", new NewRideForm());
 
@@ -86,11 +86,11 @@ public class RideController {
 
     @PostMapping("/ride/add")
     public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, Model model){
-        if(session.getAttribute("user")==null){
+        /*if(session.getAttribute("user")==null){
             model.addAttribute("status", 403);
             model.addAttribute("message", msg403);
             return "error";
-        }
+        }*/
         System.out.println(form);
 
         User userInSession = (User) session.getAttribute("user");
@@ -115,8 +115,13 @@ public class RideController {
 
         ride = Deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
 
-        RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(form.getInputDOD()),
-                LocalDateTime.parse(form.getInputDOD()), form.getInputTravelTime(), form.getInputPrice(), form.getInputDescription());
+        String departureDateTime = form.getInputDOD()+"T"+form.getInputHOD();
+        String arrivalDateTime = form.getInputDOA()+"T"+form.getInputHOA();
+
+        RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(departureDateTime),
+                LocalDateTime.parse(arrivalDateTime), 1, form.getInputPrice(), form.getInputDescription());
+
+        ride.setRideDetails(rideDetails);
 
         String postRideDetailsQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
@@ -124,9 +129,8 @@ public class RideController {
                 .addParam("rideId", ride.getRideId())
                 .build();
 
-        rideDetails = Deserializer.getSingleItemFor(template.postForObject(postRideDetailsQuery, rideDetails, String.class), RideDetails.class);
+        template.postForObject(postRideDetailsQuery, rideDetails, String.class);
 
         return "redirect:/";
     }
-
 }
