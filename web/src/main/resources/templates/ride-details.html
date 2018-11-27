@@ -9,8 +9,7 @@
     <div class="page-box" style="margin-top:0; margin-bottom:2em; border-radius:0 0 1em 1em; padding-bottom:1em;">
         <div class="container-fluid">
             <div class="row wholepool-breadcrumb">
-                <a href="" style="color:inherit">&lt;&nbsp;powrót do wyników
-                    wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
+                <a href="" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
                 przejazd</strong>
             </div>
             <div class="row" style="padding:1em; margin-bottom:0; font-size:large; background-color:#DDD;">
@@ -110,7 +109,7 @@
                     <strong>pasażerowie, którzy uczestniczą w tym przejeździe:</strong>
                 </div>
                 <div class="col-sm-4">
-                    <button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button>
+                    <a th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>
                 </div>
             </div>
             <ul th:if="${passengers.length==0}" class="list-group" style="margin-top:1em; margin-bottom:1em;">

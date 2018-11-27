@@ -19,8 +19,8 @@
 
 <nav th:replace="fragments/navbar :: nav"></nav>
 
-<div class="container-fluid" style="margin-top:-110px;">
-    <div class="page-box page-content" style="background-color:#DDD; margin-left:50px; margin-right:50px;">
+<div class="container-fluid">
+    <div class="page-box page-content" style="background-color:#DDD; margin-left:50px; margin-right:50px; margin-top:0; border-radius:0 0 1em 1em;">
         <form style="padding-left:50px; padding-right:50px;">
             <div class="form-group row">
                 <label for="searchFrom" class="col-sm-2 col-form-label">Miejsce odjazdu:</label>
@@ -65,8 +65,8 @@
     </div>
 </div>
 
-<div class="container-fluid" style="margin-top:-80px;">
-    <div class="page-box" style="margin-left:100px; margin-right:100px;">
+<div class="container-fluid">
+    <div class="page-box" style="margin-left:100px; margin-right:100px; margin-top:1em;">
         <ul class="list-group">
             <th:block th:each="ride : ${rides}">
                 <li class="list-group-item">
