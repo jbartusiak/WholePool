@@ -2,6 +2,7 @@ package com.jba.ride;
 
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.ride.enitity.RidePassangers;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.source.entity.Source;
 import com.jba.dao2.user.enitity.User;
@@ -97,6 +98,40 @@ public class RideController {
             model.addAttribute("message", "Przejazd o numerze "+rideId+" nie został odnaleziony.");
             return "error";
         }
+    }
+
+    @GetMapping("/ride/{rideId}/register")
+    public String getRideRegister(@PathVariable String rideId, Model model){
+
+        String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
+                .addPathParam(rideBaseURL)
+                .addPathParam("details")
+                .addParam("rideId", rideId)
+                .build();
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        RideDetails ride = deserializer.getSingleItemFor(restTemplate.getForObject(getRideQuery, String.class), RideDetails.class);
+
+        model.addAttribute("ride", ride);
+
+        return "ride-registration";
+    }
+
+    @PostMapping("/ride/register")
+    public String doRideRegister(String ride, String passenger){
+        String registerForRideRequest = RestRequestBuilder.builder(WPLRestURL)
+                .addPathParam(rideBaseURL)
+                .addPathParam("register")
+                .addParam("rideId", ride)
+                .addParam("userId", passenger)
+                .build();
+
+        RestTemplate template = new RestTemplate();
+
+        RidePassangers ridePassangers = deserializer.getSingleItemFor(template.postForObject(registerForRideRequest, null, String.class), RidePassangers.class);
+
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping("/ride/add")
