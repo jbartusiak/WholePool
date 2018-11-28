@@ -323,7 +323,7 @@ public class RideDAOMySQLRepository implements RideDAO{
     }
 
     @Override
-    public List<RideDetails> getUpcomingRidesForUser(User user) {
+    public List<RideDetails> getRidesForUser(User user, boolean trimToTime) {
         Session session = sessionFactory.getCurrentSession();
 
         List<RidePassangers> passangers = session.createQuery("from RidePassangers rp where rp.passenger=:user", RidePassangers.class)
@@ -336,11 +336,21 @@ public class RideDAOMySQLRepository implements RideDAO{
             rideIds.add(rp.getRide());
         }
 
-        List<RideDetails> result = session
-                .createQuery("from RideDetails rd where rd.rideId in (:rideIds)", RideDetails.class)
-                .setParameterList("rideIds", rideIds)
-                .getResultList();
+        if(trimToTime) {
+            List<RideDetails> result = session
+                    .createQuery("from RideDetails rd where rd.rideId in (:rideIds) and rd.dateOfDeparture>=SYSDATE()", RideDetails.class)
+                    .setParameterList("rideIds", rideIds)
+                    .getResultList();
 
-        return result;
+            return result;
+        }
+        else{
+            List<RideDetails> result = session
+                    .createQuery("from RideDetails rd where rd.rideId in (:rideIds)", RideDetails.class)
+                    .setParameterList("rideIds", rideIds)
+                    .getResultList();
+
+            return result;
+        }
     }
 }

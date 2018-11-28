@@ -70,5 +70,5 @@ public interface RideDAO {
     User getRideOfferer(Ride ride);
 
     @Transactional
-    List<RideDetails> getUpcomingRidesForUser(User user);
+    List<RideDetails> getRidesForUser(User user, boolean trimToTime);
 }

@@ -89,7 +89,7 @@ public class RideDAOTest {
 
     @Test
     public void getUpcomingRidesForUser() {
-        List<RideDetails> rd = rideDAO.getUpcomingRidesForUser(User.of(1));
+        List<RideDetails> rd = rideDAO.getRidesForUser(User.of(1), true);
 
         for(RideDetails rideDetails: rd){
             System.out.println(rd);
