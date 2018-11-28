@@ -166,5 +166,19 @@ public class RideController {
         rideService.unregisterFromRide(userId, rideId);
     }
 
-
+    @ApiOperation(value = "Get rides in which user is a passenger", notes = "Returns a list of rides for which the " +
+            "given by parameter is a passenger. Boolean parameter decides whether to trim rides which happened in " +
+            "the past")
+    @GetMapping("/passenger")
+    @ResponseStatus(HttpStatus.OK)
+    public WPLResponse getRidesForUser(
+        @ApiParam(name = "userId", value="An Integer referring to User entity", required = true,
+                    type = "Integer")
+        @RequestParam(name="userId", required = true) Integer userId,
+        @ApiParam(name = "trim", value="A Boolean which decides whether to trim old rides", required = true,
+                type = "Boolean")
+        @RequestParam(name = "trim", required = true) Boolean trim
+    ){
+        return new WPLResponse<>(HttpStatus.OK, rideService.getRidesForUser(userId, trim));
+    }
 }
