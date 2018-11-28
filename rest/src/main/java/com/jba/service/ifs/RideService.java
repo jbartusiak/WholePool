@@ -24,4 +24,5 @@ public interface RideService {
     RidePassangers unregisterFromRide(Integer userId, Integer rideId);
     List<Ride> getRidesByUser(Integer userId);
     User getRideOfferer(Integer rideId);
+    List<RideDetails> getRidesForUser(Integer userId, Boolean trimToTime);
 }
