@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.NoResultException;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -330,6 +331,10 @@ public class RideDAOMySQLRepository implements RideDAO{
                 .setParameter("user", user)
                 .getResultList();
 
+        if(passangers.size()==0){
+            return new ArrayList<RideDetails>();
+        }
+
         List<Ride> rideIds= new ArrayList<>();
 
         for (RidePassangers rp: passangers){
@@ -338,7 +343,7 @@ public class RideDAOMySQLRepository implements RideDAO{
 
         if(trimToTime) {
             List<RideDetails> result = session
-                    .createQuery("from RideDetails rd where rd.rideId in (:rideIds) and rd.dateOfDeparture>=SYSDATE()", RideDetails.class)
+                    .createQuery("from RideDetails rd where rd.rideId in :rideIds and (rd.dateOfDeparture>sysdate())", RideDetails.class)
                     .setParameterList("rideIds", rideIds)
                     .getResultList();
 
