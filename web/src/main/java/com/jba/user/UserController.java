@@ -263,4 +263,15 @@ public class UserController {
         model.addAttribute("message", message);
         return "user-settings-confirm";
     }
+
+    @GetMapping("/dashboard")
+    public String getUserDashboard(HttpSession session){
+        if(session.getAttribute("user")!=null) {
+
+
+
+            return "dashboard";
+        }
+        else return "error";
+    }
 }

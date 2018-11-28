@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<div class="container-fluid" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="page-box" style="border-radius:1em; margin-top:1em;">
+        <div style="background:var(--bg-wholepool-very-light); padding:1em; border-radius: 1em 1em 0 0" :>
+            <h3 style="color:var(--white); font-weight: bold; text-align: center;">moje propozycje przejazdów</h3>
+        </div>
+        <div class="container-fluid" style="padding:0 0 1em 0">
+            <table th:if="${passengers!=null}" class="table table-sm table-hover" style="padding:10px;">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Data odjazdu</th>
+                    <th scope="col">Godzina odjazdu</th>
+                    <th scope="col">Trasa</th>
+                    <th scope="col">Kierowca</th>
+                    <th scope="col">Kontakt</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">2018-01-01</th>
+                    <td>10:00</td>
+                    <td><a href="#">Wrocław > Warszawa</a></td>
+                    <td>@ambiguous1991</td>
+                    <td><a class="link" href="#">skontakuj się</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">2018-01-01</th>
+                    <td>10:00</td>
+                    <td><a href="#">Wrocław > Warszawa</a></td>
+                    <td>@ambiguous1991</td>
+                    <td><a class="link" href="#">skontakuj się</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">2018-01-01</th>
+                    <td>10:00</td>
+                    <td><a href="#">Wrocław > Warszawa</a></td>
+                    <td>@ambiguous1991</td>
+                    <td><a class="link" href="#">skontakuj się</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">2018-01-01</th>
+                    <td>10:00</td>
+                    <td><a href="#">Wrocław > Warszawa</a></td>
+                    <td>@ambiguous1991</td>
+                    <td><a class="link" href="#">skontakuj się</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <div if="${passengers==null}" style="padding:1em; text-align: center; font-size: x-large;">
+                Nie zaoferowałeś jeszcze żadnych przejazdów!<br>
+                <i class="fas fa-car" style="color:#DDD; font-size:5em; margin-top:10px;"></i>
+            </div>
+        </div>
+    </div>
+</div>

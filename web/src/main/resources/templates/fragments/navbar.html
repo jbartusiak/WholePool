@@ -16,7 +16,7 @@
             </li>
             <!--IF LOGGED IN-->
             <li th:if="${session.user!=null}" class="nav-item">
-                <a class="nav-link" id="nav-rides" href="/user/rides">Moje przejazdy</a>
+                <a class="nav-link" id="nav-rides" href="/user/dashboard">Moja tablica</a>
             </li>
             <li th:if="${session.user!=null}" class="nav-item">
                 <a class="nav-link" id="nav-settings" href="/user/settings">Ustawienia</a>
