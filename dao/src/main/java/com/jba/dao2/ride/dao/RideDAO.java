@@ -68,4 +68,7 @@ public interface RideDAO {
 
     @Transactional
     User getRideOfferer(Ride ride);
+
+    @Transactional
+    List<RideDetails> getUpcomingRidesForUser(User user);
 }

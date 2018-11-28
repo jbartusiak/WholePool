@@ -321,4 +321,26 @@ public class RideDAOMySQLRepository implements RideDAO{
 
         return offeredRides.getOfferer();
     }
+
+    @Override
+    public List<RideDetails> getUpcomingRidesForUser(User user) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<RidePassangers> passangers = session.createQuery("from RidePassangers rp where rp.passenger=:user", RidePassangers.class)
+                .setParameter("user", user)
+                .getResultList();
+
+        List<Ride> rideIds= new ArrayList<>();
+
+        for (RidePassangers rp: passangers){
+            rideIds.add(rp.getRide());
+        }
+
+        List<RideDetails> result = session
+                .createQuery("from RideDetails rd where rd.rideId in (:rideIds)", RideDetails.class)
+                .setParameterList("rideIds", rideIds)
+                .getResultList();
+
+        return result;
+    }
 }
