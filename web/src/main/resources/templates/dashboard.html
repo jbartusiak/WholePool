@@ -7,7 +7,7 @@
 <nav th:replace="fragments/navbar :: nav"></nav>
 <div class="container-fluid" style="margin-top:1em; margin-bottom:2em;">
     <div th:replace="fragments/rides-as-passenger"></div>
-    <th:block th:if="${session.user.userType.typeId==3}">
+    <th:block th:if="${session.user.userType.typeId==1}">
         <div th:replace="fragments/rides-as-driver"></div>
     </th:block>
 </div>

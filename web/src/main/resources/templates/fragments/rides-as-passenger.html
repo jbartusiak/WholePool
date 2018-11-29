@@ -22,7 +22,7 @@
                         <td><a th:href="@{'/ride/' + ${ride.getRideId().rideId}}"><span
                                 th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span>
                             <i class="fas fa-arrow-right" style="color:inherit;"></i> <span
-                                    th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></br>
+                                    th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span>
                         </a></td>
                     </tr>
                 </th:block>
