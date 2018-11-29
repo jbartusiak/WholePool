@@ -121,6 +121,39 @@ public class RideController {
         return "ride-registration";
     }
 
+    @GetMapping("/ride/{rideId}/resign")
+    public String getRideResign(@PathVariable String rideId, Model model, HttpSession session, RedirectAttributes redirectAttributes){
+        String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
+                .addPathParam(rideBaseURL)
+                .addPathParam("details")
+                .addParam("rideId", rideId)
+                .build();
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        RideDetails ride = deserializer.getSingleItemFor(restTemplate.getForObject(getRideQuery, String.class), RideDetails.class);
+
+        model.addAttribute("ride", ride);
+
+        return "ride-resignation";
+    }
+
+    @PostMapping("/ride/resign")
+    public String doRideResign(String ride, String passenger){
+        String deleteRegistrationQuery = RestRequestBuilder.builder(WPLRestURL)
+                .addPathParam(rideBaseURL)
+                .addPathParam("register")
+                .addParam("rideId", ride)
+                .addParam("userId", passenger)
+                .build();
+
+        RestTemplate template = new RestTemplate();
+
+        template.delete(deleteRegistrationQuery);
+
+        return "redirect:/user/dashboard";
+    }
+
     @PostMapping("/ride/register")
     public String doRideRegister(String ride, String passenger){
         String registerForRideRequest = RestRequestBuilder.builder(WPLRestURL)
