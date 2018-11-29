@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container">
+    <div class="page-box" style="margin-top:0; margin-bottom:2em; border-radius:0 0 1em 1em; padding-bottom:1em;">
+        <div class="container-fluid">
+            <div class="row wholepool-breadcrumb">
+                <a href="/search" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<a
+                    th:href="@{'/ride/' + ${ride.getRideId().rideId}}" style="color:inherit">ten przejazd</a>&nbsp;/&nbsp;<strong>zrezygnuj</strong>
+            </div>
+            <div class="row" style="padding:1em; margin-bottom:0; font-size:large; background-color:#DDD;">
+                <div class="col-sm-8">
+                    <span th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span>
+                    <i class="fas fa-arrow-right" style="color:inherit;"></i> <span
+                        th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></br>
+                    <span>Odjazd: <span
+                            th:text="${ride.getFormattedDate(0,'d MMMM, H:mm')}">##PLACEHOLDER##</span>, przyjazd: <span
+                            th:text="${ride.getFormattedDate(1,'d MMMM, H:mm')}">##PLACEHOLDER##</span></span>
+                </div>
+                <div class="com-sm-4">
+                    Oferta z portalu <strong>Wholepool</strong>
+                </div>
+            </div>
+            <h4 style="padding:1em; text-align:center;">Potwierdź, że chcesz zrezygnować z tego przejazdu.</h4>
+            <form action="/ride/resign" method="post">
+                <div class="form-group">
+                    <input id="passenger" name="passenger" placeholder="passenger" type="text" class="form-control here"
+                           style="display:visible;" th:value="${session.user.userId}">
+                </div>
+                <div class="form-group">
+                    <input id="ride" name="ride" placeholder="ride" type="text" class="form-control here"
+                           style="display:visible;" th:value="${ride.getRideId().getRideId()}">
+                </div>
+                <div class="form-group" style="text-align:center;">
+
+                    <a th:href="@{'/ride/' + ${ride.getRideId().rideId}}" class="btn btn-lg btn-wholepool col-lg-4"
+                       style="margin:1em; background-color:#BBB;">Anuluj</a>
+                    <button name="submit" type="submit" class="btn btn-lg btn-wholepool col-lg-4" style="margin:1em;">
+                        Zatwierdź
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
