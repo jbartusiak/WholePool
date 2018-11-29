@@ -179,6 +179,6 @@ public class RideController {
                 type = "Boolean")
         @RequestParam(name = "trim", required = true) Boolean trim
     ){
-        return new WPLResponse<>(HttpStatus.OK, rideService.getRidesForUser(userId, trim));
+        return new WPLResponse<>(HttpStatus.OK, rideService.getRidesForUser(userId, trim), RideDetails.class);
     }
 }

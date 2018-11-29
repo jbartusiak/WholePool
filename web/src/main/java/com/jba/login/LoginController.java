@@ -62,7 +62,7 @@ public class LoginController {
 
         if(isPasswordCorrect){
             session.setAttribute("user", userFromJson);
-            return "index";
+            return "redirect:/user/dashboard";
         }
         else{
             return "login";
