@@ -6,6 +6,7 @@ import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
 import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
+import com.jba.utils.Mailer;
 import com.jba.utils.Methods;
 import com.jba.utils.RestRequestBuilder;
 import org.apache.log4j.Logger;
@@ -31,6 +32,9 @@ import java.util.stream.Collectors;
 public class UserController {
 
     Logger logger = Logger.getLogger(this.getClass());
+
+    @Autowired
+    Mailer mailer;
 
     @Autowired
     UserDAO userDAO;
@@ -208,6 +212,8 @@ public class UserController {
             template.put(changePasswordRequest, userFromSession);
 
             redirectAttributes.addAttribute("message", "Twoje hasło zostało zmienione.");
+
+            mailer.sendChangedPasswordMessage(userFromSession.getEmailAddress(), userFromSession.getFirstName());
 
             return "redirect:/user/settings/confirm";
         }

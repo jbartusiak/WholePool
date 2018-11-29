@@ -3,6 +3,7 @@ package com.jba.login;
 import com.jba.dao2.user.enitity.User;
 import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
+import com.jba.utils.Mailer;
 import com.jba.utils.Methods;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class LoginController {
 
     @Autowired
     private Methods methods;
+
+    @Autowired
+    Mailer mailer;
 
     @GetMapping(value = "/login")
     public String login(){
@@ -82,7 +86,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String doRegister(User user, HttpSession session, RedirectAttributes redirectAttributes){
+    public String doRegister(User user, HttpSession session){
         String postNewUserQuery = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam("users")
@@ -112,9 +116,9 @@ public class LoginController {
 
         session.setAttribute("user", user);
 
-        redirectAttributes.addAttribute("message", "Twoje konto zostało utworzone!");
+        mailer.sendAccountCreatedMessage(user.getEmailAddress(), user.getFirstName());
 
-        return "redirect:/";
+        return "redirect:/user/dashboard";
     }
 
     @GetMapping("/logout")
