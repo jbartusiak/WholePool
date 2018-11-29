@@ -3,6 +3,7 @@ package com.jba.login;
 import com.jba.dao2.user.enitity.User;
 import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
+import com.jba.utils.Methods;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping
@@ -26,6 +30,9 @@ public class LoginController {
 
     @Autowired
     Deserializer deserializer;
+
+    @Autowired
+    private Methods methods;
 
     @GetMapping(value = "/login")
     public String login(){
@@ -85,7 +92,9 @@ public class LoginController {
 
         String hash = user.getPasswordHash();
 
-        user.setUserType(UserType.of(2));
+        UserType passenger = methods.getUserTypeByName("Pasażer");
+
+        user.setUserType(passenger);
 
         user = deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
 

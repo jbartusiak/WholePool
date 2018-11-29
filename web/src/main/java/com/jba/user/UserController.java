@@ -6,6 +6,7 @@ import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
 import com.jba.dao2.user.enitity.UserType;
 import com.jba.utils.Deserializer;
+import com.jba.utils.Methods;
 import com.jba.utils.RestRequestBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class UserController {
 
     @Autowired
     Deserializer deserializer;
+
+    @Autowired
+    private Methods methods;
 
     @GetMapping("/settings")
     public String setting(){
@@ -130,7 +134,12 @@ public class UserController {
     public String doChangeAccountType(UserType userType, RedirectAttributes redirectAttributes, HttpSession session){
         logger.debug("read: "+userType);
 
-        userType = UserType.of(Integer.parseInt(userType.getTypeName()));
+        userType = methods.getUserTypeById(Integer.parseInt(userType.getTypeName()));
+
+        if(userType.getTypeName().equals("Pasażer")){
+            redirectAttributes.addAttribute("message", "not-a-driver");
+            return "redirect:/settings/accountType";
+        }
 
         User userFromSession = (User) session.getAttribute("user");
 
@@ -150,8 +159,8 @@ public class UserController {
         session.removeAttribute("user");
         session.setAttribute("user", userFromSession);
 
-        redirectAttributes.addAttribute("message", "Typ twojego konta został zmieniony z sukcesem!");
-        return "redirect:/user/settings/confirm";
+        redirectAttributes.addAttribute("message", "become-driver");
+        return "redirect:/user/settings/addCar";
     }
 
     @GetMapping("/settings/changePassword")
