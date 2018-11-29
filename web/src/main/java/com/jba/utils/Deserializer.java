@@ -40,7 +40,8 @@ public class Deserializer {
             return items;
         }
         catch (MismatchedInputException e){
-            logger.info("No entries found, returning null");
+            logger.error("No entries found, returning null", e);
+            e.printStackTrace();
             return null;
         }
         catch (Exception e){

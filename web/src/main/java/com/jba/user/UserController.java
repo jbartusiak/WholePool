@@ -263,4 +263,6 @@ public class UserController {
         model.addAttribute("message", message);
         return "user-settings-confirm";
     }
+
+
 }

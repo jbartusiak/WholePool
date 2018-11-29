@@ -104,4 +104,9 @@ public class RideServiceImpl implements RideService {
     public User getRideOfferer(Integer rideId) {
         return rideDAO.getRideOfferer(getRideById(rideId));
     }
+
+    @Override
+    public List<RideDetails> getRidesForUser(Integer userId, Boolean trimToTime) {
+        return rideDAO.getRidesForUser(User.of(userId), trimToTime);
+    }
 }

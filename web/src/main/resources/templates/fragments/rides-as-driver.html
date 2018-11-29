@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<div class="container-fluid" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="page-box" style="border-radius:1em; margin-top:1em;">
+        <div style="background:var(--bg-wholepool-very-light); padding:1em; border-radius: 1em 1em 0 0" :>
+            <h3 style="color:var(--white); font-weight: bold; text-align: center;">moje zaoferowane przejazdy</h3>
+        </div>
+        <div class="container-fluid" style="padding:0 0 1em 0">
+            <table th:if="${offeredRides.size()>0}" class="table table-sm table-hover" style="padding:10px;">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Data odjazdu</th>
+                    <th scope="col">Godzina odjazdu</th>
+                    <th scope="col">Trasa</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="ride: ${offeredRides}">
+                    <tr>
+                        <th scope="row" th:text="${ride.getFormattedDate(0,null)}">DATA</th>
+                        <td th:text="${ride.getFormattedDate(1,'H:mm')}">10:00</td>
+                        <td><a th:href="@{'/ride/' + ${ride.getRideId().rideId}}"><span
+                                th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span>
+                            <i class="fas fa-arrow-right" style="color:inherit;"></i> <span
+                                    th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span>
+                        </a></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <div th:if="${offeredRides.size()==0}" style="padding:1em; text-align: center; font-size: x-large;">
+                Nie zaoferowałeś jeszcze żadnych przejazdów!<br>
+                <i class="fas fa-car" style="color:#DDD; font-size:5em; margin-top:10px;"></i>
+            </div>
+        </div>
+    </div>
+</div>

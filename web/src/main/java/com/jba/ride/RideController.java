@@ -18,12 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
 public class RideController {
@@ -101,7 +98,11 @@ public class RideController {
     }
 
     @GetMapping("/ride/{rideId}/register")
-    public String getRideRegister(@PathVariable String rideId, Model model){
+    public String getRideRegister(@PathVariable String rideId, Model model, HttpSession session){
+
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
 
         String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)

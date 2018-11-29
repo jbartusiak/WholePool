@@ -6,8 +6,8 @@
 
     <properties>
         <webModuleVersion>0.0.1-SNAPSHOT</webModuleVersion>
-        <restModuleVersion>1.1</restModuleVersion>
-        <daoModuleVersion>1.3.3</daoModuleVersion>
+        <restModuleVersion>1.5</restModuleVersion>
+        <daoModuleVersion>1.4.0</daoModuleVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>

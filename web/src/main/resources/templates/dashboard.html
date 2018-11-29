@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Moja tablica</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container-fluid" style="margin-top:1em; margin-bottom:2em;">
+    <div th:replace="fragments/rides-as-passenger"></div>
+    <th:block th:if="${session.user.userType.typeId==1}">
+        <div th:replace="fragments/rides-as-driver"></div>
+    </th:block>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#nav-rides').addClass('active');
+    });
+</script>
+</body>
+</html>

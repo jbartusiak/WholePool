@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.NoResultException;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -320,5 +321,41 @@ public class RideDAOMySQLRepository implements RideDAO{
                 getSingleResult();
 
         return offeredRides.getOfferer();
+    }
+
+    @Override
+    public List<RideDetails> getRidesForUser(User user, boolean trimToTime) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<RidePassangers> passangers = session.createQuery("from RidePassangers rp where rp.passenger=:user", RidePassangers.class)
+                .setParameter("user", user)
+                .getResultList();
+
+        if(passangers.size()==0){
+            return new ArrayList<RideDetails>();
+        }
+
+        List<Ride> rideIds= new ArrayList<>();
+
+        for (RidePassangers rp: passangers){
+            rideIds.add(rp.getRide());
+        }
+
+        if(trimToTime) {
+            List<RideDetails> result = session
+                    .createQuery("from RideDetails rd where rd.rideId in :rideIds and (rd.dateOfDeparture>sysdate())", RideDetails.class)
+                    .setParameterList("rideIds", rideIds)
+                    .getResultList();
+
+            return result;
+        }
+        else{
+            List<RideDetails> result = session
+                    .createQuery("from RideDetails rd where rd.rideId in (:rideIds)", RideDetails.class)
+                    .setParameterList("rideIds", rideIds)
+                    .getResultList();
+
+            return result;
+        }
     }
 }
