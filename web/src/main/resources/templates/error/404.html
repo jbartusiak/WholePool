@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container">
+    <div class="page-box" style="height:50%; display: flex;
+  justify-content: center;
+  align-items: center; border:2px dashed var(--danger); background-color:var(--bg-accent-dark); color:#FFF">
+        <div style="text-align:center">
+            <h1 style="color:var(--danger); font-size:10em">404&nbsp;<i class="fas fa-skull" style="color:inherit"></i></h1>
+            <div style="color:var(--danger); font-size:1.5em; font-weight:bold">404 Not Found -  żądana przez Ciebie strona nie istnieje.</div>
+            <div>Jeżeli uważasz, że wystąpił błąd, <a href="mailto:jakub.bartusiak@gmail.com" style="color:var(--fg-wholepool-accent)">skontakuj się z administratorem.</a></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

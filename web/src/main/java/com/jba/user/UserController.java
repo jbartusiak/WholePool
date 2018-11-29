@@ -264,14 +264,5 @@ public class UserController {
         return "user-settings-confirm";
     }
 
-    @GetMapping("/dashboard")
-    public String getUserDashboard(HttpSession session){
-        if(session.getAttribute("user")!=null) {
 
-
-
-            return "dashboard";
-        }
-        else return "error";
-    }
 }

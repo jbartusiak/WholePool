@@ -101,7 +101,11 @@ public class RideController {
     }
 
     @GetMapping("/ride/{rideId}/register")
-    public String getRideRegister(@PathVariable String rideId, Model model){
+    public String getRideRegister(@PathVariable String rideId, Model model, HttpSession session){
+
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
 
         String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
