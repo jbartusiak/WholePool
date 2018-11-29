@@ -2,11 +2,14 @@ package com.jba.utils;
 
 import com.jba.dao2.user.enitity.User;
 import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
 public class Methods {
 
-    public static Boolean isUserAPassenger(User[] passengers, Integer userId){
+    public Boolean isUserAPassenger(User[] passengers, Integer userId){
+        if(userId==null||passengers==null){
+            return false;
+        }
         for(User u: passengers){
             if(u.getUserId()==userId){
                 return true;
@@ -15,7 +18,7 @@ public class Methods {
         return false;
     }
 
-    public static Boolean isUserDriver(Integer rideId, Integer userId){
-        return false;
+    public Boolean isUserDriver(User offerer, Integer userId){
+        return offerer.getUserId()==userId;
     }
 }
