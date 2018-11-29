@@ -31,11 +31,30 @@
                     <hr/>
                     <div style="margin-top:1em; margin-bottom:1em"><strong>Poniżej znajdziesz listę swoich
                         pojazdów.</strong><br>
-                        Możesz usuwać pojazdy, jeżeli zajdzie taka potrzeba.
+                        
                     </div>
-                    <th:block th:each="car : ${cars}">
-                        <div th:text="${car.toString()}"></div>
-                    </th:block>
+                    <div class="list-group">
+                        <th:block th:each="car : ${cars}">
+                            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">
+                                        <span th:switch="${car.carTypeId.carTypeId}">
+                                            <img th:case="1" src="/images/ic-hatchback.png" style="width:50px;height:50px;"/>
+                                            <img th:case="2" src="/images/ic-sedan.png" style="width:50px;height:50px;"/>
+                                            <img th:case="3" src="/images/ic-mvp.png" style="width:50px;height:50px;"/>
+                                            <img th:case="4" src="/images/ic-suv.png" style="width:50px;height:50px;"/>
+                                            <img th:case="5" src="/images/ic-crossover.png" style="width:50px;height:50px;"/>
+                                            <img th:case="6" src="/images/ic-coupe.png" style="width:50px;height:50px;"/>
+                                            <img th:case="7" src="/images/ic-convertible.png" style="width:50px;height:50px;"/>
+                                        </span>
+                                        &nbsp;<span th:text="${car.carName}">CAR_NAME</span> / <i><span th:text="${car.carTypeId.carTypeName}">CAR TYPE</span></i>
+                                    </h5>
+                                    <small>Rok produkcji: <span th:text="${car.carProductionYear}">PLACEHOLDER</span></small>
+                                </div>
+                                <p class="mb-1">Numer rejestracyjny: <span th:text="${car.carRegistrationNumber}">XYZ123456</span></p>
+                            </div>
+                        </th:block>
+                    </div>
                 </div>
             </div>
         </div>
