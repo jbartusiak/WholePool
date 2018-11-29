@@ -1,0 +1,44 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: Jakub Bartusiak
+  Date: 12.11.2018
+  Time: 16:16
+  To change this template use File | Settings | File Templates.
+-->
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Moje dane</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+
+        <div th:replace="fragments/user-settings-menu"></div>
+
+        <div class="col-lg-1">
+
+        </div>
+
+        <div class="col-lg-6">
+            <div class="page-box">
+                <div class="page-content" style="padding:2em">
+                    <h2>Twoje zmiany zostały zapisane.</h2>
+                    <hr/>
+                    <div th:text="${message}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('#nav-settings').addClass('active');
+    });
+</script>
+</body>
+</html>

@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.NoResultException;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,8 +72,8 @@ public class RideDAOMySQLRepository implements RideDAO{
 
     public List<Ride> findRideByCriteria(
             Route route,
-            @Nullable Date dateOfDeparture,
-            @Nullable Date dateOfArrival
+            @Nullable LocalDateTime dateOfDeparture,
+            @Nullable LocalDateTime dateOfArrival
     ){
         RideDetails rideDetails = new RideDetails();
 
@@ -102,20 +104,21 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
+    @Override
+    public List<RideDetails> getAllRideDetails() {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("from RideDetails rd", RideDetails.class).getResultList();
+    }
+
     public RideDetails getRideDetials(Ride ride){
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            session.beginTransaction();
-
             RideDetails details = session
                     .createQuery("from RideDetails rd where rd.rideId=:ride", RideDetails.class)
                     .setParameter("ride",ride)
                     .getSingleResult();
-
-            session.getTransaction().commit();
-
-            session.close();
 
             return details;
         }
@@ -216,7 +219,7 @@ public class RideDAOMySQLRepository implements RideDAO{
     public Ride deleteRideDetails(Ride ride) {
         logger.info("Deleting ride details if present");
 
-        Session session = sessionFactory.getCurrentSession();
+        /*Session session = sessionFactory.getCurrentSession();
 
         try{
             if(ride.getRideDetails()!=null) {
@@ -226,7 +229,7 @@ public class RideDAOMySQLRepository implements RideDAO{
         catch (Exception e){
             logger.error("Error occured deleting ride details",e);
             throw e;
-        }
+        }*/
         return ride;
     }
 
@@ -305,6 +308,54 @@ public class RideDAOMySQLRepository implements RideDAO{
         catch (NoResultException e){
             logger.info("User "+user+" did not offer any rides!");
             throw new NoResultException("User "+user.getUserId()+" did not offer any rides!");
+        }
+    }
+
+    @Override
+    public User getRideOfferer(Ride ride) {
+        Session session = sessionFactory.getCurrentSession();
+
+        OfferedRides offeredRides = session.
+                createQuery("from OfferedRides o where o.ride=:ride", OfferedRides.class).
+                setParameter("ride", ride).
+                getSingleResult();
+
+        return offeredRides.getOfferer();
+    }
+
+    @Override
+    public List<RideDetails> getRidesForUser(User user, boolean trimToTime) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<RidePassangers> passangers = session.createQuery("from RidePassangers rp where rp.passenger=:user", RidePassangers.class)
+                .setParameter("user", user)
+                .getResultList();
+
+        if(passangers.size()==0){
+            return new ArrayList<RideDetails>();
+        }
+
+        List<Ride> rideIds= new ArrayList<>();
+
+        for (RidePassangers rp: passangers){
+            rideIds.add(rp.getRide());
+        }
+
+        if(trimToTime) {
+            List<RideDetails> result = session
+                    .createQuery("from RideDetails rd where rd.rideId in :rideIds and (rd.dateOfDeparture>sysdate())", RideDetails.class)
+                    .setParameterList("rideIds", rideIds)
+                    .getResultList();
+
+            return result;
+        }
+        else{
+            List<RideDetails> result = session
+                    .createQuery("from RideDetails rd where rd.rideId in (:rideIds)", RideDetails.class)
+                    .setParameterList("rideIds", rideIds)
+                    .getResultList();
+
+            return result;
         }
     }
 }

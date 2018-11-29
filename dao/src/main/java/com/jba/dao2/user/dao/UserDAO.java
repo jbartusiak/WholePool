@@ -3,6 +3,7 @@ package com.jba.dao2.user.dao;
 import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public interface UserDAO {
     User getUserById(int id);
 
     @Transactional
+    List<UserType> getUserTypes();
+
+    @Transactional
     List<Preference> getAllPreferences();
 
     @Transactional
@@ -37,6 +41,9 @@ public interface UserDAO {
 
     @Transactional
     void updateUserData(User user);
+
+    @Transactional
+    void updateUserPasswordHash(User user, String hash);
 
     @Transactional
     UsersPreference setPreference(User user, Preference preference, String value);

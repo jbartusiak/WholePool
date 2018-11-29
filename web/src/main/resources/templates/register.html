@@ -1,0 +1,159 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Zarejestruj się</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+
+<nav th:replace="fragments/navbar :: nav"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-5">
+            <div class="page-box">
+                <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div class="alert alert-info fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i>&nbsp;Informacja</h4>
+                            <p>Aby rezerwować przejazdy, musisz się zarejestrować. W tym celu, skorzystaj z poniższego formularza.</p>
+                        </div>
+                    </div>
+                    <h3 class="text-align-center">Zarejestruj się</h3>
+                    <small>
+                        <div>
+                            Ta aplikacja przechowuje Twój adres e-mail w celu:
+                            <ul>
+                                <li>logowania</li>
+                                <li>resetowania hasła</li>
+                                <li>informowania Cię o istotnych akcjach w systemie (takich jak zmiana hasła, czy odwołanie przejazdu)</li>
+                                <li>nawiązania kontaku z kierowcą/pasażerem oraz obsługą serwisu</li>
+                            </ul>
+                        </div>
+                        <div>
+                            Twoje nazwisko i data urodzenia nie są udostępniane innym użytkownikom systemu.
+                        </div>
+                    </small>
+                    <hr/>
+                    <form id="registrationForm" method="post" action="/register">
+                        <div class="form-group row">
+                            <label for="firstName" class="col-lg-3 col-form-label">Imię</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="firstName" id="firstName"
+                                       placeholder="Imię" pattern="[a-zA-Z]+" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lastName" class="col-lg-3 col-form-label">Nazwisko</label>
+                            <div class="col-lg-9">
+                                <input type="text" name="lastName" class="form-control" id="lastName"
+                                       placeholder="Nazwisko" pattern="[a-zA-Z]+" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userName" class="col-lg-3 col-form-label">Nazwa uźytkownika</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" name="userName" id="userName"
+                                       placeholder="Nazwa użytkownika" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="emailAddress" class="col-lg-3 col-form-label">Adres e-mail</label>
+                            <div class="col-lg-9">
+                                <input type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="Adres e-mail" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="passwordHash" class="col-lg-3 col-form-label">Hasło</label>
+                            <div class="col-lg-9">
+                                <input type="password" class="form-control" name="passwordHash" id="passwordHash" placeholder="Hasło" pattern="([a-zA-z0-9]).{8,}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="dateOfBirth" class="col-lg-3 col-form-label">Data urodzenia</label>
+                            <div class="col-lg-9">
+                                <input type="date" class="form-control" name="dateOfBirth" id="dateOfBirth" required>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn-lg btn-wholepool btn-block"/>
+                    </form>
+
+                    <script>
+                        $.validator.addMethod("pattern", function(value, element, param) {
+                            if (this.optional(element)) {
+                                return true;
+                            }
+                            if (typeof param === "string") {
+                                param = new RegExp("^(?:" + param + ")$");
+                            }
+                            return param.test(value);
+                        }, "Invalid regular expression format");
+                        $('#registrationForm').validate({
+                            rules:{
+                                firstName:{
+                                    required:true,
+                                    pattern:/[A-Z][a-z].{1,29}/
+                                },
+                                lastName:{
+                                    required:true,
+                                    pattern:/[A-Z][a-z].{1,49}/
+                                },
+                                userName:{
+                                    required:true,
+                                    pattern:/^[^0-9][A-Za-z0-9].{4,9}$/
+                                },
+                                passwordHash:{
+                                    required:true,
+                                    pattern:/^[A-Za-z0-9].{7,59}$/
+                                }
+                            },
+                            highlight: function(element) {
+                                $(element).addClass("form-error");
+                                $(element).removeClass("form-ok");
+                            },
+                            unhighlight: function(element) {
+                                $(element).removeClass("form-error");
+                                $(element).addClass("form-ok");
+                            },
+                            messages:{
+                                firstName:"Wprowadź swoje imię",
+                                lastName:"Wprowadź swoje nazwisko",
+                                userName:"Wprowadź nazwę użytkownika. Nazwa uźytkownika nie moźe zaczynać się od cyfry " +
+                                    "i może zawierać małe i duże litery oraz liczby.",
+                                emailAddress:"Wprowadź swój adres e-mail",
+                                passwordHash:"Wprowadź hasło. Hasło musi mieć co najmniej 8 znaków i może zawierać" +
+                                    " małe i duże litery, oraz cyfry.",
+                                dateOfBirth:"Wybierz datę urodzenia"
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div class="page-box">
+                <div class="jumbotron page-content-jumbotron" style="padding:50px">
+                    <h1 class="text-align-center">Lorem ipsum</h1>
+                </div>
+                <div class="page-content">
+
+                    <div>
+                        <img src="images/sedan.png" style="margin:auto; width:100%"/>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis risus eget urna
+                            tincidunt eleifend. Phasellus ac turpis sit amet orci malesuada faucibus. Ut nec lorem in
+                            justo vulputate rhoncus. Curabitur consequat neque vestibulum lorem elementum porta. Aliquam
+                            erat volutpat. Proin ac lorem lectus. Aliquam faucibus fermentum ante, eget vehicula leo
+                            congue eget.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+</body>
+</html>

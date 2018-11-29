@@ -2,6 +2,8 @@ package com.jba.dao2.ride.dao;
 
 import com.jba.dao2.DAOConfig;
 import com.jba.dao2.ride.enitity.Ride;
+import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.user.enitity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 //TODO Implement!!!
 
@@ -82,5 +85,16 @@ public class RideDAOTest {
 
     @Test
     public void getRidesByUser() {
+    }
+
+    @Test
+    public void getUpcomingRidesForUser() {
+        List<RideDetails> rd = rideDAO.getRidesForUser(User.of(1), true);
+
+        for(RideDetails rideDetails: rd){
+            System.out.println(rd);
+        }
+
+        assertNotNull(rd);
     }
 }

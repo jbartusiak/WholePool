@@ -1,0 +1,70 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: Jakub Bartusiak
+  Date: 12.11.2018
+  Time: 16:16
+  To change this template use File | Settings | File Templates.
+-->
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Moje dane</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+
+        <div th:replace="fragments/user-settings-menu"></div>
+
+        <div class="col-lg-1">
+
+        </div>
+
+        <div class="col-lg-6">
+            <div class="page-box">
+                <div class="page-content">
+                    <h2>Moje samochody</h2>
+                    <hr/>
+                    <div style="margin-top:1em; margin-bottom:1em"><strong>Poniżej znajdziesz listę swoich
+                        pojazdów.</strong><br>
+
+                    </div>
+                    <div class="list-group">
+                        <th:block th:each="car : ${cars}">
+                            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">
+                                        <span th:switch="${car.carTypeId.carTypeId}">
+                                            <img th:case="1" src="/images/ic-hatchback.png" style="width:50px;height:50px;"/>
+                                            <img th:case="2" src="/images/ic-sedan.png" style="width:50px;height:50px;"/>
+                                            <img th:case="3" src="/images/ic-mvp.png" style="width:50px;height:50px;"/>
+                                            <img th:case="4" src="/images/ic-suv.png" style="width:50px;height:50px;"/>
+                                            <img th:case="5" src="/images/ic-crossover.png" style="width:50px;height:50px;"/>
+                                            <img th:case="6" src="/images/ic-coupe.png" style="width:50px;height:50px;"/>
+                                            <img th:case="7" src="/images/ic-convertible.png" style="width:50px;height:50px;"/>
+                                        </span>
+                                        &nbsp;<span th:text="${car.carName}">CAR_NAME</span> / <i><span th:text="${car.carTypeId.carTypeName}">CAR TYPE</span></i>
+                                    </h5>
+                                    <small>Rok produkcji: <span th:text="${car.carProductionYear}">PLACEHOLDER</span></small>
+                                </div>
+                                <p class="mb-1">Numer rejestracyjny: <span th:text="${car.carRegistrationNumber}">XYZ123456</span></p>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#nav-settings').addClass('active');
+        $('#userSettingsCars').addClass('active');
+    });
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@
 
     <groupId>com.jba</groupId>
     <artifactId>wholepool-dao</artifactId>
-    <version>1.3</version>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
 
     <name>WholePool DAO Package</name>
@@ -69,6 +69,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
+            <version>2.9.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
             <version>2.9.7</version>
         </dependency>
     </dependencies>

@@ -4,7 +4,7 @@ import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.service.entity.SearchCriteria;
 import com.jba.service.ifs.RideService;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/ride")
@@ -44,6 +45,25 @@ public class RideController {
         else return new WPLResponse<>(HttpStatus.OK, rideService.getAllRides(), Ride.class);
     }
 
+    @ApiOperation(value = "Get ride detail(s)", notes = "Fetches ride details from the database. If rideId is " +
+            "specified, returns only details for that given ride.")
+    @GetMapping("/details")
+    public WPLResponse getRideDetails(
+        @ApiParam(name="rideId", value = "An Integer reffering to Ride entity", required = false, type = "Integer")
+        @RequestParam(name="rideId", required = false) Integer rideId
+    ){
+        if(rideId!=null)
+            return new WPLResponse<>(HttpStatus.OK, rideService.getRideDetails(rideId));
+        return new WPLResponse<>(HttpStatus.OK, rideService.getAllRideDetails(), RideDetails.class);
+    }
+
+    @GetMapping("/offerer")
+    public WPLResponse getRideOfferer(
+        @RequestParam(name="rideId", required = true) Integer rideId
+    ){
+        return new WPLResponse<>(HttpStatus.OK, rideService.getRideOfferer(rideId));
+    }
+
     @ApiOperation(value = "Find ride(s)", notes = "Finds ride(s) matching the criteria. Consumes routeId, " +
             "dateOfDeparture and dateOfArrival parameters. Only routeId is required to run the search.")
     @GetMapping("/find")
@@ -60,8 +80,8 @@ public class RideController {
             @RequestParam(name = "dateOfArrival", required = false) String dateOfArrival
     ){
         SearchCriteria searchCriteria = new SearchCriteria(Route.of(routeId));
-        if(dateOfDeparture!=null) searchCriteria.setDOD(Date.valueOf(dateOfDeparture));
-        if(dateOfArrival!=null) searchCriteria.setDOA(Date.valueOf(dateOfArrival));
+        if(dateOfDeparture!=null) searchCriteria.setDOD(LocalDateTime.parse(dateOfDeparture));
+        if(dateOfArrival!=null) searchCriteria.setDOA(LocalDateTime.parse(dateOfArrival));
 
         return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(searchCriteria), Ride.class);
     }
@@ -144,5 +164,21 @@ public class RideController {
             @RequestParam(name = "rideId", required = true) Integer rideId
     ){
         rideService.unregisterFromRide(userId, rideId);
+    }
+
+    @ApiOperation(value = "Get rides in which user is a passenger", notes = "Returns a list of rides for which the " +
+            "given by parameter is a passenger. Boolean parameter decides whether to trim rides which happened in " +
+            "the past")
+    @GetMapping("/passenger")
+    @ResponseStatus(HttpStatus.OK)
+    public WPLResponse getRidesForUser(
+        @ApiParam(name = "userId", value="An Integer referring to User entity", required = true,
+                    type = "Integer")
+        @RequestParam(name="userId", required = true) Integer userId,
+        @ApiParam(name = "trim", value="A Boolean which decides whether to trim old rides", required = true,
+                type = "Boolean")
+        @RequestParam(name = "trim", required = true) Boolean trim
+    ){
+        return new WPLResponse<>(HttpStatus.OK, rideService.getRidesForUser(userId, trim), RideDetails.class);
     }
 }

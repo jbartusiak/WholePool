@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>WholePool - Dodaj przejazd</title>
+    <div th:replace="fragments/imports"></div>
+    <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0 '></script>
+    <script src="/js/locationpicker.jquery.js"></script>
+</head>
+
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+
+<div class="container-fluid">
+    <div class="page-box" style="margin-left:15em; margin-right:15em;margin-bottom:5em;">
+        <div class="jumbotron page-content-jumbotron-v2" style="padding:50px">
+            <h1 class="text-align-center">Dodaj nowy przejazd</h1>
+        </div>
+        <div style="padding:3em">
+            <form action="/ride/add" method="post" id="newRideForm" style="padding-left:50px; padding-right:50px;">
+                <div class="form-group row">
+                    <label for="inputAddressFrom" class="col-sm-2 col-form-label">Miejsce odjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="inputAddressFrom" class="form-control" id="inputAddressFrom" placeholder="wybierz" required>
+                    </div>
+                    <label for="inputAddressTo" class="col-sm-2 col-form-label">Miejsce
+                        przjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="inputAddressTo" name="inputAddressTo" placeholder="wybierz" required>
+                    </div>
+                </div>
+                <div class="form-group row" style="display:none">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="fromLat" name="fromLat" placeholder="fromLat">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="toLat" name="toLat" placeholder="toLat">
+                    </div>
+                </div>
+                <div class="form-group row" style="display:none">
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="fromLong" name="fromLong" placeholder="fromLong">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="toLong" name="toLong" placeholder="toLong">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputDOD" class="col-sm-2 col-form-label">Data odjazdu</label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="inputDOD" name="inputDOD" required>
+                    </div>
+                    <label for="inputHOD" class="col-sm-2 col-form-label">Godzina odjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="text" maxlength="5" class="form-control" id="inputHOD" name="inputHOD" placeholder="Godzina odjazdu" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputDOA" class="col-sm-2 col-form-label">Data przyjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="inputDOA" name="inputDOA" required>
+                    </div>
+                    <label for="inputHOA" class="col-sm-2 col-form-label">Godzina przyjazdu:</label>
+                    <div class="col-sm-4">
+                        <input type="text" maxlength="5" class="form-control" id="inputHOA" name="inputHOA" placeholder="Godzina odjazdu" required>
+                    </div>
+                </div>
+                <hr/>
+                <div class="form-group row">
+                    <label for="inputAvailableSpots" class="col-sm-2 col-form-label">Ilość miejsc</label>
+                    <div class="col-sm-4">
+                        <input type="number" min=1 class="form-control" id="inputAvailableSpots" name="inputAvailableSpots" placeholder="wolne miejsca" required>
+                    </div>
+                    <label for="inputPrice" class="col-sm-2 col-form-label">Cena za miejsce</label>
+                    <div class="col-sm-4">
+                        <input type="number" step="0.01" min="0.00" class="form-control" id="inputPrice" name="inputPrice" required
+                               placeholder="cena">
+                    </div>
+                </div>
+                <label for="inputDescription" class="form-label">Opis przejazdu</label>
+                <textarea type="text" rows="5" class="form-control" id="inputDescription" name="inputDescription"
+                          placeholder="Opis przejazdu (opcjalnie)"></textarea>
+                <div class="form-group row">
+                    <button type="button" class=" col-sm-12 btn btn-link text-body"
+                            style="padding-left:30px; padding-right:30px;" data-toggle="collapse"
+                            data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Zmodyfikuj swoje preferencje
+                    </button>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div>
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+                        proident.
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-md btn-wholepool btn-warning btn-block"
+                            style="padding-left:30px; padding-right:30px; text-align:center;">Dodaj przejazd
+                    </button>
+                </div>
+            </form>
+            <script>
+                $.validator.addMethod("pattern", function(value, element, param) {
+                    if (this.optional(element)) {
+                        return true;
+                    }
+                    if (typeof param === "string") {
+                        param = new RegExp("^(?:" + param + ")$");
+                    }
+                    return param.test(value);
+                }, "Invalid regular expression format");
+                $('#newRideForm').validate({
+                    rules:{
+                        inputHOD:{
+                            required:true,
+                            pattern:/(?:[0-2])?[0-9]:[0-5][0-9]/
+                        },
+                        inputHOA:{
+                            required:true,
+                            pattern:/(?:[0-2])?[0-9]:[0-5][0-9]/
+                        }
+                    },
+                    highlight: function(element) {
+                        $(element).addClass("form-error");
+                        $(element).removeClass("form-ok");
+                    },
+                    unhighlight: function(element) {
+                        $(element).removeClass("form-error");
+                        $(element).addClass("form-ok");
+                    },
+                    messages:{
+                        inputHOD:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM",
+                        inputHOA:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM"
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#nav-addride').addClass('active');
+    });
+</script>
+
+<div id="map-from" class="map-widget"></div>
+<div id="map-to" class="map-widget"></div>
+<script>
+    // This example adds a search box to a map, using the Google Place Autocomplete
+    // feature. People can enter geographical searches. The search box will return a
+    // pick list containing a mix of places and predicted search terms.
+
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    function initAutocomplete() {
+        var map = new google.maps.Map(document.getElementById('map-from'), {
+            center: {lat: -33.8688, lng: 151.2195},
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        });
+
+        var map2 = new google.maps.Map(document.getElementById('map-to'), {
+            center: {lat: -33.8688, lng: 151.2195},
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        });
+
+        // Create the search box and link it to the UI element.
+        var inputFrom = document.getElementById('inputAddressFrom');
+        var inputTo = document.getElementById('inputAddressTo');
+        var searchBoxFrom = new google.maps.places.SearchBox(inputFrom);
+        var searchBoxTo = new google.maps.places.SearchBox(inputTo);
+
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBoxFrom.addListener('places_changed', function() {
+            var places = searchBoxFrom.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            // Clear out the old markers.
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
+
+            // For each place, get the icon, name and location.
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+                var icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // Create a marker for each place.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    icon: icon,
+                    title: place.name,
+                    position: place.geometry.location
+                }));
+
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
+        });
+    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0&libraries=places&callback=initAutocomplete&language=pl&location=PL" async defer></script>
+
+</body>
+</html>

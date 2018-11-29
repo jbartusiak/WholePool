@@ -1,0 +1,139 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Strona główna</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container">
+    <div class="page-box" style="margin-top:0; margin-bottom:2em; border-radius:0 0 1em 1em; padding-bottom:1em;">
+        <div class="container-fluid">
+            <div class="row wholepool-breadcrumb">
+                <a href="" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
+                przejazd</strong>
+            </div>
+            <div class="row" style="padding:1em; margin-bottom:0; font-size:large; background-color:#DDD;">
+                <div class="col-sm-8">
+                    <span th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span>
+                    <i class="fas fa-arrow-right" style="color:inherit;"></i> <span
+                        th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></br>
+                    <span>Odjazd: <span
+                            th:text="${ride.getFormattedDate(0,'d MMMM, H:mm')}">##PLACEHOLDER##</span>, przyjazd: <span
+                            th:text="${ride.getFormattedDate(1,'d MMMM, H:mm')}">##PLACEHOLDER##</span></span>
+                </div>
+                <div class="com-sm-4">
+                    Oferta z portalu <strong>Wholepool</strong>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding:0em; margin:0em; margin-top:1em;">
+            <div class="col-md-6">
+            <div class="row" style="margin:0em">
+
+                <div class="card" style="width:50%">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size:x-large"><span th:text="${ride.getPrice()}">##PLACEHOLDER##</span>
+                            PLN <i
+                                    class="fas fa-money-bill"
+                                    style="color:inherit"></i>
+                        </h5>
+                        <p class="card-text" style="margin-top:2em">Opłata za jedno miejsce w aucie</p>
+                    </div>
+                </div>
+
+                <div class="card" style="width:50%">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size:x-large"><span th:text="${freeSeats}"></span> <i class="fas fa-chair"
+                                                                              style="color:inherit"></i>
+                        </h5>
+                        <p class="card-text" style="margin-top:3em">Liczba wolnych miejsc</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style="margin:0em">
+                <div class="card" style="width:100%">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size:x-large">Opis przejazdu <i
+                                class="fas fa-file-signature" style="color:inherit"></i></h5>
+                        <p class="card-text" style="margin-top:2em">
+                        <div th:text="${ride.getDescription()}">Lorem ipsum dolor sit amet, consectetur
+                            adipiscing elit. Integer sit amet maximus mauris. Nunc orci sem, accumsan vel
+                            nisi
+                            at,
+                            suscipit sagittis velit. Phasellus vulputate bibendum volutpat. Pellentesque sit
+                            amet
+                            purus tempor ante ultricies feugiat. Vivamus ac nibh sed nisl dictum efficitur.
+                            Nunc
+                            congue feugiat euismod. In elementum interdum tortor non sagittis. Praesent a
+                            leo
+                            aliquet, congue felis et, rutrum mauris.
+                        </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin:0em">
+                <div class="card" style="width:50%">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size:x-large"><span th:text="${ride.getTravelTime()}">##PLACEHOLDER##min</span> <i
+                                class="fas fa-clock"
+                                style="color:inherit"></i>
+                        </h5>
+                        <p class="card-text" style="margin-top:2em">Czas przejazdu</p>
+                    </div>
+                </div>
+                <div class="card" style="width:50%">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-size:x-large">Kierowca <i class="fas fa-user-alt"
+                                                                                     style="color:inherit"></i>
+                        </h5>
+                        <p class="card-text" style="margin-top:2em"><strong><span th:text="${offerer.getFirstName()}"></span></strong>
+                            <br>@(<span th:text="${offerer.getUserName()}"></span>)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="margin:0em;">
+            <iframe style="width:100%; height:100%; max-height:500px; border:1px solid #DDD;"
+                    th:src="@{'https://www.google.com/maps/embed/v1/directions?origin=' + ${ride.getRideId().getRouteForThisRide().getRouteFromLocation()} +
+                        '&destination=' + ${ride.getRideId().getRouteForThisRide().getRouteToLocation()} +
+                        '&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0'}"></iframe>
+        </div>
+        </div>
+        <hr/>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-8">
+                    <strong>pasażerowie, którzy uczestniczą w tym przejeździe:</strong>
+                </div>
+                <div class="col-sm-4">
+                    <th:block th:if="${session.user!=null}">
+                        <th:block th:if="${freeSeats>0}">
+                            <a th:if="${!@utilityMethods.isUserAPassenger(passengers,session.user.getUserId())&&!@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>
+                        </th:block>
+                        <a th:if="${@utilityMethods.isUserAPassenger(passengers,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/resign'}"><button class="btn btn-danger btn-block">Zrezygnuj</button></a></th:if>
+                        <a th:if="${@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/delete'}"><button class="btn btn-danger btn-block">Usuń przejazd</button></a></th:if>
+                    </th:block>
+                    <th:block th:if="${session.user==null}">
+                        <a th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>
+                    </th:block>
+                </div>
+            </div>
+            <ul th:if="${passengers.length==0}" class="list-group" style="margin-top:1em; margin-bottom:1em;">
+                <li class="list-group-item" style="text-align:center; border: 2px dashed;">jeszcze nikt nie zarezerował
+                    miejsca
+                </li>
+            </ul>
+            <ul th:if="${passengers.length!=0}" class="list-group" style="margin-top:1em; margin-bottom:1em;">
+                <li th:each="p: ${passengers}" class="list-group-item">
+                    <i class="fas fa-user-alt fa-fw" style="margin-right:1em; color:inherit;"></i><strong th:text="${p.firstName}"></strong>
+                    (@<span th:text="${p.userName}"></span>)
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

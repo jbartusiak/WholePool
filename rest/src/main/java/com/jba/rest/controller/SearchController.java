@@ -2,7 +2,7 @@ package com.jba.rest.controller;
 
 import com.jba.dao2.search.entity.Search;
 import com.jba.dao2.search.entity.SearchHistory;
-import com.jba.entity.WPLResponse;
+import com.jba.dao2.entity.WPLResponse;
 import com.jba.service.ifs.SearchService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

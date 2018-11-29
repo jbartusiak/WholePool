@@ -14,10 +14,8 @@ public interface RideService {
     Ride getRideById(Integer rideId);
     List<Ride> getAllRides();
     List<Ride> findRideByCriteria(SearchCriteria searchCriteria);
-
-    @Deprecated
+    List<RideDetails> getAllRideDetails();
     RideDetails getRideDetails(Integer rideId);
-
     Ride addRide(Integer userOffererId, Ride ride);
     RideDetails addRideDetails(Integer rideId, RideDetails rideDetails);
     Ride deleteRide(Integer rideId);
@@ -25,4 +23,6 @@ public interface RideService {
     RidePassangers registerToRide(Integer userId, Integer rideId) throws UnsupportedOperationException;
     RidePassangers unregisterFromRide(Integer userId, Integer rideId);
     List<Ride> getRidesByUser(Integer userId);
+    User getRideOfferer(Integer rideId);
+    List<RideDetails> getRidesForUser(Integer userId, Boolean trimToTime);
 }

@@ -4,6 +4,7 @@ import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.dao.UserDAO;
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import com.jba.service.ifs.PreferenceService;
 import com.jba.service.ifs.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
+        User fromDB = userDAO.getUserById(user.getUserId());
+        if(user.getPasswordHash()==null)
+            user.setPasswordHash(fromDB.getPasswordHash());
         userDAO.updateUserData(user);
         return user;
+    }
+
+    @Override
+    public void updateUserPasswordHash(Integer userId, String hash) {
+        userDAO.updateUserPasswordHash(getUser(userId), hash);
     }
 
     @Override
     public boolean verifyPasswordHash(User user, String hash) {
         String usersHash = userDAO.getUserPasswordHash(user);
         return usersHash.equals(hash);
+    }
+
+    @Override
+    public List<UserType> getUserTypes() {
+        return userDAO.getUserTypes();
     }
 
     @Override

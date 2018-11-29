@@ -47,6 +47,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<RideDetails> getAllRideDetails() {
+        return rideDAO.getAllRideDetails();
+    }
+
+    @Override
     public RideDetails getRideDetails(Integer rideId) {
         return rideDAO.getRideDetials(getRideById(rideId));
     }
@@ -93,5 +98,15 @@ public class RideServiceImpl implements RideService {
     @Override
     public List<Ride> getRidesByUser(Integer userId) {
         return rideDAO.getRidesByUser(User.of(userId));
+    }
+
+    @Override
+    public User getRideOfferer(Integer rideId) {
+        return rideDAO.getRideOfferer(getRideById(rideId));
+    }
+
+    @Override
+    public List<RideDetails> getRidesForUser(Integer userId, Boolean trimToTime) {
+        return rideDAO.getRidesForUser(User.of(userId), trimToTime);
     }
 }

@@ -1,0 +1,97 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: Jakub Bartusiak
+  Date: 12.11.2018
+  Time: 16:16
+  To change this template use File | Settings | File Templates.
+-->
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Moje dane</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+
+        <div th:replace="fragments/user-settings-menu"></div>
+
+        <div class="col-lg-1">
+
+        </div>
+
+        <div th:if=${session.user.userType.typeId!=3} class="col-lg-6">
+            <div class="page-box">
+                <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i> Nie jesteś kierowcą</h4>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <p>Jeżeli chcesz oferować przejazdy, zmień typ swojego konta. W dalszym ciągu będziesz mógł korzystać z przejazdów oferowanych przez innych kierowców.</p>
+                        </div>
+                    </div>
+
+                    <form action="/user/settings/accountType" method="post" id="accountTypeForm">
+                        <h2>Zmiana typu konta</h2>
+                        <hr/>
+                        <div style="margin-top:1em; margin-bottom:1em"><strong>Zmień typ swojego konta.</strong><br>
+                            Jeżeli chcesz oferować przejazdy, zmień rodzaj konta na kierowcę. Po zmianie rodzaju konta,
+                            nie można jej przywrócić do statusu kierowcy
+                        </div>
+                        <div class="form-group">
+                            <label for="userType">Typ konta</label>
+                            <div>
+                                <select id="userType" name="userType" aria-describedby="userTypeHelpBlock"
+                                        class="custom-select">
+                                    <option
+                                            th:each="userType:${userTypes}"
+                                            th:value="${userType.typeId}"
+                                            th:utext="${userType.typeName}">
+
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button name="submit" type="submit" class="btn-lg btn-wholepool btn-block">Zatwierdź
+                            </button>
+                        </div>
+                    </form>
+                    <script>
+                        $('#accountTypeForm').validate({
+                            messages:{
+                                userType:"Jesteś juź pasażerem!"
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div th:if=${session.user.userType.typeId==3} class="col-lg-6">
+            <div class="page-box">
+                <div class="page-content">
+                    <h2>Zmiana typu konta</h2>
+                    <hr/>
+                    <div style="margin-top:1em; margin-bottom:1em">
+                        Jesteś już kierowcą. Nie ma możliwości powrotu... ale nie musisz oferować żadnych przejazdów ;)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#nav-settings').addClass('active');
+        $('#userSettingsAccountType').addClass('active');
+    });
+</script>
+</body>
+</html>

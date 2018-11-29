@@ -1,0 +1,90 @@
+<!--
+  Created by IntelliJ IDEA.
+  User: Jakub Bartusiak
+  Date: 12.11.2018
+  Time: 16:16
+  To change this template use File | Settings | File Templates.
+-->
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>WholePool - Moje dane</title>
+    <div th:replace="fragments/imports"></div>
+</head>
+<body>
+<nav th:replace="fragments/navbar :: nav"></nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+
+        <div th:replace="fragments/user-settings-menu"></div>
+
+        <div class="col-lg-1">
+
+        </div>
+
+        <div class="col-lg-6">
+            <div class="page-box">
+                <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-thumbs-up" style="color:inherit;"></i> Zmieniono typ konta!</h4>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <p>Gratulacje! Jesteś teraz kierowcą. Aby oferować przejazdy, dodaj co najmniej jeden pojazd.</p>
+                        </div>
+                    </div>
+
+                    <form action="/user/settings/addCar" method="post">
+                        <h2>Dodaj nowy samochód</h2>
+                        <hr/>
+                        <div style="margin-top:1em; margin-bottom:1em"><strong>Wprowadź dane pojazdu.</strong><br>
+                            Nazwa samochodu pozwoli Ci łatwo odszukać ten pojazd na liście.
+                        </div>
+                        <div class="form-group">
+                            <label for="carName">Nazwa samochodu</label>
+                            <input id="carName" name="carName" placeholder="Np. Moje auto" type="text"
+                                   class="form-control here">
+                        </div>
+                        <div class="form-group">
+                            <label for="carProductionYear">Rok produkcji samochodu</label>
+                            <input id="carProductionYear" name="carProductionYear" placeholder="wprowadź rok produkcji"
+                                   type="text" class="form-control here" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="carRegistrationNumber">Numer rejestracyjny pojazdu</label>
+                            <input id="carRegistrationNumber" name="carRegistrationNumber"
+                                   placeholder="wprowadź numer rejestracyjny" type="text" class="form-control here"
+                                   required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="carTypeId">Typ pojazdu</label>
+                            <div>
+                                <select id="carTypeId" name="carTypeId" class="custom-select" required="required">
+                                    <option th:each="carType: ${carTypes}"
+                                            th:value="${carType.carTypeId}"
+                                            th:utext="${carType.carTypeName}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button name="submit" type="submit" class="btn-lg btn-wholepool btn-block">Zatwierdź
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#nav-settings').addClass('active');
+        $('#userSettingsAddCar').addClass('active');
+    });
+</script>
+</body>
+</html>

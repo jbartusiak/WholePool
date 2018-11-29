@@ -3,6 +3,7 @@ package com.jba.dao2.user.dao;
 import com.jba.dao2.preferences.entity.Preference;
 import com.jba.dao2.preferences.entity.UsersPreference;
 import com.jba.dao2.user.enitity.User;
+import com.jba.dao2.user.enitity.UserType;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -104,6 +105,27 @@ public class UserDAOMySQLRepository implements UserDAO {
         Session session = sessionFactory.getCurrentSession();
 
         session.saveOrUpdate(user);
+    }
+
+    @Override
+    public void updateUserPasswordHash(User user, String hash) {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.createQuery("update User u set u.passwordHash=:hash where u.userId=:id")
+                .setParameter("hash", hash)
+                .setParameter("id", user.getUserId())
+                .executeUpdate();
+    }
+
+    @Override
+    public List<UserType> getUserTypes() {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<UserType> userTypes = session
+                .createQuery("from UserType", UserType.class)
+                .getResultList();
+
+        return userTypes;
     }
 
     public List<Preference> getAllPreferences() {
