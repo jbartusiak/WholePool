@@ -13,6 +13,12 @@
         <div class="col-lg-5">
             <div class="page-box">
                 <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div class="alert alert-info fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i>&nbsp;Informacja</h4>
+                            <p>Aby rezerwować przejazdy, musisz się zarejestrować. W tym celu, skorzystaj z poniższego formularza.</p>
+                        </div>
+                    </div>
                     <h3 class="text-align-center">Zarejestruj się</h3>
                     <hr/>
                     <form id="registrationForm" method="post" action="/register">

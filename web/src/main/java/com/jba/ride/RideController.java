@@ -99,10 +99,11 @@ public class RideController {
     }
 
     @GetMapping("/ride/{rideId}/register")
-    public String getRideRegister(@PathVariable String rideId, Model model, HttpSession session){
+    public String getRideRegister(@PathVariable String rideId, Model model, HttpSession session, RedirectAttributes redirectAttributes){
 
         if(session.getAttribute("user")==null){
-            return "error/401";
+            redirectAttributes.addAttribute("message", "register");
+            return "redirect:/register";
         }
 
         String getRideQuery = RestRequestBuilder.builder(WPLRestURL)
