@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -136,13 +137,17 @@ public class RideController {
     }
 
     @GetMapping("/ride/add")
-    public String getNewRideView(HttpSession session, Model model){
+    public String getNewRideView(HttpSession session, Model model, RedirectAttributes redirectAttributes){
+        if(session.getAttribute("user")==null) {
+            return "401";
+        }
 
-        /*if(session.getAttribute("user")==null) {
-            model.addAttribute("status", 403);
-            model.addAttribute("message", msg403);
-            return "error";
-        }*/
+        User user = (User) session.getAttribute("user");
+
+        if(!user.getUserType().getTypeName().equals("Kierowca")){
+            redirectAttributes.addAttribute("message", "not-a-driver");
+            return "redirect:/user/settings/accountType";
+        }
 
         model.addAttribute("form", new NewRideForm());
 
@@ -151,11 +156,9 @@ public class RideController {
 
     @PostMapping("/ride/add")
     public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, Model model){
-        /*if(session.getAttribute("user")==null){
-            model.addAttribute("status", 403);
-            model.addAttribute("message", msg403);
-            return "error";
-        }*/
+        if(session.getAttribute("user")==null){
+            return "401";
+        }
         System.out.println(form);
 
         User userInSession = (User) session.getAttribute("user");

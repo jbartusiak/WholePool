@@ -27,6 +27,16 @@
         <div class="col-lg-6">
             <div class="page-box">
                 <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="padding:1em 3em 1em 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i> Nie jesteś kierowcą</h4>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <p>Jeżeli chcesz oferować przejazdy, zmień typ swojego konta. W dalszym ciągu będziesz mógł korzystać z przejazdów oferowanych przez innych kierowców.</p>
+                        </div>
+                    </div>
+
                     <form action="/user/settings/accountType" method="post" id="accountTypeForm">
                         <h2>Zmiana typu konta</h2>
                         <hr/>
