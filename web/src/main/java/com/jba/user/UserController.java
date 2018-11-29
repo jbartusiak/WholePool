@@ -105,7 +105,11 @@ public class UserController {
     }
 
     @GetMapping("/settings/accountType")
-    public String getAccountType(Model model){
+    public String getAccountType(Model model, HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
+
         String getUserTypesRequest = RestRequestBuilder
                 .builder(WPLBaseURL)
                 .addPathParam("users")
