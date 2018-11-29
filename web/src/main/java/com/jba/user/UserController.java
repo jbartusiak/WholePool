@@ -150,8 +150,8 @@ public class UserController {
         session.removeAttribute("user");
         session.setAttribute("user", userFromSession);
 
-        redirectAttributes.addAttribute("message", "Typ twojego konta został zmieniony z sukcesem!");
-        return "redirect:/user/settings/confirm";
+        redirectAttributes.addAttribute("message", "become-driver");
+        return "redirect:/user/settings/addCar";
     }
 
     @GetMapping("/settings/changePassword")

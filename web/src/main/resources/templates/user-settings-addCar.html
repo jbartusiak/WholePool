@@ -27,6 +27,16 @@
         <div class="col-lg-6">
             <div class="page-box">
                 <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-thumbs-up" style="color:inherit;"></i> Zmieniono typ konta!</h4>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <p>Gratulacje! Jesteś teraz kierowcą. Aby oferować przejazdy, dodaj co najmniej jeden pojazd.</p>
+                        </div>
+                    </div>
+
                     <form action="/user/settings/addCar" method="post">
                         <h2>Dodaj nowy samochód</h2>
                         <hr/>
