@@ -45,15 +45,26 @@ public class UserController {
     private Methods methods;
 
     @GetMapping("/settings")
-    public String setting(){
+    public String setting(HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         return "user-settings";
     }
 
     @GetMapping("/settings/preferences")
-    public String getPreferencesSettings(){return "user-settings-preferences";}
+    public String getPreferencesSettings(HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
+        return "user-settings-preferences";
+    }
 
     @GetMapping("/settings/data")
-    public String getDataSettings(){
+    public String getDataSettings(HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         return "user-settings-data";
     }
 
@@ -168,7 +179,10 @@ public class UserController {
     }
 
     @GetMapping("/settings/changePassword")
-    public String getChangePassword(){
+    public String getChangePassword(HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         return "user-settings-changePassword";
     }
 
@@ -203,6 +217,9 @@ public class UserController {
 
     @GetMapping("/settings/myCars")
     public String getCars(HttpSession session, Model model){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         User user = (User) session.getAttribute("user");
 
         String getCarsQuery = RestRequestBuilder
@@ -221,7 +238,10 @@ public class UserController {
     }
 
     @GetMapping("/settings/addCar")
-    public String getAddCar(Model model){
+    public String getAddCar(HttpSession session, Model model){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         String getCarTypesQuery = RestRequestBuilder
                 .builder(WPLBaseURL)
                 .addPathParam("cars")
@@ -262,20 +282,27 @@ public class UserController {
     }
 
     @GetMapping("/rides")
-    public String getUsersRides(){
+    public String getUsersRides(HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         return "user-rides";
     }
 
     @GetMapping("/searchHistory")
-    public String getUserSearchHistory(){
+    public String getUserSearchHistory(HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         return "user-search-history";
     }
 
     @GetMapping("/settings/confirm")
-    public String getConfirmation(@RequestParam("message") String message, Model model){
+    public String getConfirmation(@RequestParam("message") String message, Model model, HttpSession session){
+        if(session.getAttribute("user")==null){
+            return "error/401";
+        }
         model.addAttribute("message", message);
         return "user-settings-confirm";
     }
-
-
 }

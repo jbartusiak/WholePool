@@ -140,7 +140,7 @@ public class RideController {
     @GetMapping("/ride/add")
     public String getNewRideView(HttpSession session, Model model, RedirectAttributes redirectAttributes){
         if(session.getAttribute("user")==null) {
-            return "401";
+            return "error/401";
         }
 
         User user = (User) session.getAttribute("user");
