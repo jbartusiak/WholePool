@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -41,6 +42,19 @@ public class SearchController {
         RideDetails[] rides = deserializer.getResultArrayFor(result, RideDetails[].class);
 
         model.addAttribute("rides", rides);
+
+        return "search";
+    }
+
+    @GetMapping("/search/rides")
+    public String doSearch(
+        @RequestParam String searchFrom,
+        @RequestParam String searchTo,
+        @RequestParam String dateOfDeparture,
+        @RequestParam String inputHOD,
+        Model model
+    ){
+
 
         return "search";
     }
