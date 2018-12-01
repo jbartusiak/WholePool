@@ -48,7 +48,9 @@ public class SearchController {
     @GetMapping("/route")
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse findRoute(
+            @ApiParam(name="fromLocation", value = "A String to search for", required = true, type = "String")
             @RequestParam(name="fromLocation", required = true) String fromLoc,
+            @ApiParam(name="toLocation", value = "A String to search for", required = true, type = "String")
             @RequestParam(name="toLocation", required = true) String toLoc
     ){
         return new WPLResponse<>(HttpStatus.CREATED, searchService.findRouteByCriteria(fromLoc, toLoc), Route.class);
