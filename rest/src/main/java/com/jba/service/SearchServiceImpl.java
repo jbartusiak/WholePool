@@ -1,5 +1,6 @@
 package com.jba.service;
 
+import com.jba.dao2.ride.dao.RideDAO;
 import com.jba.dao2.route.entity.PopularRoute;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.search.dao.SearchDAO;
@@ -11,6 +12,7 @@ import com.jba.service.ifs.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -21,6 +23,9 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RideDAO rideDAO;
 
     @Override
     public Route getRouteById(Integer routeId) {
@@ -66,6 +71,16 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<PopularRoute> getAllPopularRoutes() {
         return searchDAO.getAllPopularRoutes();
+    }
+
+    @Override
+    public Route findRouteByCriteria(String from, String to) {
+        try{
+            return rideDAO.findRouteByCriteria(from, to);
+        }
+        catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override

@@ -6,7 +6,9 @@ import com.jba.dao2.search.entity.Search;
 import com.jba.dao2.search.entity.SearchHistory;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -20,6 +22,7 @@ public interface SearchService {
     List<SearchHistory> getUsersSearchHistory(Integer userId);
     PopularRoute getPopularRouteById(Integer id);
     List<PopularRoute> getAllPopularRoutes();
+    Route findRouteByCriteria(String from, String to);
 
     @Deprecated
     PopularRoute getPopularRouteByRoute(Integer routeId);
