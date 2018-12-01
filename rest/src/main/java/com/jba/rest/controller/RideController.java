@@ -72,11 +72,11 @@ public class RideController {
             @ApiParam(name = "routeId", value="An Integer referring to Route entity", required = true,
                     type = "Integer")
             @RequestParam(name = "routeId", required = true) Integer routeId,
-            @ApiParam(name = "dateOfDeparture", value="A string representing date in format YYYY-MM-DD",
-                    required = false, type = "Integer")
+            @ApiParam(name = "dateOfDeparture", value="A string representing date in format YYYY-MM-DDTHH24:MI:SS",
+                    required = false, type = "LocalDateTime")
             @RequestParam(name = "dateOfDeparture", required = false) String dateOfDeparture,
-            @ApiParam(name = "dateOfArrival", value="A string representing date in format YYYY-MM-DD",
-                    required = false, type = "Integer")
+            @ApiParam(name = "dateOfArrival", value="A string representing date in format YYYY-MM-DDTHH24:MI:SS",
+                    required = false, type = "LocalDateTime")
             @RequestParam(name = "dateOfArrival", required = false) String dateOfArrival
     ){
         Route route = Route.of(routeId);
@@ -84,10 +84,10 @@ public class RideController {
         LocalDateTime DOA = null;
 
         if(dateOfDeparture!=null)
-            DOD = LocalDateTime.parse(dateOfDeparture+"T00:00:00");
+            DOD = LocalDateTime.parse(dateOfDeparture);
 
         if(dateOfArrival!=null)
-            DOA = LocalDateTime.parse(dateOfArrival+"T23:59:59");
+            DOA = LocalDateTime.parse(dateOfArrival);
 
         return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(routeId, DOD, DOA), RideDetails.class);
     }
