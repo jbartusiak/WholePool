@@ -22,7 +22,7 @@ public interface SearchService {
     List<SearchHistory> getUsersSearchHistory(Integer userId);
     PopularRoute getPopularRouteById(Integer id);
     List<PopularRoute> getAllPopularRoutes();
-    Route findRouteByCriteria(String from, String to);
+    List<Route> findRouteByCriteria(String from, String to);
 
     @Deprecated
     PopularRoute getPopularRouteByRoute(Integer routeId);

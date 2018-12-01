@@ -1,5 +1,6 @@
 package com.jba.rest.controller;
 
+import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.search.entity.Search;
 import com.jba.dao2.search.entity.SearchHistory;
 import com.jba.dao2.entity.WPLResponse;
@@ -41,5 +42,15 @@ public class SearchController {
             @RequestBody(required = true) Search search
     ){
         return new WPLResponse<>(HttpStatus.CREATED, searchService.registerNewSearch(userId, search));
+    }
+
+    @ApiOperation(value = "Find route", notes="Searches for a route with given criteria")
+    @GetMapping("/route")
+    @ResponseStatus(HttpStatus.OK)
+    public WPLResponse findRoute(
+            @RequestParam(name="fromLocation", required = true) String fromLoc,
+            @RequestParam(name="toLocation", required = true) String toLoc
+    ){
+        return new WPLResponse<>(HttpStatus.CREATED, searchService.findRouteByCriteria(fromLoc, toLoc), Route.class);
     }
 }

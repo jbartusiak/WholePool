@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,12 +75,12 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Route findRouteByCriteria(String from, String to) {
+    public List<Route> findRouteByCriteria(String from, String to) {
         try{
             return rideDAO.findRouteByCriteria(from, to);
         }
         catch (NoResultException e){
-            return null;
+            return new ArrayList<Route>();
         }
     }
 
