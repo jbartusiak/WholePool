@@ -79,11 +79,17 @@ public class RideController {
                     required = false, type = "Integer")
             @RequestParam(name = "dateOfArrival", required = false) String dateOfArrival
     ){
-        SearchCriteria searchCriteria = new SearchCriteria(Route.of(routeId));
-        if(dateOfDeparture!=null) searchCriteria.setDOD(LocalDateTime.parse(dateOfDeparture));
-        if(dateOfArrival!=null) searchCriteria.setDOA(LocalDateTime.parse(dateOfArrival));
+        Route route = Route.of(routeId);
+        LocalDateTime DOD = null;
+        LocalDateTime DOA = null;
 
-        return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(searchCriteria), Ride.class);
+        if(dateOfDeparture!=null)
+            DOD = LocalDateTime.parse(dateOfDeparture+"T00:00:00");
+
+        if(dateOfArrival!=null)
+            DOA = LocalDateTime.parse(dateOfArrival+"T23:59:59");
+
+        return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(routeId, DOD, DOA), RideDetails.class);
     }
 
     @ApiOperation(value = "Get passenger(s) for a ride", notes = "Gets passengers for given rideId.")

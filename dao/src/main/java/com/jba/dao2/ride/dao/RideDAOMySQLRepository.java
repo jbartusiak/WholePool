@@ -80,33 +80,33 @@ public class RideDAOMySQLRepository implements RideDAO{
                 .getResultList();
     }
 
-    public List<Ride> findRideByCriteria(
+    public List<RideDetails> findRideByCriteria(
             Route route,
             @Nullable LocalDateTime dateOfDeparture,
             @Nullable LocalDateTime dateOfArrival
     ){
-        RideDetails rideDetails = new RideDetails();
 
-        if(dateOfDeparture!=null) rideDetails.setDateOfDeparture(dateOfDeparture);
-        if(dateOfArrival!=null) rideDetails.setDateOfArrival(dateOfArrival);
+        if(dateOfDeparture==null){
+            dateOfDeparture = LocalDateTime.MIN;
+        }
+        if(dateOfArrival==null){
+            dateOfArrival = LocalDateTime.MAX;
+        }
 
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            List<Ride> result = session.
-                    createQuery(
-                            "select rd.rideId from RideDetails rd where rd.rideId.routeForThisRide=:route and (rd.dateOfDeparture=:dod or rd.dateOfArrival=:doa)",
-                            Ride.class).
-                    setParameter("doa", rideDetails.getDateOfArrival()).
-                    setParameter("dod", rideDetails.getDateOfDeparture()).
-                    setParameter("route", route).
-                    getResultList();
-
-            return result;
+            return session.createQuery(
+                    "from RideDetails rd where rd.rideId.routeForThisRide=:route and rd.dateOfDeparture>=:dod and rd.dateOfArrival<=:doa",
+                    RideDetails.class)
+                    .setParameter("route", route)
+                    .setParameter("dod", dateOfDeparture)
+                    .setParameter("doa", dateOfArrival)
+                    .getResultList();
         }
         catch (NoResultException e){
             logger.info("There are no entries of given criteria");
-            return new ArrayList<Ride>();
+            return new ArrayList<RideDetails>();
         }
         catch (Exception e){
             logger.error("Error retrieving entries!", e);

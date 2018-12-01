@@ -28,7 +28,7 @@ public interface RideDAO {
     List<Route> findRouteByCriteria(String from, String to) throws NoResultException;
 
     @Transactional
-    List<Ride> findRideByCriteria(
+    List<RideDetails> findRideByCriteria(
             Route route,
             @Nullable LocalDateTime dateOfDeparture,
             @Nullable LocalDateTime dateOfArrival
