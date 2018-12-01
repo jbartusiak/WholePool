@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,7 +55,10 @@ public class SearchController {
         @RequestParam String inputHOD,
         Model model
     ){
+        LocalDateTime localDateTime = LocalDateTime.parse(dateOfDeparture+"T"+inputHOD);
 
+        searchFrom = searchFrom.substring(0, searchFrom.indexOf(","));
+        searchTo = searchTo.substring(0, searchTo.indexOf(","));
 
         return "search";
     }
