@@ -70,6 +70,20 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
+    @Override
+    public Route findRouteByCriteria(String from, String to) throws NoResultException {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Route> routes = session.createQuery("from Route r where r.routeFromLocation like :fromLoc and r.routeToLocation like :toLoc", Route.class)
+                .setParameter("fromLoc", "%"+from+"%")
+                .setParameter("toLoc", "%"+to+"%")
+                .getResultList();
+
+        if(routes.size()>0)
+            return routes.get(0);
+        else throw new NoResultException("No route found for "+from +" -> "+to);
+    }
+
     public List<Ride> findRideByCriteria(
             Route route,
             @Nullable LocalDateTime dateOfDeparture,

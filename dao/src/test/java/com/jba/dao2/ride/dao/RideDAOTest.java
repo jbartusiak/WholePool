@@ -3,6 +3,7 @@ package com.jba.dao2.ride.dao;
 import com.jba.dao2.DAOConfig;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,11 +15,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 //TODO Implement!!!
 
@@ -85,6 +88,23 @@ public class RideDAOTest {
 
     @Test
     public void getRidesByUser() {
+    }
+
+    @Test
+    public void findRouteByCriteria(){
+        try {
+            rideDAO.findRouteByCriteria("Mordor", "Tristram");
+        }
+        catch (NoResultException e){
+            System.out.println("Exception caught. This is expected. "+e.getMessage());
+        }
+        try{
+            Route route = rideDAO.findRouteByCriteria("Wrocław", "Legnica");
+            System.out.println("Found route: "+route);
+        }
+        catch (NoResultException e){
+            fail(e.getMessage());
+        }
     }
 
     @Test

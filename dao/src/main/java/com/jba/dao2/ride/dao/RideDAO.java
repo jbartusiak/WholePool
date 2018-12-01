@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public interface RideDAO {
 
     @Transactional
     List<Ride> getAllRides();
+
+    @Transactional
+    Route findRouteByCriteria(String from, String to) throws NoResultException;
 
     @Transactional
     List<Ride> findRideByCriteria(
