@@ -70,33 +70,50 @@ public class RideDAOMySQLRepository implements RideDAO{
         }
     }
 
-    public List<Ride> findRideByCriteria(
-            Route route,
+    @Override
+    public List<Route> findRouteByCriteria(String from, String to) {
+        Session session = sessionFactory.getCurrentSession();
+
+        return session.createQuery("from Route r where r.routeFromLocation like :fromLoc and r.routeToLocation like :toLoc", Route.class)
+                .setParameter("fromLoc", "%"+from+"%")
+                .setParameter("toLoc", "%"+to+"%")
+                .getResultList();
+    }
+
+    public List<RideDetails> findRideByCriteria(
+            List<Route> route,
             @Nullable LocalDateTime dateOfDeparture,
             @Nullable LocalDateTime dateOfArrival
     ){
-        RideDetails rideDetails = new RideDetails();
 
-        if(dateOfDeparture!=null) rideDetails.setDateOfDeparture(dateOfDeparture);
-        if(dateOfArrival!=null) rideDetails.setDateOfArrival(dateOfArrival);
+        if(dateOfDeparture==null){
+            dateOfDeparture = LocalDateTime.MIN;
+        }
+        if(dateOfArrival==null){
+            dateOfArrival = LocalDateTime.MAX;
+        }
 
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            List<Ride> result = session.
-                    createQuery(
-                            "select rd.rideId from RideDetails rd where rd.rideId.routeForThisRide=:route and (rd.dateOfDeparture=:dod or rd.dateOfArrival=:doa)",
-                            Ride.class).
-                    setParameter("doa", rideDetails.getDateOfArrival()).
-                    setParameter("dod", rideDetails.getDateOfDeparture()).
-                    setParameter("route", route).
-                    getResultList();
+            List<RideDetails> result =session.createQuery(
+                    "from RideDetails rd where rd.rideId.routeForThisRide in :routes", // and rd.dateOfDeparture>=:dod and rd.dateOfArrival<=:doa
+                    RideDetails.class)
+                    .setParameterList("routes", route)
+                    /*.setParameter("dod", dateOfDeparture)
+                    .setParameter("doa", dateOfArrival)*/
+                    .getResultList();
+
+            LocalDateTime finalDateOfDeparture = dateOfDeparture;
+            result = result.stream().filter(rideDetails -> rideDetails.getDateOfDeparture().isAfter(finalDateOfDeparture)).collect(Collectors.toList());
+            LocalDateTime finalDateOfArrival = dateOfArrival;
+            result = result.stream().filter(rideDetails -> rideDetails.getDateOfArrival().isBefore(finalDateOfArrival)).collect(Collectors.toList());;
 
             return result;
         }
         catch (NoResultException e){
             logger.info("There are no entries of given criteria");
-            return new ArrayList<Ride>();
+            return new ArrayList<RideDetails>();
         }
         catch (Exception e){
             logger.error("Error retrieving entries!", e);

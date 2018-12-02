@@ -37,7 +37,7 @@ public class SearchDAOTest {
     public void addRoute() {
         Route newRoute = new Route("Czy zapisano", "Zapisano");
         newRoute = searchDAO.addRoute(newRoute);
-        assertNotEquals(0,newRoute.getRouteId());
+        assertNotEquals(0,newRoute.getRouteId().intValue());
     }
 
     @Test

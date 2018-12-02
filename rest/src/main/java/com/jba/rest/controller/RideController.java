@@ -69,21 +69,29 @@ public class RideController {
     @GetMapping("/find")
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse findRide(
-            @ApiParam(name = "routeId", value="An Integer referring to Route entity", required = true,
-                    type = "Integer")
-            @RequestParam(name = "routeId", required = true) Integer routeId,
-            @ApiParam(name = "dateOfDeparture", value="A string representing date in format YYYY-MM-DD",
-                    required = false, type = "Integer")
+            @ApiParam(name = "routeFrom", value="An String referring to Route entity", required = true,
+                    type = "String")
+            @RequestParam(name = "routeFrom", required = true) String routeFrom,
+            @ApiParam(name = "routeTo", value="An String referring to Route entity", required = true,
+                    type = "routeTo")
+            @RequestParam(name = "routeTo", required = true) String routeTo,
+            @ApiParam(name = "dateOfDeparture", value="A string representing date in format YYYY-MM-DDTHH24:MI:SS",
+                    required = false, type = "LocalDateTime")
             @RequestParam(name = "dateOfDeparture", required = false) String dateOfDeparture,
-            @ApiParam(name = "dateOfArrival", value="A string representing date in format YYYY-MM-DD",
-                    required = false, type = "Integer")
+            @ApiParam(name = "dateOfArrival", value="A string representing date in format YYYY-MM-DDTHH24:MI:SS",
+                    required = false, type = "LocalDateTime")
             @RequestParam(name = "dateOfArrival", required = false) String dateOfArrival
     ){
-        SearchCriteria searchCriteria = new SearchCriteria(Route.of(routeId));
-        if(dateOfDeparture!=null) searchCriteria.setDOD(LocalDateTime.parse(dateOfDeparture));
-        if(dateOfArrival!=null) searchCriteria.setDOA(LocalDateTime.parse(dateOfArrival));
+        LocalDateTime DOD = null;
+        LocalDateTime DOA = null;
 
-        return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(searchCriteria), Ride.class);
+        if(dateOfDeparture!=null)
+            DOD = LocalDateTime.parse(dateOfDeparture);
+
+        if(dateOfArrival!=null)
+            DOA = LocalDateTime.parse(dateOfArrival);
+
+        return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(routeFrom, routeTo, DOD, DOA), RideDetails.class);
     }
 
     @ApiOperation(value = "Get passenger(s) for a ride", notes = "Gets passengers for given rideId.")

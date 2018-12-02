@@ -6,12 +6,14 @@
   To change this template use File | Settings | File Templates.
 -->
 
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>WholePool - Wyszukaj przejazd</title>
     <div th:replace="fragments/imports"></div>
-    <script type="text/javascript" src='http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0 '></script>
+    <script type="text/javascript"
+            src='http://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0 '></script>
     <script src="/js/locationpicker.jquery.js"></script>
 </head>
 
@@ -20,53 +22,65 @@
 <nav th:replace="fragments/navbar :: nav"></nav>
 
 <div class="container-fluid">
-    <div class="page-box page-content" style="background-color:#DDD; margin-left:50px; margin-right:50px; margin-top:0; border-radius:0 0 1em 1em;">
-        <form style="padding-left:50px; padding-right:50px;">
+    <div class="page-box page-content"
+         style="background-color:#DDD; margin-left:50px; margin-right:50px; margin-top:0; border-radius:0 0 1em 1em; padding:1em;">
+        <form action="/search/rides" method="get" style="padding-left:50px; padding-right:50px;" class="collapse show" id="collapseExample">
             <div class="form-group row">
                 <label for="searchFrom" class="col-sm-2 col-form-label">Miejsce odjazdu:</label>
                 <div class="col-sm-4">
-                    <input type="text" name="searchFrom" class="form-control " id="searchFrom" placeholder="wybierz">
+                    <input type="text" name="searchFrom" class="form-control " id="searchFrom" placeholder="wybierz"
+                           required>
                 </div>
                 <label for="searchTo" class="col-sm-2 col-form-label">Miejsce przyjazdu:</label>
                 <div class="col-sm-4">
-                    <input type="text" name="searchTo" class="form-control" id="searchTo" placeholder="wybierz">
+                    <input type="text" name="searchTo" class="form-control" id="searchTo" placeholder="wybierz"
+                           required>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="dateOfDeparture" class="col-sm-2 col-form-label">Data odjazdu</label>
                 <div class="col-sm-4">
-                    <input type="date" name="dateOfDeparture" class="form-control" id="dateOfDeparture">
+                    <input type="date" name="dateOfDeparture" class="form-control" id="dateOfDeparture" required>
                 </div>
                 <label for="inputHOD" class="col-sm-2 col-form-label">Odjazd po godzinie:</label>
                 <div class="col-sm-4">
-                    <input type="text" name="inputHOD" class="form-control" id="inputHOD" placeholder="HH:MM" pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
-                </div>
-            </div>
-            <div class="form-group row" style="display:none;">
-                <button type="button" class=" col-sm-12 btn btn-link text-body"
-                        style="padding-left:30px; padding-right:30px;" data-toggle="collapse"
-                        data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Więcej
-                    opcji wyszukiwania
-                </button>
-            </div>
-            <div class="collapse" id="collapseExample">
-                <div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                    Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    <input type="text" name="inputHOD" class="form-control" id="inputHOD" placeholder="HH:MM"
+                           pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
                 </div>
             </div>
             <div class="form-group row">
-                <button type="button" class="btn btn-md btn-wholepool btn-warning"
+                <button type="submit" class="btn btn-md btn-wholepool btn-warning"
                         style="padding-left:30px; padding-right:30px; text-align:center;">Szukaj
                 </button>
             </div>
 
         </form>
+        <div th:if="${param.searchFrom!=null}" class="text-center">
+            <button class="btn btn-block text-center" data-toggle="collapse"
+                    data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i
+                    class="fas fa-caret-down" style="color:inherit; box-shadow: none; -webkit-box-shadow: none;"></i>
+                <small>&nbsp;rozwiń&nbsp;</small>
+                <i class="fas fa-caret-down" style="color:inherit;"></i></button>
+        </div>
+    </div>
+</div>
+
+<div th:if="${message=='no-results'}" class="container-fluid">
+    <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">
+        <div class="alert alert-warning" role="alert">
+            <h3>Nic nie znaleziono</h3>
+            <div>Nie udało się znaleźć żadnego przejazdu spełniającego zadane kryteria.</div>
+            <hr>
+            <p>Upewnij się, że Twoje zapytanie jest prawidłowe lub spróbuj je zmodyfikować.</p>
+            <p class="mb-0">Odjazd z <strong th:text="${searchFrom}"></strong></p>
+            <p class="mb-0">Przyjazd do <strong th:text="${searchTo}"></strong></p>
+            <p>Odjazd nie wcześniej niż <strong th:text="${dateTime}"></strong> </p>
+        </div>
     </div>
 </div>
 
 <div class="container-fluid">
-    <div class="page-box" style="margin-left:100px; margin-right:100px; margin-top:1em;">
+    <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">
         <ul class="list-group">
             <th:block th:each="ride : ${rides}">
                 <li class="list-group-item">
@@ -98,7 +112,7 @@
                                         th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}"></h3>
                                 </div>
                                 <div class="col-lg-4">
-                                    Oferta z portalu <img src="images/logo.png" witdh="25px" height="25px"/><strong
+                                    Oferta z portalu <img src="/images/logo.png" witdh="25px" height="25px"/><strong
                                         style="color:var(--fg-wholepool-accent);">Wholepool</strong>
                                 </div>
                                 <div class="col-lg-2">
@@ -114,9 +128,22 @@
 </div>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#nav-search').addClass('active');
     });
+</script>
+
+<script>
+    $("document").ready(function () {
+        var searchFrom = get('searchFrom');
+        if(searchFrom!=null){
+            $('#collapseExample').removeClass('show');
+        }
+    });
+    function get(name){
+        if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+            return decodeURIComponent(name[1]);
+    }
 </script>
 
 <div id="map-from" class="map-widget"></div>
@@ -152,7 +179,7 @@
         var markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
         // more details for that place.
-        searchBoxFrom.addListener('places_changed', function() {
+        searchBoxFrom.addListener('places_changed', function () {
             var places = searchBoxFrom.getPlaces();
 
             if (places.length == 0) {
@@ -160,14 +187,14 @@
             }
 
             // Clear out the old markers.
-            markers.forEach(function(marker) {
+            markers.forEach(function (marker) {
                 marker.setMap(null);
             });
             markers = [];
 
             // For each place, get the icon, name and location.
             var bounds = new google.maps.LatLngBounds();
-            places.forEach(function(place) {
+            places.forEach(function (place) {
                 if (!place.geometry) {
                     console.log("Returned place contains no geometry");
                     return;
@@ -199,7 +226,9 @@
         });
     }
 
+
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0&libraries=places&callback=initAutocomplete&language=pl&location=PL" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtaWhgKo0YlcEa8JQu-19VNU6w4kYz5_0&libraries=places&callback=initAutocomplete&language=pl&location=PL"
+        async defer></script>
 </body>
 </html>
