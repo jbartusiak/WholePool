@@ -81,7 +81,7 @@ public class RideDAOMySQLRepository implements RideDAO{
     }
 
     public List<RideDetails> findRideByCriteria(
-            Route route,
+            List<Route> route,
             @Nullable LocalDateTime dateOfDeparture,
             @Nullable LocalDateTime dateOfArrival
     ){
@@ -97,9 +97,9 @@ public class RideDAOMySQLRepository implements RideDAO{
 
         try{
             List<RideDetails> result =session.createQuery(
-                    "from RideDetails rd where rd.rideId.routeForThisRide.id=:route", // and rd.dateOfDeparture>=:dod and rd.dateOfArrival<=:doa
+                    "from RideDetails rd where rd.rideId.routeForThisRide in :routes", // and rd.dateOfDeparture>=:dod and rd.dateOfArrival<=:doa
                     RideDetails.class)
-                    .setParameter("route", route.getRouteId())
+                    .setParameterList("routes", route)
                     /*.setParameter("dod", dateOfDeparture)
                     .setParameter("doa", dateOfArrival)*/
                     .getResultList();

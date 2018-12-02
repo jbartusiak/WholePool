@@ -29,7 +29,7 @@ public interface RideDAO {
 
     @Transactional
     List<RideDetails> findRideByCriteria(
-            Route route,
+            List<Route> route,
             @Nullable LocalDateTime dateOfDeparture,
             @Nullable LocalDateTime dateOfArrival
     );

@@ -80,21 +80,14 @@ public class SearchController {
 
         RestTemplate template = new RestTemplate();
 
-        Route[] routes = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
-
-        if(routes.length==0){
-            model.addAllAttributes(getNoResultsMap(searchFrom, searchTo, localDateTime));
-
-            return "search";
-        }
-
         String findRidesQuery;
 
         if(dateOfDeparture!=null&&dateOfArrival.isPresent()){
             findRidesQuery = RestRequestBuilder.builder(WPLRestURL)
                     .addPathParam("ride")
                     .addPathParam("find")
-                    .addParam("routeId", routes[0].getRouteId())
+                    .addParam("routeFrom", searchFrom)
+                    .addParam("routeTo", searchTo)
                     .addParam("dateOfDeparture", localDateTime.toString())
                     .addParam("dateOfArrival", dateOfArrival.toString())
                     .build();
@@ -103,7 +96,8 @@ public class SearchController {
             findRidesQuery = RestRequestBuilder.builder(WPLRestURL)
                     .addPathParam("ride")
                     .addPathParam("find")
-                    .addParam("routeId", routes[0].getRouteId())
+                    .addParam("routeFrom", searchFrom)
+                    .addParam("routeTo", searchTo)
                     .addParam("dateOfDeparture", localDateTime.toString())
                     .build();
         }
@@ -111,7 +105,8 @@ public class SearchController {
             findRidesQuery = RestRequestBuilder.builder(WPLRestURL)
                     .addPathParam("ride")
                     .addPathParam("find")
-                    .addParam("routeId", routes[0].getRouteId())
+                    .addParam("routeFrom", searchFrom)
+                    .addParam("routeTo", searchTo)
                     .addParam("dateOfArrival", dateOfArrival.toString())
                     .build();
         }
@@ -119,7 +114,8 @@ public class SearchController {
             findRidesQuery = RestRequestBuilder.builder(WPLRestURL)
                     .addPathParam("ride")
                     .addPathParam("find")
-                    .addParam("routeId", routes[0].getRouteId())
+                    .addParam("routeFrom", searchFrom)
+                    .addParam("routeTo", searchTo)
                     .build();
         }
 

@@ -14,7 +14,7 @@ import java.util.List;
 public interface RideService {
     Ride getRideById(Integer rideId);
     List<Ride> getAllRides();
-    List<RideDetails> findRideByCriteria(Integer routeId, LocalDateTime dateOfDeparture, LocalDateTime dateOfArrival);
+    List<RideDetails> findRideByCriteria(String routeFrom, String routeTo, LocalDateTime dateOfDeparture, LocalDateTime dateOfArrival);
     List<RideDetails> getAllRideDetails();
     RideDetails getRideDetails(Integer rideId);
     Ride addRide(Integer userOffererId, Ride ride);

@@ -69,9 +69,12 @@ public class RideController {
     @GetMapping("/find")
     @ResponseStatus(HttpStatus.OK)
     public WPLResponse findRide(
-            @ApiParam(name = "routeId", value="An Integer referring to Route entity", required = true,
-                    type = "Integer")
-            @RequestParam(name = "routeId", required = true) Integer routeId,
+            @ApiParam(name = "routeFrom", value="An String referring to Route entity", required = true,
+                    type = "String")
+            @RequestParam(name = "routeFrom", required = true) String routeFrom,
+            @ApiParam(name = "routeTo", value="An String referring to Route entity", required = true,
+                    type = "routeTo")
+            @RequestParam(name = "routeTo", required = true) String routeTo,
             @ApiParam(name = "dateOfDeparture", value="A string representing date in format YYYY-MM-DDTHH24:MI:SS",
                     required = false, type = "LocalDateTime")
             @RequestParam(name = "dateOfDeparture", required = false) String dateOfDeparture,
@@ -79,7 +82,6 @@ public class RideController {
                     required = false, type = "LocalDateTime")
             @RequestParam(name = "dateOfArrival", required = false) String dateOfArrival
     ){
-        Route route = Route.of(routeId);
         LocalDateTime DOD = null;
         LocalDateTime DOA = null;
 
@@ -89,7 +91,7 @@ public class RideController {
         if(dateOfArrival!=null)
             DOA = LocalDateTime.parse(dateOfArrival);
 
-        return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(routeId, DOD, DOA), RideDetails.class);
+        return new WPLResponse<>(HttpStatus.OK, rideService.findRideByCriteria(routeFrom, routeTo, DOD, DOA), RideDetails.class);
     }
 
     @ApiOperation(value = "Get passenger(s) for a ride", notes = "Gets passengers for given rideId.")
