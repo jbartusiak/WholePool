@@ -1,10 +1,31 @@
 package com.jba.source;
 
+import com.jba.dao2.ride.enitity.Ride;
+import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.source.entity.Source;
+import com.jba.dao2.user.enitity.User;
+import com.jba.source.exception.MissingPropertiesException;
+import com.jba.utils.Deserializer;
+import com.jba.utils.RestRequestBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Collects data from external sources, and parses them as needed.
@@ -20,14 +41,99 @@ public abstract class SingleSourceFetch {
 
     protected String exampleValue;
 
+    protected List<Ride> rides;
+    protected List<RideDetails> rideDetails;
+
     protected Source definition;
     protected HttpMethod method;
 
+    private Properties properties;
+
+    @Autowired
+    private Deserializer deserializer;
+
     public SingleSourceFetch(){
+        rides = new ArrayList<>();
+        rideDetails = new ArrayList<>();
+        properties = new Properties();
     }
 
     public abstract String getResultsForQuery(String from, String to);
-    public void setDefinition(Source source){
+
+    public void setDefinition(Source source) throws MissingPropertiesException{
         this.definition=source;
+
+        try {
+            properties.load(new StringReader(source.getResultsParseRules()));
+        }
+        catch (IOException e){
+            throw new MissingPropertiesException("Properties malformed, or IOException occured.", e);
+        }
+
+        switch (properties.getProperty("method")){
+            case "GET": method = HttpMethod.GET; break;
+            case "POST": method = HttpMethod.POST; break;
+            default: throw new MissingPropertiesException("No property found for key 'method' in properties from DB "+source.toString());
+        }
+    }
+
+    public abstract String search(String from, String to, String dateOfDeparture, String dateOfArrival);
+
+    @Async("fetcherTaskExecutors")
+    protected void saveToDB(String from, String to){
+        String findRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                .addPathParam("search")
+                .addPathParam("route")
+                .addParam("fromLocation", from)
+                .addParam("toLocation", to)
+                .build();
+
+        RestTemplate template = new RestTemplate();
+
+        Route[] res = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
+        List<Route> routes = Arrays.stream(res).collect(Collectors.toList());
+
+        if(routes.size()==0){
+            String postNewRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                    .addPathParam("route")
+                    .build();
+
+            Route routeToPost = new Route(from, to);
+
+            routeToPost = deserializer.getSingleItemFor(template.postForObject(postNewRouteQuery, routeToPost, String.class), Route.class);
+
+            routes.clear();
+            routes.add(routeToPost);
+        }
+
+        String postRideQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                .addPathParam("ride")
+                .addParam("userId", User.of(definition.getSourceId()))
+                .build();
+
+
+        for(Ride ride:rides) {
+            ride = deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
+        }
+
+        for(int i=0; i<rideDetails.size(); i++) {
+            String postRideDetailsQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                    .addPathParam("ride")
+                    .addPathParam("details")
+                    .addParam("rideId", rides.get(i).getRideId())
+                    .build();
+
+            rideDetails.set(i, deserializer.getSingleItemFor(template.postForObject(postRideDetailsQuery, rideDetails, String.class), RideDetails.class));
+        }
+    }
+
+    @Bean(name="fetcherTaskExecutors")
+    public TaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(8);
+        executor.setMaxPoolSize(16);
+        executor.setThreadNamePrefix("wholepool-mailer");
+        executor.initialize();
+        return executor;
     }
 }

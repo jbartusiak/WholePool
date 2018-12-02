@@ -3,19 +3,23 @@ package com.jba.source;
 import com.jba.dao2.source.entity.Source;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 @Repository
-@Configuration
 public class SourceRepository {
+
+    private Logger logger = Logger.getLogger(SourceRepository.class);
 
     @Value("${wholepool.rest.url.base.url}")
     protected String wholepoolRestBaseURL;
@@ -40,10 +44,24 @@ public class SourceRepository {
         List<SingleSourceFetch> result = new ArrayList<>();
 
         for (Source s: sourceList){
+            if(!s.getSourceName().equals("localhost")) {
+                SingleSourceFetch ssf;
+                Properties properties = new Properties();
+                try {
+                    properties.load(new StringReader(s.getResultsParseRules()));
 
-            SingleSourceFetch ssf = factory.getBean(SingleSourceFetch.class);
-            ssf.setDefinition(s);
-            result.add(ssf);
+                    if (properties.getProperty("kind").equals("web"))
+                        ssf = factory.getBean(SourceWebFetcher.class);
+                    else if (properties.getProperty("kind").equals("rest"))
+                        ssf = factory.getBean(SourceRestFetcher.class);
+                    else
+                        ssf = factory.getBean(SingleSourceFetch.class);
+                    ssf.setDefinition(s);
+                    result.add(ssf);
+                } catch (IOException e) {
+                    logger.error("Error parsing properties! " + e);
+                }
+            }
         }
 
         return result;
