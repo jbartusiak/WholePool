@@ -96,13 +96,20 @@ public class RideDAOMySQLRepository implements RideDAO{
         Session session = sessionFactory.getCurrentSession();
 
         try{
-            return session.createQuery(
-                    "from RideDetails rd where rd.rideId.routeForThisRide=:route and rd.dateOfDeparture>=:dod and rd.dateOfArrival<=:doa",
+            List<RideDetails> result =session.createQuery(
+                    "from RideDetails rd where rd.rideId.routeForThisRide.id=:route", // and rd.dateOfDeparture>=:dod and rd.dateOfArrival<=:doa
                     RideDetails.class)
-                    .setParameter("route", route)
-                    .setParameter("dod", dateOfDeparture)
-                    .setParameter("doa", dateOfArrival)
+                    .setParameter("route", route.getRouteId())
+                    /*.setParameter("dod", dateOfDeparture)
+                    .setParameter("doa", dateOfArrival)*/
                     .getResultList();
+
+            LocalDateTime finalDateOfDeparture = dateOfDeparture;
+            result = result.stream().filter(rideDetails -> rideDetails.getDateOfDeparture().isAfter(finalDateOfDeparture)).collect(Collectors.toList());
+            LocalDateTime finalDateOfArrival = dateOfArrival;
+            result = result.stream().filter(rideDetails -> rideDetails.getDateOfArrival().isBefore(finalDateOfArrival)).collect(Collectors.toList());;
+
+            return result;
         }
         catch (NoResultException e){
             logger.info("There are no entries of given criteria");
