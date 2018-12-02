@@ -29,6 +29,6 @@ public class SwaggerConfig {
                 title("WholePool REST API").
                 description("A REST API enabling the interaction with WPL database. Serves roles as a backend " +
                         "server for all actions taking place in WholePool system.").
-                version("1.5").build();
+                version("1.5.0").build();
     }
 }
