@@ -6,7 +6,8 @@
   To change this template use File | Settings | File Templates.
 -->
 
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>WholePool - Wyszukaj przejazd</title>
@@ -64,8 +65,22 @@
     </div>
 </div>
 
+<div th:if="${message=='no-results'}" class="container-fluid">
+    <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">
+        <div class="alert alert-warning" role="alert">
+            <h3>Nic nie znaleziono</h3>
+            <div>Nie udało się znaleźć żadnego przejazdu spełniającego zadane kryteria.</div>
+            <hr>
+            <p>Upewnij się, że Twoje zapytanie jest prawidłowe lub spróbuj je zmodyfikować.</p>
+            <p class="mb-0">Odjazd z <strong th:text="${searchFrom}"></strong></p>
+            <p class="mb-0">Przyjazd do <strong th:text="${searchTo}"></strong></p>
+            <p>Odjazd nie wcześniej niż <strong th:text="${dateTime}"></strong> </p>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid">
-    <div class="page-box" style="margin-left:100px; margin-right:100px; margin-top:1em;">
+    <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">
         <ul class="list-group">
             <th:block th:each="ride : ${rides}">
                 <li class="list-group-item">

@@ -2,6 +2,7 @@ package com.jba.home;
 
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.route.entity.Route;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Controller
 public class SearchController {
@@ -57,8 +59,36 @@ public class SearchController {
     ){
         LocalDateTime localDateTime = LocalDateTime.parse(dateOfDeparture+"T"+inputHOD);
 
-        searchFrom = searchFrom.substring(0, searchFrom.indexOf(","));
-        searchTo = searchTo.substring(0, searchTo.indexOf(","));
+        if(searchFrom.endsWith(", Polska"))
+            searchFrom = searchFrom.substring(0, searchFrom.lastIndexOf(","));
+        if(searchTo.endsWith(", Polska"))
+            searchTo = searchTo.substring(0, searchTo.lastIndexOf(","));
+
+        String findRouteQuery = RestRequestBuilder.builder(WPLRestURL)
+                .addPathParam("search")
+                .addPathParam("route")
+                .addParam("fromLocation", searchFrom)
+                .addParam("toLocation", searchTo)
+                .build();
+
+        RestTemplate template = new RestTemplate();
+
+        Route[] routes = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
+
+        if(routes.length==0){
+            Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("message", "no-results");
+            paramMap.put("searchFrom", searchFrom);
+            paramMap.put("searchTo", searchTo);
+            DateTimeFormatter sdf = DateTimeFormatter.ofPattern("d MMMM, HH:mm:ss", new Locale("pl"));
+            paramMap.put("dateTime", sdf.format(localDateTime));
+
+            model.addAllAttributes(paramMap);
+
+            return "search";
+        }
+
+
 
         return "search";
     }
