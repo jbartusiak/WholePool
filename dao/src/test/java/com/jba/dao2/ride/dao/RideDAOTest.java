@@ -3,6 +3,7 @@ package com.jba.dao2.ride.dao;
 import com.jba.dao2.DAOConfig;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,11 +15,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 //TODO Implement!!!
 
@@ -85,6 +86,15 @@ public class RideDAOTest {
 
     @Test
     public void getRidesByUser() {
+    }
+
+    @Test
+    public void findRouteByCriteria(){
+        List<Route> result = rideDAO.findRouteByCriteria("Mordor", "Tristram");
+
+        assertEquals(0, result.size());
+
+        assertNotEquals(0, rideDAO.findRouteByCriteria("Wrocław", "Legnica"));
     }
 
     @Test

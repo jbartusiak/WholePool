@@ -4,14 +4,17 @@ import com.jba.dao2.ride.dao.RideDAO;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.ride.enitity.RidePassangers;
+import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
 import com.jba.service.entity.SearchCriteria;
 import com.jba.service.ifs.RideService;
+import com.jba.service.ifs.SearchService;
 import com.jba.service.ifs.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,6 +25,9 @@ public class RideServiceImpl implements RideService {
 
     @Autowired
     private RideDAO rideDAO;
+
+    @Autowired
+    private SearchService searchService;
 
     @Autowired
     UserService userService;
@@ -37,13 +43,15 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public List<Ride> findRideByCriteria(SearchCriteria searchCriteria) {
+    public List<RideDetails> findRideByCriteria(String routeFrom, String routeTo, LocalDateTime dateOfDeparture, LocalDateTime dateOfArrival){
+        List<Route> routes = searchService.findRouteByCriteria(routeFrom, routeTo);
+
         return rideDAO
                 .findRideByCriteria(
-                        searchCriteria.getRoute(),
-                        searchCriteria.getDOD(),
-                        searchCriteria.getDOA()
-                ).stream().collect(Collectors.toList());
+                        routes,
+                        dateOfDeparture,
+                        dateOfArrival
+                );
     }
 
     @Override

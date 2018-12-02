@@ -7,13 +7,14 @@ import com.jba.dao2.user.enitity.User;
 import com.jba.service.entity.SearchCriteria;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public interface RideService {
     Ride getRideById(Integer rideId);
     List<Ride> getAllRides();
-    List<Ride> findRideByCriteria(SearchCriteria searchCriteria);
+    List<RideDetails> findRideByCriteria(String routeFrom, String routeTo, LocalDateTime dateOfDeparture, LocalDateTime dateOfArrival);
     List<RideDetails> getAllRideDetails();
     RideDetails getRideDetails(Integer rideId);
     Ride addRide(Integer userOffererId, Ride ride);
