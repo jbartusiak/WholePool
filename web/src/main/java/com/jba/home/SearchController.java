@@ -2,6 +2,7 @@ package com.jba.home;
 
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
+import com.jba.source.SourceRepository;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class SearchController {
 
     @Autowired
     Deserializer deserializer;
+
+    @Autowired
+    SourceRepository repository;
 
     @GetMapping("/search")
     public String search(Model model){
@@ -71,12 +75,7 @@ public class SearchController {
         if(searchTo.endsWith(", Polska"))
             searchTo = searchTo.substring(0, searchTo.lastIndexOf(","));
 
-        String findRouteQuery = RestRequestBuilder.builder(WPLRestURL)
-                .addPathParam("search")
-                .addPathParam("route")
-                .addParam("fromLocation", searchFrom)
-                .addParam("toLocation", searchTo)
-                .build();
+        repository.searchInSources(searchFrom, searchTo, dateOfDeparture, "9999-12-01T23:59:59");
 
         RestTemplate template = new RestTemplate();
 

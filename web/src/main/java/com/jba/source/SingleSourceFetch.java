@@ -1,5 +1,6 @@
 package com.jba.source;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
@@ -30,12 +31,18 @@ import java.util.stream.Collectors;
 /**
  * Collects data from external sources, and parses them as needed.
  */
+
 @Service
-@EnableAsync
 public abstract class SingleSourceFetch {
 
-    @Value("${wholepool.rest.url.base.url}")
-    protected String wholepoolRestBaseURL;
+    protected String wholepoolRestBaseURL = "http://localhost:5000/api";
+
+    @Autowired
+    protected ObjectMapper mapper;
+
+    //https://api.dosiadam.pl/api/v1/search/rides?departure=%API_DEPARTURE%&arrival=%API_ARRIVAL%&departureDateFrom=%API_DATE_OF_DEPARTURE%
+
+    protected final static String DEPARTURE_PLACEHOLDER="%API_DEPARTURE%", ARRIVAL_PLACEHOLDER = "%API_ARRIVAL%", DATE_OF_DEPARTURE_PLACEHOLDER="%API_DATE_OF_DEPARTURE%";
 
     protected boolean debug;
 
@@ -47,15 +54,19 @@ public abstract class SingleSourceFetch {
     protected Source definition;
     protected HttpMethod method;
 
-    private Properties properties;
+    protected Properties properties;
+
+    protected String searchBaseUrl;
 
     @Autowired
-    private Deserializer deserializer;
+    protected Deserializer deserializer;
 
     public SingleSourceFetch(){
         rides = new ArrayList<>();
         rideDetails = new ArrayList<>();
         properties = new Properties();
+
+        deserializer = new Deserializer();
     }
 
     public abstract String getResultsForQuery(String from, String to);
@@ -71,15 +82,20 @@ public abstract class SingleSourceFetch {
         }
 
         switch (properties.getProperty("method")){
-            case "GET": method = HttpMethod.GET; break;
-            case "POST": method = HttpMethod.POST; break;
+            case "get": method = HttpMethod.GET; break;
+            case "post": method = HttpMethod.POST; break;
             default: throw new MissingPropertiesException("No property found for key 'method' in properties from DB "+source.toString());
         }
+
+        searchBaseUrl= definition.getSearchBaseUrl();
     }
 
-    public abstract String search(String from, String to, String dateOfDeparture, String dateOfArrival);
+    public abstract void doImplementationSpecificInitialization();
 
-    @Async("fetcherTaskExecutors")
+    public abstract void search(String from, String to, String dateOfDeparture, String dateOfArrival);
+
+    public abstract void parse(String input, String from, String to);
+
     protected void saveToDB(String from, String to){
         String findRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
                 .addPathParam("search")
@@ -125,15 +141,5 @@ public abstract class SingleSourceFetch {
 
             rideDetails.set(i, deserializer.getSingleItemFor(template.postForObject(postRideDetailsQuery, rideDetails, String.class), RideDetails.class));
         }
-    }
-
-    @Bean(name="fetcherTaskExecutors")
-    public TaskExecutor threadPoolTaskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(8);
-        executor.setMaxPoolSize(16);
-        executor.setThreadNamePrefix("wholepool-mailer");
-        executor.initialize();
-        return executor;
     }
 }
