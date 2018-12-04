@@ -44,7 +44,7 @@ public class SourceRepository{
 
         for (Source s: sourceList){
             switch (s.getSourceName()){
-                case "dosiadam.pl":{
+                /*case "dosiadam.pl":{
                     try {
                         DosiadamRestFetcher fetcher = factory.getBean(DosiadamRestFetcher.class);
                         fetcher.setDefinition(s);
@@ -52,7 +52,18 @@ public class SourceRepository{
                         break;
                     }
                     catch (MissingPropertiesException e){
-
+                        break;
+                    }
+                }*/
+                case "blablacar.pl":{
+                    try{
+                        BlaBlaCarWebFetcher fetcher = factory.getBean(BlaBlaCarWebFetcher.class);
+                        fetcher.setDefinition(s);
+                        result.add(fetcher);
+                        break;
+                    }
+                    catch (MissingPropertiesException e){
+                        break;
                     }
                 }
                 default:{
