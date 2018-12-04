@@ -6,6 +6,7 @@ import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
 import com.jba.utils.RestRequestBuilder;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class DosiadamRestFetcher extends SingleSourceFetch {
     private String container, innerContainer;
+    private Logger logger = Logger.getLogger(getClass());
 
     @Override
     public String getResultsForQuery(String from, String to) {
@@ -51,8 +53,6 @@ public class DosiadamRestFetcher extends SingleSourceFetch {
 
             JsonNode array = actualObj.get("data");
 
-            System.out.println(array);
-
             //go through every result
             array.forEach(jsonNode -> parseAsIndividual(jsonNode, from, to));
         }
@@ -69,6 +69,20 @@ public class DosiadamRestFetcher extends SingleSourceFetch {
             AtomicReference<String> departureLocation = new AtomicReference<>(node.get("departureLocation").get("name").asText());
             AtomicReference<String> arrivalLocation = new AtomicReference<>(node.get("arrivalLocation").get("name").asText());
 
+            RestTemplate template = new RestTemplate();
+
+            String checkIsRidePresentQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                    .addPathParam("ride")
+                    .addParam("directLink", "https://dosiadam.pl/ride/"+rideId)
+                    .build();
+
+            Ride[] ridesAvailable = deserializer.getResultArrayFor(template.getForObject(checkIsRidePresentQuery, String.class), Ride[].class);
+
+            if(ridesAvailable.length>0){
+                logger.info("Ride of URL "+"https://dosiadam.pl/ride/"+rideId+" already in DB. Skipping...");
+                return;
+            }
+
             //from/to differs
             if (!departureLocation.get().contains(from) || !arrivalLocation.get().contains(to)) {
                 //check stopovers
@@ -82,6 +96,8 @@ public class DosiadamRestFetcher extends SingleSourceFetch {
                 });
             }
 
+
+
             String findRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
                     .addPathParam("search")
                     .addPathParam("route")
@@ -89,7 +105,7 @@ public class DosiadamRestFetcher extends SingleSourceFetch {
                     .addParam("toLocation", arrivalLocation.get())
                     .build();
 
-            RestTemplate template = new RestTemplate();
+
 
             Route[] r = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
             List<Route> routes = Arrays.asList(r);

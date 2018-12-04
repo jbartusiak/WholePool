@@ -39,6 +39,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<Ride> getRideByDirectLink(String directLink) {
+        return rideDAO.getRideByDirectLink(directLink);
+    }
+
+    @Override
     public List<Ride> getAllRides() {
         return rideDAO.getAllRides();
     }
