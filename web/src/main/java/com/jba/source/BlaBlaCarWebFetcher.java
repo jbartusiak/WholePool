@@ -2,6 +2,10 @@ package com.jba.source;
 
 import com.jaunt.JauntException;
 import com.jaunt.UserAgent;
+import com.jba.dao2.ride.enitity.Ride;
+import com.jba.dao2.ride.enitity.RideDetails;
+import com.jba.dao2.route.entity.Route;
+import com.jba.utils.RestRequestBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,10 +13,15 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,8 +70,13 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
         Elements li = ul.get(0).getElementsByTag("li");
 
         li.forEach(element ->{
-            if(element.hasAttr("itemtype")){
-                parseAsIndividual(element.toString(), from, to);
+            try {
+                if (element.hasAttr("itemtype")) {
+                    parseAsIndividual(element.toString(), from, to);
+                }
+            }
+            catch (Exception e){
+
             }
         });
 
@@ -74,11 +88,14 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
 
         Elements elements= doc.getElementsByTag("meta");
         String rideId="";
-        String rideFrom="";
-        String rideTo="";
+        String departureLocation="";
+        String arrivalLocation="";
         String startDate="";
         String endDate="";
         String price="";
+
+        price = doc.getElementsByClass("kirk-tripCard-price").text();
+        price = price.substring(0,4).replace(",",".");
 
         List<Element> elementsArray = elements.stream().collect(Collectors.toList());
         for(Element element: elementsArray){
@@ -86,24 +103,25 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
             switch (attribute){
                 case "url":{
                     rideId=element.attr("content");
+                    rideId=rideId.substring(rideId.lastIndexOf("/")+1);
                     break;
                 }
                 case "name":{
                     String fromTo = element.attr("content");
-                    fromTo = fromTo.substring(fromTo.lastIndexOf("/"));
+                    fromTo = fromTo.substring(fromTo.lastIndexOf("/")+1);
                     String fromToArray[] = fromTo.split(" → ");
-                    rideFrom=fromToArray[0];
-                    rideTo=fromToArray[1];
+                    departureLocation=fromToArray[0];
+                    arrivalLocation=fromToArray[1];
                     break;
                 }
                 case "startDate":{
                     startDate = element.attr("content");
-                    startDate = startDate.substring(startDate.lastIndexOf("/"));
+                    startDate = startDate.substring(startDate.lastIndexOf("/")+1);
                     break;
                 }
                 case "endDate":{
                     endDate = element.attr("content");
-                    endDate = endDate.substring(endDate.lastIndexOf("/"));
+                    endDate = endDate.substring(endDate.lastIndexOf("/")+1);
                 }
                 default:{
                     break;
@@ -111,7 +129,52 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
             }
         }
 
-        System.out.println(rideId+rideFrom+rideTo+startDate+endDate+price);
+        RestTemplate template = new RestTemplate();
+
+        String findRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                .addPathParam("search")
+                .addPathParam("route")
+                .addParam("fromLocation", departureLocation)
+                .addParam("toLocation", arrivalLocation)
+                .build();
+
+
+
+        Route[] r = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
+        List<Route> routes = Arrays.asList(r);
+
+        if (routes.size() == 0) {
+            Route newRoute = new Route(departureLocation, arrivalLocation);
+
+            String postNewRoute = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                    .addPathParam("route").build();
+
+            newRoute = deserializer.getSingleItemFor(template.postForObject(postNewRoute, newRoute, String.class), Route.class);
+            routes = new ArrayList<>();
+            routes.add(newRoute);
+        }
+
+        Ride ride = new Ride(definition, routes.get(0));
+        ride.setNrOfSeats(-1);
+        ride.setDirectURL("https://www.blablacar.pl/" + rideId);
+
+        String postRideQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                .addPathParam("ride")
+                .addParam("userId", 1)
+                .build();
+
+        ride = deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
+
+        RideDetails rideDetails = new RideDetails(ride, LocalDateTime.parse(startDate),
+                LocalDateTime.parse(endDate), 1, Double.parseDouble(price), "No description");
+
+        String postRideDetailsQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                .addPathParam("ride")
+                .addPathParam("details")
+                .addParam("rideId", ride.getRideId())
+                .build();
+
+        template.postForObject(postRideDetailsQuery, rideDetails, String.class);
 
     }
 
