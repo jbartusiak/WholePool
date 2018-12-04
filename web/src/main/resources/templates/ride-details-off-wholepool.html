@@ -1,27 +1,38 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>WholePool - Strona główna</title>
-    <div th:replace="fragments/imports"></div>
+    <div th:replace="fragments/imports" ></div>
 </head>
 <body>
 <nav th:replace="fragments/navbar :: nav"></nav>
 <div class="container">
-    <div class="page-box">
-        <div class="jumbotron page-content-jumbotron">
-            <h1><span th:text="${ride.getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span> &gt; <span
-                    th:text="${ride.getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></h1>
-            <span class="color-white">Odjazd: <span th:text="${ride.getRideDetails().getDateOfDeparture()}">##PLACEHOLDER##</span>, przyjazd: <span
-                    th:text="${ride.getRideDetails().getDateOfArrival()}">##PLACEHOLDER##</span></span>
+    <div class="page-box" style="margin-top:0; margin-bottom:2em; border-radius:0 0 1em 1em; padding-bottom:1em;">
+        <div class="container-fluid">
+            <div class="row wholepool-breadcrumb">
+                <a href="" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
+                przejazd</strong>
+            </div>
+            <div class="row" style="padding:1em; margin-bottom:0; font-size:large; background-color:#DDD;">
+                <div class="col-sm-8">
+                    <span th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}">##PLACEHOLDER##</span>
+                    <i class="fas fa-arrow-right" style="color:inherit;"></i> <span
+                        th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}">##PLACEHOLDER##</span></br>
+                    <span>Odjazd: <span
+                            th:text="${ride.getFormattedDate(0,'d MMMM, H:mm')}">##PLACEHOLDER##</span></span>
+                </div>
+                <div class="com-sm-4">
+                    Oferta z portalu <strong th:text="${ride.getRideId().sourceId.sourceName}"></strong>
+                </div>
+            </div>
         </div>
         <div style="margin-top:10px; margin-bottom:1em; padding:0px 100px 0px 100px">
-            <div style="padding:1em;">
-            <a th:href="${ride.getDirectURL()}" style="text-decoration:none">
-
+            <a th:href="${ride.getRideId().getDirectURL()}" style="text-decoration:none">
                 <button type="button" class="btn btn-lg btn-wholepool btn-block" style="margin:1em">Przejdź do oferty
                     (strona zewnętrzna)
                 </button>
             </a>
         </div>
+        <iframe th:src="${ride.getRideId().getDirectURL()}" style="width:100%; height:500px; border:1px solid #CCC;"></iframe>
     </div>
 </div>
 </div>

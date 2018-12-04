@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import java.util.List;
@@ -26,7 +27,7 @@ public class SearchDAOMySQLRepository implements SearchDAO{
 
     public Route addRoute(Route route){
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(route);
+        session.save(route);
         return route;
     }
 

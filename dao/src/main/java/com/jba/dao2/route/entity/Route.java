@@ -22,20 +22,20 @@ public class Route {
     private Integer routeId;
 
     @Column(name="ROUTE_FROM_LAT")
-    private Float routeFromLatitude;
+    private float routeFromLatitude;
 
     @Column(name="ROUTE_FROM_LONG")
-    private Float routeFromLongitude;
+    private float routeFromLongitude;
 
     @NonNull
     @Column(name="ROUTE_FROM_LOCATION")
     private String routeFromLocation;
 
     @Column(name="ROUTE_TO_LAT")
-    private Float routeToLatitude;
+    private float routeToLatitude;
 
     @Column(name="ROUTE_TO_LONG")
-    private Float routeToLongitude;
+    private float routeToLongitude;
 
     @NonNull
     @Column(name="ROUTE_TO_LOCATION")

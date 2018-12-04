@@ -35,12 +35,17 @@ public class RideController {
             @RequestParam(name = "rideId", required = false) Integer rideId,
             @ApiParam(name = "userId", value="An Integer referring to User entity", required = false,
                     type = "Integer")
-            @RequestParam(name = "userId", required = false) Integer userId
+            @RequestParam(name = "userId", required = false) Integer userId,
+            @ApiParam(name="directLink", value = "A direct link to the Ride", required = false, type = "String")
+            @RequestParam(name="directLink", required = false) String directLink
     ){
         if(rideId!=null)
             return new WPLResponse<>(HttpStatus.OK, rideService.getRideById(rideId));
         else if (userId!=null){
             return new WPLResponse<>(HttpStatus.OK, rideService.getRidesByUser(userId), Ride.class);
+        }
+        else if (directLink!=null){
+            return new WPLResponse<>(HttpStatus.OK, rideService.getRideByDirectLink(directLink), Ride.class);
         }
         else return new WPLResponse<>(HttpStatus.OK, rideService.getAllRides(), Ride.class);
     }

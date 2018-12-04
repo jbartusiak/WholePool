@@ -35,6 +35,9 @@ public interface RideDAO {
     );
 
     @Transactional
+    List<Ride> getRideByDirectLink(String directLink);
+
+    @Transactional
     List<RideDetails> getAllRideDetails();
 
     @Transactional

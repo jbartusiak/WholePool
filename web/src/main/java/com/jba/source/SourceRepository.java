@@ -1,21 +1,24 @@
 package com.jba.source;
 
 import com.jba.dao2.source.entity.Source;
+import com.jba.source.exception.MissingPropertiesException;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Configuration
-public class SourceRepository {
+public class SourceRepository{
+
+    private Logger logger = Logger.getLogger(SourceRepository.class);
 
     @Value("${wholepool.rest.url.base.url}")
     protected String wholepoolRestBaseURL;
@@ -29,7 +32,7 @@ public class SourceRepository {
     private Deserializer deserializer;
 
     @Autowired
-    public List<SingleSourceFetch> setSources(){
+    public void setSources(){
         String getSourcesQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
                 .addPathParam("source")
                 .build();
@@ -40,12 +43,36 @@ public class SourceRepository {
         List<SingleSourceFetch> result = new ArrayList<>();
 
         for (Source s: sourceList){
+            switch (s.getSourceName()){
+                case "dosiadam.pl":{
+                    try {
+                        DosiadamRestFetcher fetcher = factory.getBean(DosiadamRestFetcher.class);
+                        fetcher.setDefinition(s);
+                        result.add(fetcher);
+                        break;
+                    }
+                    catch (MissingPropertiesException e){
 
-            SingleSourceFetch ssf = factory.getBean(SingleSourceFetch.class);
-            ssf.setDefinition(s);
-            result.add(ssf);
+                    }
+                }
+                default:{
+                    break;
+                }
+            }
         }
 
-        return result;
+        sources= result;
+    }
+
+    public void searchInSources(String from, String to, String dateOfDeparture, String dateOfArival){
+        for(SingleSourceFetch s:sources){
+            try {
+                s.search(from, to, dateOfDeparture, dateOfArival);
+                //s.saveToDB(from,to);
+            }
+            catch (NotImplementedException e){
+                logger.error("Fetcher for "+s.definition.getSourceName()+" not implemented.");
+            }
+        }
     }
 }

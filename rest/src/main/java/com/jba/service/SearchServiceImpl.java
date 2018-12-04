@@ -40,7 +40,6 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public Route addRoute(Route route) {
-        route.setRouteId(0);
         return searchDAO.addRoute(route);
     }
 
