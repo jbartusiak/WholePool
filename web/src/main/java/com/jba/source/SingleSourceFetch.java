@@ -9,6 +9,7 @@ import com.jba.dao2.user.enitity.User;
 import com.jba.source.exception.MissingPropertiesException;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,8 @@ import java.util.stream.Collectors;
 
 @Service
 public abstract class SingleSourceFetch {
+
+    protected Logger logger = Logger.getLogger(getClass());
 
     protected String wholepoolRestBaseURL = "http://localhost:5000/api";
 

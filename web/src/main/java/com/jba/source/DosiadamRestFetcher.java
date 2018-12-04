@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class DosiadamRestFetcher extends SingleSourceFetch {
     private String container, innerContainer;
-    private Logger logger = Logger.getLogger(getClass());
 
     @Override
     public String getResultsForQuery(String from, String to) {
