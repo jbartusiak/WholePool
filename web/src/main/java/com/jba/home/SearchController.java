@@ -15,10 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class SearchController {
@@ -48,7 +46,14 @@ public class SearchController {
 
         RideDetails[] rides = deserializer.getResultArrayFor(result, RideDetails[].class);
 
-        model.addAttribute("rides", rides);
+        List<RideDetails> rideDetailsList = Arrays.asList(rides);
+
+        rideDetailsList = rideDetailsList.stream()
+                .filter(rideDetails -> rideDetails.getDateOfDeparture().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparingInt(o -> o.getRideId().getSourceId().getSourceId()))
+                .collect(Collectors.toList());
+
+        model.addAttribute("rides", rideDetailsList.toArray());
 
         return "search";
     }
@@ -119,7 +124,7 @@ public class SearchController {
         }
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         }
         catch (InterruptedException e){
             e.printStackTrace();
@@ -127,6 +132,12 @@ public class SearchController {
 
         RideDetails[] rideDetails = deserializer.getResultArrayFor(template.getForObject(findRidesQuery, String.class), RideDetails[].class);
 
+        List<RideDetails> rideDetailsList = Arrays.asList(rideDetails);
+
+        rideDetailsList = rideDetailsList.stream()
+                .filter(rd -> rd.getDateOfDeparture().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparingInt(o -> o.getRideId().getSourceId().getSourceId()))
+                .collect(Collectors.toList());
 
         if(rideDetails.length==0){
             model.addAllAttributes(getNoResultsMap(searchFrom, searchTo, localDateTime));
@@ -134,7 +145,7 @@ public class SearchController {
             return "search";
         }
 
-        model.addAttribute("rides", rideDetails);
+        model.addAttribute("rides", rideDetailsList.toArray());
 
         return "search";
     }

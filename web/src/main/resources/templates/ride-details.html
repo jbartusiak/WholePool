@@ -32,8 +32,8 @@
 
                 <div class="card" style="width:50%">
                     <div class="card-body">
-                        <h5 class="card-title" style="font-size:x-large"><span th:text="${ride.getPrice()}">##PLACEHOLDER##</span>
-                            PLN <i
+                        <h5 class="card-title" style="font-size:x-large"><span th:text="${#numbers.formatCurrency(ride.getPrice())}">##PLACEHOLDER##</span>
+                            <i
                                     class="fas fa-money-bill"
                                     style="color:inherit"></i>
                         </h5>

@@ -116,8 +116,7 @@
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-3"></div>
                                 <div class="col-lg-2 text-align-end">
-                                    Cena: <strong th:text="${ride.getPrice()}"></strong><strong>
-                                    PLN</strong>
+                                    Cena: <strong th:text="${#numbers.formatCurrency(ride.getPrice())}"></strong>
                                 </div>
                             </div>
                             <div class="row">
@@ -130,7 +129,9 @@
                                         th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}"></h3>
                                 </div>
                                 <div class="col-lg-4">
-                                    Oferta z portalu <img src="/images/logo.png" witdh="25px" height="25px"/><strong th:text="${ride.getRideId().sourceId.sourceName}"></strong>
+                                    Oferta z portalu <img src="/images/logo.png" witdh="25px" height="25px"/>
+                                    <strong th:if="${ride.getRideId().sourceId.sourceName!='localhost'}" th:text="${ride.getRideId().sourceId.sourceName}"></strong>
+                                    <strong th:if="${ride.getRideId().sourceId.sourceName=='localhost'}">Wholepool</strong>
                                 </div>
                                 <div class="col-lg-2">
 
