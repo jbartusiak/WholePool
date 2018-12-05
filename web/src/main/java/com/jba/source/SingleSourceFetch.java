@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@EnableAsync
 public abstract class SingleSourceFetch {
 
     protected Logger logger = Logger.getLogger(getClass());
@@ -74,6 +75,7 @@ public abstract class SingleSourceFetch {
 
     public abstract String getResultsForQuery(String from, String to);
 
+
     public void setDefinition(Source source) throws MissingPropertiesException{
         this.definition=source;
 
@@ -94,9 +96,9 @@ public abstract class SingleSourceFetch {
     }
 
     public abstract void doImplementationSpecificInitialization();
-
+    @Async("sourceTaskExecutor")
     public abstract void search(String from, String to, String dateOfDeparture, String dateOfArrival);
-
+    @Async("sourceTaskExecutor")
     public abstract void parse(String input, String from, String to);
 
     protected void saveToDB(String from, String to){
@@ -144,5 +146,15 @@ public abstract class SingleSourceFetch {
 
             rideDetails.set(i, deserializer.getSingleItemFor(template.postForObject(postRideDetailsQuery, rideDetails, String.class), RideDetails.class));
         }
+    }
+
+    @Bean(name="sourceTaskExecutor")
+    public TaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(8);
+        executor.setMaxPoolSize(12);
+        executor.setThreadNamePrefix("wholepool-sourcer");
+        executor.initialize();
+        return executor;
     }
 }

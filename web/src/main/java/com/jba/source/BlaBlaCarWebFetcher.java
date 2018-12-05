@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -69,6 +70,8 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
 
         Elements li = ul.get(0).getElementsByTag("li");
 
+        logger.info("String to parse results");
+
         li.forEach(element ->{
             try {
                 if (element.hasAttr("itemtype")) {
@@ -80,9 +83,10 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
             }
         });
 
-        System.out.println(li.toString());
+        logger.info("finished parsing result");
     }
 
+    @Async("sourceTaskExecutor")
     public void parseAsIndividual(String input, String from, String to){
         Document doc = Jsoup.parse(input);
 
@@ -96,6 +100,7 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
 
         price = doc.getElementsByClass("kirk-tripCard-price").text();
         price = price.substring(0,4).replace(",",".");
+        logger.info("finished parsing single result");
 
         List<Element> elementsArray = elements.stream().collect(Collectors.toList());
         for(Element element: elementsArray){
@@ -131,6 +136,18 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
 
         RestTemplate template = new RestTemplate();
 
+        String checkIsRidePresentQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                .addPathParam("ride")
+                .addParam("directLink", "https://www.blablacar.pl/"+rideId)
+                .build();
+
+        Ride[] ridesAvailable = deserializer.getResultArrayFor(template.getForObject(checkIsRidePresentQuery, String.class), Ride[].class);
+
+        if(ridesAvailable.length>0){
+            logger.info("Ride of URL "+"https://www.blablacar.pl/"+rideId+" already in DB. Skipping...");
+            return;
+        }
+
         String findRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
                 .addPathParam("search")
                 .addPathParam("route")
@@ -139,7 +156,7 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
                 .build();
 
 
-
+        logger.info("putting result in DB");
         Route[] r = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
         List<Route> routes = Arrays.asList(r);
 
@@ -175,7 +192,7 @@ public class BlaBlaCarWebFetcher extends SingleSourceFetch {
                 .build();
 
         template.postForObject(postRideDetailsQuery, rideDetails, String.class);
-
+        logger.info("Result: done");
     }
 
     @Bean

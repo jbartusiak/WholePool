@@ -7,6 +7,8 @@ import com.jba.dao2.route.entity.Route;
 import com.jba.dao2.user.enitity.User;
 import com.jba.utils.RestRequestBuilder;
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
+@EnableAsync
 public class DosiadamRestFetcher extends SingleSourceFetch {
     private String container, innerContainer;
 
@@ -60,6 +63,7 @@ public class DosiadamRestFetcher extends SingleSourceFetch {
         }
     }
 
+    @Async("sourceTaskExecutor")
     public void parseAsIndividual(JsonNode node, String from, String to){
         try {
             String rideId = node.get("rideId").asText();

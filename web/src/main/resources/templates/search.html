@@ -49,9 +49,25 @@
                 </div>
             </div>
             <div class="form-group row">
-                <button type="submit" class="btn btn-md btn-wholepool btn-warning"
-                        style="padding-left:30px; padding-right:30px; text-align:center;">Szukaj
+                <button type="button|submit" class="btn btn-md btn-wholepool btn-warning"
+                        style="padding-left:30px; padding-right:30px; text-align:center;" data-toggle="modal" data-target="#exampleModalCenter">Szukaj
                 </button>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content text-align-center">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Szukamy Twoich przejazdów</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="loader" style="margin:auto"></div>
+                                <div>Prosimy o chwilę cierpliwości...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </form>
@@ -64,6 +80,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div th:if="${message=='no-results'}" class="container-fluid">
     <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">

@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@EnableAsync
 public class SourceRepository{
 
     private Logger logger = Logger.getLogger(SourceRepository.class);
@@ -44,7 +47,7 @@ public class SourceRepository{
 
         for (Source s: sourceList){
             switch (s.getSourceName()){
-                /*case "dosiadam.pl":{
+                case "dosiadam.pl":{
                     try {
                         DosiadamRestFetcher fetcher = factory.getBean(DosiadamRestFetcher.class);
                         fetcher.setDefinition(s);
@@ -54,7 +57,7 @@ public class SourceRepository{
                     catch (MissingPropertiesException e){
                         break;
                     }
-                }*/
+                }
                 case "blablacar.pl":{
                     try{
                         BlaBlaCarWebFetcher fetcher = factory.getBean(BlaBlaCarWebFetcher.class);
@@ -75,6 +78,7 @@ public class SourceRepository{
         sources= result;
     }
 
+    @Async("sourceTaskExecutor")
     public void searchInSources(String from, String to, String dateOfDeparture, String dateOfArival){
         for(SingleSourceFetch s:sources){
             try {

@@ -118,7 +118,15 @@ public class SearchController {
                     .build();
         }
 
+        try {
+            Thread.sleep(5000);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
         RideDetails[] rideDetails = deserializer.getResultArrayFor(template.getForObject(findRidesQuery, String.class), RideDetails[].class);
+
 
         if(rideDetails.length==0){
             model.addAllAttributes(getNoResultsMap(searchFrom, searchTo, localDateTime));
