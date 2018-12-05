@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
-import com.jba.dao2.user.enitity.User;
 import com.jba.utils.RestRequestBuilder;
-import org.apache.log4j.Logger;
+import org.jsoup.nodes.Element;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @EnableAsync
-public class DosiadamRestFetcher extends SingleSourceFetch {
+public class DosiadamRestFetcher extends AbstractSourceFetch {
     private String container, innerContainer;
 
     @Override
@@ -61,6 +60,11 @@ public class DosiadamRestFetcher extends SingleSourceFetch {
         catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void parseIndividual(Element element, String from, String to) {
+
     }
 
     @Async("sourceTaskExecutor")

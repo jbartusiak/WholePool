@@ -123,8 +123,8 @@ public class SearchController {
                     .build();
         }
 
-        try {
-            Thread.sleep(10000);
+        try{
+            Thread.sleep(15000);
         }
         catch (InterruptedException e){
             e.printStackTrace();

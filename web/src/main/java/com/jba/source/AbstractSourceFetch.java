@@ -1,6 +1,7 @@
 package com.jba.source;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jaunt.UserAgent;
 import com.jba.dao2.ride.enitity.Ride;
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
@@ -10,6 +11,7 @@ import com.jba.source.exception.MissingPropertiesException;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
 import org.apache.log4j.Logger;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,15 +36,18 @@ import java.util.stream.Collectors;
  */
 
 @Service
-@EnableAsync
-public abstract class SingleSourceFetch {
+public abstract class AbstractSourceFetch {
 
     protected Logger logger = Logger.getLogger(getClass());
 
-    protected String wholepoolRestBaseURL = "http://localhost:5000/api";
+    @Value("${wholepool.rest.url.base.url}")
+    protected String wholepoolRestBaseURL;
 
     @Autowired
     protected ObjectMapper mapper;
+
+    @Autowired
+    protected UserAgent agent;
 
     //https://api.dosiadam.pl/api/v1/search/rides?departure=%API_DEPARTURE%&arrival=%API_ARRIVAL%&departureDateFrom=%API_DATE_OF_DEPARTURE%
 
@@ -65,12 +70,10 @@ public abstract class SingleSourceFetch {
     @Autowired
     protected Deserializer deserializer;
 
-    public SingleSourceFetch(){
+    public AbstractSourceFetch(){
         rides = new ArrayList<>();
         rideDetails = new ArrayList<>();
         properties = new Properties();
-
-        deserializer = new Deserializer();
     }
 
     public abstract String getResultsForQuery(String from, String to);
@@ -80,6 +83,7 @@ public abstract class SingleSourceFetch {
         this.definition=source;
 
         try {
+            logger.info("Loading preferences for source "+source.getSourceName());
             properties.load(new StringReader(source.getResultsParseRules()));
         }
         catch (IOException e){
@@ -96,55 +100,42 @@ public abstract class SingleSourceFetch {
     }
 
     public abstract void doImplementationSpecificInitialization();
-    @Async("sourceTaskExecutor")
+
     public abstract void search(String from, String to, String dateOfDeparture, String dateOfArrival);
-    @Async("sourceTaskExecutor")
+
     public abstract void parse(String input, String from, String to);
 
-    protected void saveToDB(String from, String to){
-        String findRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
-                .addPathParam("search")
-                .addPathParam("route")
-                .addParam("fromLocation", from)
-                .addParam("toLocation", to)
-                .build();
+    public abstract void parseIndividual(Element element, String from, String to);
+
+    protected void saveToDB(){
+        if(rides.size()!=rideDetails.size()){
+            throw new IllegalArgumentException("Rides and ride details should be equal, something wrong happened while parsing results.");
+        }
 
         RestTemplate template = new RestTemplate();
 
-        Route[] res = deserializer.getResultArrayFor(template.getForObject(findRouteQuery, String.class), Route[].class);
-        List<Route> routes = Arrays.stream(res).collect(Collectors.toList());
+        for(int i=0; i<rides.size(); i++){
+            Ride ride = rides.get(i);
+            RideDetails details = rideDetails.get(i);
 
-        if(routes.size()==0){
-            String postNewRouteQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
-                    .addPathParam("route")
+            String postRideQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
+                    .addPathParam("ride")
+                    .addParam("userId", definition.getSourceId())
                     .build();
 
-            Route routeToPost = new Route(from, to);
-
-            routeToPost = deserializer.getSingleItemFor(template.postForObject(postNewRouteQuery, routeToPost, String.class), Route.class);
-
-            routes.clear();
-            routes.add(routeToPost);
-        }
-
-        String postRideQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
-                .addPathParam("ride")
-                .addParam("userId", User.of(definition.getSourceId()))
-                .build();
-
-
-        for(Ride ride:rides) {
             ride = deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
-        }
 
-        for(int i=0; i<rideDetails.size(); i++) {
+            details.setRideId(ride);
+
             String postRideDetailsQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
                     .addPathParam("ride")
                     .addPathParam("details")
-                    .addParam("rideId", rides.get(i).getRideId())
+                    .addParam("rideId", ride.getRideId())
                     .build();
 
-            rideDetails.set(i, deserializer.getSingleItemFor(template.postForObject(postRideDetailsQuery, rideDetails, String.class), RideDetails.class));
+            template.postForObject(postRideDetailsQuery, details, String.class);
+
+            logger.info("Ride "+ride.getRideId()+" created successfully!");
         }
     }
 
@@ -157,4 +148,6 @@ public abstract class SingleSourceFetch {
         executor.initialize();
         return executor;
     }
+
+
 }
