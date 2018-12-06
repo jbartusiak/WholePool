@@ -6,6 +6,9 @@ import com.jba.utils.Deserializer;
 import com.jba.utils.Mailer;
 import com.jba.utils.Methods;
 import com.jba.utils.RestRequestBuilder;
+import org.apache.log4j.Logger;
+import org.bouncycastle.util.encoders.Hex;
+import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,8 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +35,9 @@ public class LoginController {
     private String wholepoolBaseUrl;
 
     private final String usersBase = "users";
+
+    @Autowired
+    Logger logger;
 
     @Autowired
     Deserializer deserializer;
@@ -82,11 +92,13 @@ public class LoginController {
 
     @GetMapping("/register")
     public String register(){
+
+
         return "register";
     }
 
     @PostMapping("/register")
-    public String doRegister(User user, HttpSession session){
+    public String doRegister(User user, HttpSession session, RedirectAttributes attributes){
         String postNewUserQuery = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam("users")
@@ -94,11 +106,28 @@ public class LoginController {
 
         RestTemplate template = new RestTemplate();
 
-        String hash = user.getPasswordHash();
+        String password = user.getPasswordHash();
+
+        String hash="";
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-awdawd256");
+            byte[] table = digest.digest(
+                    password.getBytes(StandardCharsets.UTF_8));
+            hash= new String(Hex.encode(table));
+        }
+        catch (NoSuchAlgorithmException e){
+            logger.error("Error occured while creating SHA-256 hash short for password.", e);
+            attributes.addAttribute("message", "registration-error");
+            return "redirect:/register";
+        }
 
         UserType passenger = methods.getUserTypeByName("Pasażer");
 
         user.setUserType(passenger);
+
+        user.setFirstName(StringUtils.capitalize(user.getFirstName()));
+        user.setLastName(StringUtils.capitalize(user.getLastName()));
 
         user = deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
 

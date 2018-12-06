@@ -102,7 +102,7 @@ public class RideController {
     public String getRideRegister(@PathVariable String rideId, Model model, HttpSession session, RedirectAttributes redirectAttributes){
 
         if(session.getAttribute("user")==null){
-            redirectAttributes.addAttribute("message", "register");
+            redirectAttributes.addAttribute("message", "registration-required");
             return "redirect:/register";
         }
 
