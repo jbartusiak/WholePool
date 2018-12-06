@@ -122,11 +122,11 @@
                     rules:{
                         inputAddressFrom:{
                             required:true,
-                            pattern:/[a-z]+, +/
+                            pattern:/[a-z]/
                         },
                         inputAddressTo:{
                             required:true,
-                            pattern:/[a-z]+, +/
+                            pattern:/[a-z]/
                         },
                         inputHOD:{
                             required:true,
@@ -141,8 +141,7 @@
                             pattern:/[0-9]/
                         },
                         inputPrice:{
-                            required:true,
-                            pattern:/\d,[0-9][0-9]/
+                            required:true
                         }
                     },
                     highlight: function(element) {

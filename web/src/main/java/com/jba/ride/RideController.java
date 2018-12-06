@@ -155,7 +155,7 @@ public class RideController {
     }
 
     @PostMapping("/ride/register")
-    public String doRideRegister(String ride, String passenger){
+    public String doRideRegister(String ride, String passenger, RedirectAttributes attributes){
         String registerForRideRequest = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
                 .addPathParam("register")
@@ -166,6 +166,8 @@ public class RideController {
         RestTemplate template = new RestTemplate();
 
         RidePassangers ridePassangers = deserializer.getSingleItemFor(template.postForObject(registerForRideRequest, null, String.class), RidePassangers.class);
+
+        attributes.addAttribute("message", "registered");
 
         return "redirect:/user/dashboard";
     }
@@ -189,7 +191,7 @@ public class RideController {
     }
 
     @PostMapping("/ride/add")
-    public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, Model model){
+    public String addNewRide(@ModelAttribute NewRideForm form, HttpSession session, RedirectAttributes attributes){
         if(session.getAttribute("user")==null){
             return "401";
         }
@@ -231,6 +233,8 @@ public class RideController {
 
         template.postForObject(postRideDetailsQuery, rideDetails, String.class);
 
-        return "redirect:/";
+        attributes.addAttribute("message", "new-ride-added");
+
+        return "redirect:/user/dashboard";
     }
 }
