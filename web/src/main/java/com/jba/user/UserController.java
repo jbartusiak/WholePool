@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -82,9 +83,9 @@ public class UserController {
         if(!userFromSession.getUserName().equals(user.getUserName()))
             userFromSession.setUserName(user.getUserName());
         if(!userFromSession.getFirstName().equals(user.getFirstName()))
-            userFromSession.setFirstName(user.getFirstName());
+            userFromSession.setFirstName(StringUtils.capitalize(user.getFirstName()));
         if(!userFromSession.getLastName().equals(user.getLastName()))
-            userFromSession.setLastName(user.getLastName());
+            userFromSession.setLastName(StringUtils.capitalize(user.getLastName()));
         if(!userFromSession.getEmailAddress().equals(user.getEmailAddress()))
             userFromSession.setEmailAddress(user.getEmailAddress());
         if(!userFromSession.getDateOfBirth().equals(user.getDateOfBirth()))
