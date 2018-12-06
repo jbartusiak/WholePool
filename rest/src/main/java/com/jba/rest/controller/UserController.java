@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -37,8 +39,16 @@ public class UserController {
             return new WPLResponse<>(HttpStatus.OK, userService.getUser(id));
         else if (name != null)
             return new WPLResponse<>(HttpStatus.OK, userService.getUserByUsername(name));
-        else if (email != null)
-            return new WPLResponse<>(HttpStatus.OK, userService.getUserByEmail(email));
+        else if (email != null) {
+            User user = userService.getUserByEmail(email);
+
+            if(user.getUserId()==-1) {
+                return new WPLResponse<>(HttpStatus.NOT_FOUND, "Not found");
+            }
+            else {
+                return new WPLResponse<>(HttpStatus.OK, userService.getUserByEmail(email));
+            }
+        }
         else return new WPLResponse<>(HttpStatus.OK, userService.getAllUsers());
     }
 

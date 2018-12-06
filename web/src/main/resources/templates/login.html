@@ -11,23 +11,69 @@
         <div class="col-lg-4">
             <div class="page-box">
                 <div class="page-content">
+                    <div th:if="${param.message!=null}">
+                        <div th:if="${param.message[0]=='password-incorrect'}" class="alert alert-danger fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i>&nbsp;Uwaga</h4>
+                            <p>Wprowadzone hasło jest nieprawidłowe. Spróbuj ponownie.</p>
+                        </div>
+                        <div th:if="${param.message[0]=='login-error'}" class="alert alert-warning fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i>&nbsp;Uwaga</h4>
+                            <p>Nie odnaleziono użytkownika o wskazanym adresie e-mail.</p>
+                        </div>
+                    </div>
                     <h3 class="text-align-center">Zaloguj się</h3>
                     <hr/>
-                    <form action="/login" method="post">
+                    <form action="/login" method="post" id="login-form">
                         <div class="form-group">
-                            <label for="userName">Adres e-mail</label>
-                            <input type="email" class="form-control" id="userName" aria-describedby="userNameHelp"
-                                   placeholder="Wprowadź dane" name="emailAddress">
+                            <label for="emailAddress">Adres e-mail</label>
+                            <input type="email" class="form-control" id="emailAddress"
+                                   placeholder="Wprowadź dane" name="emailAddress" required>
                         </div>
                         <div class="form-group">
-                            <label for="password">Hasło</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password"
-                                   name="passwordHash">
+                            <label for="passwordHash">Hasło</label>
+                            <input type="password" class="form-control" id="passwordHash" placeholder="Hasło"
+                                   name="passwordHash" required>
                         </div>
                         <button type="submit" class="btn btn-lg btn-wholepool btn-block" style="margin-top:50px;">
                             Zatwierdź
                         </button>
                     </form>
+
+                    <script>
+                        $.validator.addMethod("pattern", function(value, element, param) {
+                            if (this.optional(element)) {
+                                return true;
+                            }
+                            if (typeof param === "string") {
+                                param = new RegExp("^(?:" + param + ")$");
+                            }
+                            return param.test(value);
+                        }, "Invalid regular expression format");
+                        $('#login-form').validate({
+                            rules:{
+                                emailAddress:{
+                                    required:true
+                                },
+                                passwordHash:{
+                                    required:true,
+                                    pattern:/^[A-Za-z0-9].{7,59}$/
+                                }
+                            },
+                            highlight: function(element) {
+                                $(element).addClass("form-error");
+                                $(element).removeClass("form-ok");
+                            },
+                            unhighlight: function(element) {
+                                $(element).removeClass("form-error");
+                                $(element).addClass("form-ok");
+                            },
+                            messages:{
+                                emailAddress:"Wprowadź swój adres e-mail",
+                                passwordHash:"Wprowadź hasło. Hasło musi mieć co najmniej 8 znaków i może zawierać" +
+                                    " małe i duże litery, oraz cyfry."
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>

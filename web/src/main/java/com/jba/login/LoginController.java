@@ -54,7 +54,7 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login")
-    public String doLogin(User user, HttpSession session){
+    public String doLogin(User user, HttpSession session, RedirectAttributes attributes){
         RestTemplate restTemplate = new RestTemplate();
 
         String userSearchURL = RestRequestBuilder
@@ -65,15 +65,34 @@ public class LoginController {
 
         String result = restTemplate.getForObject(userSearchURL, String.class);
 
+        String hash="";
+
+
+
+        if(result.contains("404")&&result.contains("Not found")) {
+            logger.error("User " + user.getEmailAddress() + " not found!");
+            attributes.addAttribute("message", "login-error");
+            return "redirect:/login";
+        }
+
         User userFromJson = deserializer.getSingleItemFor(result, User.class);
 
-        System.out.println(userFromJson.toString());
+        logger.info("User found: "+userFromJson.getEmailAddress());
+
+        try {
+            hash=generatePasswordHash(user.getPasswordHash());
+        }
+        catch (NoSuchAlgorithmException e){
+            logger.error("Error occured while creating SHA-256 hash short for password.", e);
+            attributes.addAttribute("message", "login-error");
+            return "redirect:/login";
+        }
 
         String verifyPasswordURL = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam(usersBase)
                 .addPathParam("verify")
-                .addParam("hash", user.getPasswordHash())
+                .addParam("hash", hash)
                 .addParam("userId", userFromJson.getUserId())
                 .build();
 
@@ -86,7 +105,8 @@ public class LoginController {
             return "redirect:/user/dashboard";
         }
         else{
-            return "login";
+            attributes.addAttribute("message", "password-incorrect");
+            return "redirect:/login";
         }
     }
 
@@ -111,10 +131,7 @@ public class LoginController {
         String hash="";
 
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-awdawd256");
-            byte[] table = digest.digest(
-                    password.getBytes(StandardCharsets.UTF_8));
-            hash= new String(Hex.encode(table));
+            hash=generatePasswordHash(password);
         }
         catch (NoSuchAlgorithmException e){
             logger.error("Error occured while creating SHA-256 hash short for password.", e);
@@ -154,5 +171,12 @@ public class LoginController {
     public String logout(HttpSession session){
         session.removeAttribute("user");
         return "index";
+    }
+
+    public String generatePasswordHash(String password) throws NoSuchAlgorithmException{
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] table = digest.digest(
+                password.getBytes(StandardCharsets.UTF_8));
+        return new String(Hex.encode(table));
     }
 }
