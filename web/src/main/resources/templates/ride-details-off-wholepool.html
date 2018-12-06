@@ -9,7 +9,7 @@
     <div class="page-box" style="margin-top:0; margin-bottom:2em; border-radius:0 0 1em 1em; padding-bottom:1em;">
         <div class="container-fluid">
             <div class="row wholepool-breadcrumb">
-                <a href="" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
+                <a href="javascript:history.back();" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
                 przejazd</strong>
             </div>
             <div class="row" style="padding:1em; margin-bottom:0; font-size:large; background-color:#DDD;">
@@ -28,7 +28,6 @@
         <div style="margin-top:10px; margin-bottom:1em; padding:0px 100px 0px 100px">
             <a th:href="${ride.getRideId().getDirectURL()}" style="text-decoration:none">
                 <button type="button" class="btn btn-lg btn-wholepool btn-block" style="margin:1em">Przejdź do oferty
-                    (strona zewnętrzna)
                 </button>
             </a>
         </div>
