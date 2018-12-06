@@ -62,8 +62,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="loader" style="margin:auto"></div>
-                                <div>Prosimy o chwilę cierpliwości...</div>
+                                <div class="spinner">
+                                    <div class="dot1"></div>
+                                    <div class="dot2"></div>
+                                </div>
+                                <div style="margin-top:2em;">Przeszukujemy wiele źródeł - to może chwile potrwać.</div>
                             </div>
                         </div>
                     </div>
@@ -93,6 +96,7 @@
             <p class="mb-0">Odjazd z <strong th:text="${searchFrom}"></strong></p>
             <p class="mb-0">Przyjazd do <strong th:text="${searchTo}"></strong></p>
             <p>Odjazd nie wcześniej niż <strong th:text="${dateTime}"></strong> </p>
+            <p>Możesz też spróbować <a href="">odświeżyć</a> wyszukiwanie.</p>
         </div>
     </div>
 </div>
