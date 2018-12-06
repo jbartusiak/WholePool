@@ -10,6 +10,7 @@ import com.jba.utils.Mailer;
 import com.jba.utils.Methods;
 import com.jba.utils.RestRequestBuilder;
 import org.apache.log4j.Logger;
+import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -198,6 +202,14 @@ public class UserController {
         logger.debug(password + "=" + passwordConfirm + "?");
 
         if(password.equals(passwordConfirm)){
+            try {
+                password = generatePasswordHash(password);
+            }
+            catch (NoSuchAlgorithmException e){
+                logger.error("Error setting password!");
+                redirectAttributes.addAttribute("message", "Występił problem podczas zmiany hasła. Spróbuj ponownie.");
+                return "redirect:/user/settings/confirm";
+            }
             userFromSession.setPasswordHash(password);
 
             String changePasswordRequest = RestRequestBuilder
@@ -218,8 +230,11 @@ public class UserController {
 
             return "redirect:/user/settings/confirm";
         }
-
-        return "404";
+        else{
+            logger.error("Error setting password!");
+            redirectAttributes.addAttribute("message", "Wprowadzone hasła różnią się od siebie. Spróbuj ponownie");
+            return "redirect:/user/settings/confirm";
+        }
     }
 
     @GetMapping("/settings/myCars")
@@ -311,5 +326,12 @@ public class UserController {
         }
         model.addAttribute("message", message);
         return "user-settings-confirm";
+    }
+
+    public String generatePasswordHash(String password) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] table = digest.digest(
+                password.getBytes(StandardCharsets.UTF_8));
+        return new String(Hex.encode(table));
     }
 }
