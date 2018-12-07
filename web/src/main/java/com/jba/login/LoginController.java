@@ -164,6 +164,8 @@ public class LoginController {
 
         mailer.sendAccountCreatedMessage(user.getEmailAddress(), user.getFirstName());
 
+        attributes.addAttribute("message", "registration-successfull");
+
         return "redirect:/user/dashboard";
     }
 

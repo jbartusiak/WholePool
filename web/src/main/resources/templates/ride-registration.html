@@ -28,11 +28,11 @@
             </div>
             <h4 style="padding:1em; text-align:center;">Potwierdź, że chcesz zapisać się na ten przejazd.</h4>
             <form action="/ride/register" method="post">
-                <div class="form-group">
+                <div class="form-group" style="display: none;">
                     <input id="passenger" name="passenger" placeholder="passenger" type="text" class="form-control here"
                            style="display:visible;" th:value="${session.user.userId}">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display:none;">
                     <input id="ride" name="ride" placeholder="ride" type="text" class="form-control here"
                            style="display:visible;" th:value="${ride.getRideId().getRideId()}">
                 </div>

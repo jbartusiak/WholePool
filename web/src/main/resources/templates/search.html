@@ -62,8 +62,11 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="loader" style="margin:auto"></div>
-                                <div>Prosimy o chwilę cierpliwości...</div>
+                                <div class="spinner">
+                                    <div class="dot1"></div>
+                                    <div class="dot2"></div>
+                                </div>
+                                <div style="margin-top:2em;">Przeszukujemy wiele źródeł - to może chwile potrwać.</div>
                             </div>
                         </div>
                     </div>
@@ -93,6 +96,7 @@
             <p class="mb-0">Odjazd z <strong th:text="${searchFrom}"></strong></p>
             <p class="mb-0">Przyjazd do <strong th:text="${searchTo}"></strong></p>
             <p>Odjazd nie wcześniej niż <strong th:text="${dateTime}"></strong> </p>
+            <p>Możesz też spróbować <a href="">odświeżyć</a> wyszukiwanie.</p>
         </div>
     </div>
 </div>
@@ -106,8 +110,8 @@
                         <a th:href="@{'/ride/' + ${ride.getRideId().rideId}}">
                             <div class="d-sm-flex bd-highlight">
                                 <div class="p-2 align-self-center text-align-center" style="width:10%; min-width:150px;">
-                                    <span th:text="${ride.getFormattedDate(0,null)}" class="result-hour"></span></br>
-                                    <span class="result-hour" th:text="${ride.getFormattedDate(1, null)}"></span>
+                                    <span th:text="${ride.getFormattedDate(0,'H:mm, d MMMM')}" class="result-hour"></span></br>
+                                    <span th:if="${ride.getRideId().sourceId.sourceName=='blablacar.pl'}" class="result-hour" th:text="${ride.getFormattedDate(1, 'H:mm, d MMMM')}"></span>
                                 </div>
                                 <div class="p-2 align-self-center result-place" style="width:50%; min-width:200px;">
 

@@ -11,10 +11,78 @@
         <div th:replace="fragments/rides-as-driver"></div>
     </th:block>
 </div>
-
+<div th:if="${param.message!=null}">
+    <div th:if="${param.message[0]=='new-ride-added'}" class="modal fade" id="modal-added-ride" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="exampleModalLongTitle"><i class="fas fa-check" style="color:inherit;"></i>&nbsp;Utworzono
+                        przejazd!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Twój przejazd został utworzony! Zostaniesz poinformowany mailowo, gdy na przejazd zapisze się jakiś
+                    pasażer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${param.message[0]=='registered'}" class="modal fade" id="modal-added-ride" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="exampleModalLongTitle"><i class="fas fa-check" style="color:inherit;"></i>&nbsp;Zapisano się na przejazd!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Z sukcesem zapisałeś się na przejazd. Kierowca zostanie poinformowany o tym, że będziesz pasażerem
+                    we wspólnym przejeździe.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${param.message[0]=='registration-successfull'}" class="modal fade" id="modal-added-ride" tabindex="-1"
+         role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="exampleModalLongTitle"><i class="fas fa-check" style="color:inherit;"></i>&nbsp;Dziękujemy za rejestrację!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Dziękujemy za zarejestrowanie się! Możesz już korzystać z wszystkich funkcji portalu.<br>
+                    Skorzystaj z przycisków w górnym menu aby nawigować w serwisie.<br>
+                    <br>
+                    Na niniejszym ekranie znajduje się Twoja tablica. Zawiera ona Twoje najbliżśze przejazdy. Możesz
+                    do niej wrócić klikając na logo serwisu.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         $('#nav-rides').addClass('active');
+    });
+    $(window).on('load',function(){
+        $('#modal-added-ride').modal('show');
     });
 </script>
 </body>

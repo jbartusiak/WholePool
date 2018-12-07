@@ -101,6 +101,7 @@ public abstract class AbstractSourceFetch {
 
     public abstract void doImplementationSpecificInitialization();
 
+    @Async("sourceTaskExecutor")
     public abstract void search(String from, String to, String dateOfDeparture, String dateOfArrival);
 
     public abstract void parse(String input, String from, String to);

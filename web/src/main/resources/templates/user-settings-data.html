@@ -27,7 +27,7 @@
         <div class="col-lg-6">
             <div class="page-box">
                 <div class="page-content">
-                    <form action="/user/settings/data" method="post">
+                    <form action="/user/settings/data" method="post" id="data-form">
                         <h2>Aktualizacja danych</h2>
                         <hr/>
                         <div style="margin-top:1em; margin-bottom:1em"><strong>Wprowadź informacje o sobie.</strong><br>
@@ -37,35 +37,35 @@
                             <label for="firstName" class="col-3 col-form-label">Imię</label>
                             <div class="col-9">
                                 <input id="firstName" name="firstName" placeholder="Imię" type="text"
-                                       class="form-control here" th:value="${session.user.getFirstName()}">
+                                       class="form-control here" th:value="${session.user.getFirstName()}" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="lastName" class="col-3 col-form-label">Nazwisko</label>
                             <div class="col-9">
                                 <input id="lastName" name="lastName" placeholder="Nazwisko" type="text"
-                                       class="form-control here" th:value="${session.user.getLastName()}">
+                                       class="form-control here" th:value="${session.user.getLastName()}" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="dateOfBirth" class="col-3 col-form-label">Data urodzenia</label>
                             <div class="col-9">
                                 <input id="dateOfBirth" name="dateOfBirth" placeholder="Data urodzenia" type="date"
-                                       class="form-control here" th:value="${session.user.getDateOfBirth().toString()}">
+                                       class="form-control here" th:value="${session.user.getDateOfBirth().toString()}" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="emailAddress" class="col-3 col-form-label">Adres e-mail</label>
                             <div class="col-9">
                                 <input id="emailAddress" name="emailAddress" placeholder="Adres e-mail" type="email"
-                                       class="form-control here" th:value="${session.user.emailAddress}">
+                                       class="form-control here" th:value="${session.user.emailAddress}" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="userName" class="col-3 col-form-label">Nazwa użytkownika</label>
                             <div class="col-9">
                                 <input id="userName" name="userName" placeholder="Nazwa użytkownika" type="text"
-                                       class="form-control here" th:value="${session.user.userName}">
+                                       class="form-control here" th:value="${session.user.userName}" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -73,6 +73,49 @@
                             </button>
                         </div>
                     </form>
+                    <script>
+                        $.validator.addMethod("pattern", function(value, element, param) {
+                            if (this.optional(element)) {
+                                return true;
+                            }
+                            if (typeof param === "string") {
+                                param = new RegExp("^(?:" + param + ")$");
+                            }
+                            return param.test(value);
+                        }, "Invalid regular expression format");
+                        $('#data-form').validate({
+                            rules:{
+                                firstName:{
+                                    required:true,
+                                    pattern:/[a-z].{0,30}/
+                                },
+                                lastName:{
+                                    required:true,
+                                    pattern:/[a-z].{0,50}/
+                                },
+                                userName:{
+                                    required:true,
+                                    pattern:/^[^0-9]+[A-Za-z0-9].{4,9}$/
+                                }
+                            },
+                            highlight: function(element) {
+                                $(element).addClass("form-error");
+                                $(element).removeClass("form-ok");
+                            },
+                            unhighlight: function(element) {
+                                $(element).removeClass("form-error");
+                                $(element).addClass("form-ok");
+                            },
+                            messages:{
+                                firstName:"Wprowadź swoje imię",
+                                lastName:"Wprowadź swoje nazwisko",
+                                userName:"Wprowadź nazwę użytkownika. Nazwa uźytkownika nie moźe zaczynać się od cyfry " +
+                                    "i może zawierać małe i duże litery oraz liczby.",
+                                emailAddress:"Wprowadź swój adres e-mail",
+                                dateOfBirth:"Wybierz datę urodzenia"
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         </div>
