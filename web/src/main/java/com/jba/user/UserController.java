@@ -202,7 +202,7 @@ public class UserController {
         logger.debug(password + "=" + passwordConfirm + "?");
 
         if(password.equals(passwordConfirm)){
-            
+
             userFromSession.setPasswordHash(password);
 
             String changePasswordRequest = RestRequestBuilder

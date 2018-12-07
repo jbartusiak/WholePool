@@ -1,12 +1,13 @@
 branch-defaults:
   default:
-    environment: wholepool-web-env
+    environment: WholepoolWebProduction-env
+    group_suffix: null
 deploy:
-  artifact: target/wholepool-web-0.0.1-SNAPSHOT.jar
+  artifact: target/wholepool-web-1.0.0.jar
 global:
-  application_name: wholepool-web
+  application_name: wholepool-web-production
   branch: null
-  default_ec2_keyname: null
+  default_ec2_keyname: aws-eb
   default_platform: Java 8
   default_region: eu-west-3
   include_git_submodules: true

@@ -124,7 +124,7 @@ public class SearchController {
         }
 
         try{
-            Thread.sleep(25000);
+            Thread.sleep(10000);
         }
         catch (InterruptedException e){
             e.printStackTrace();
