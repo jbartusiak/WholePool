@@ -202,14 +202,7 @@ public class UserController {
         logger.debug(password + "=" + passwordConfirm + "?");
 
         if(password.equals(passwordConfirm)){
-            try {
-                password = generatePasswordHash(password);
-            }
-            catch (NoSuchAlgorithmException e){
-                logger.error("Error setting password!");
-                redirectAttributes.addAttribute("message", "Występił problem podczas zmiany hasła. Spróbuj ponownie.");
-                return "redirect:/user/settings/confirm";
-            }
+            
             userFromSession.setPasswordHash(password);
 
             String changePasswordRequest = RestRequestBuilder

@@ -79,7 +79,7 @@ public class LoginController {
 
         logger.info("User found: "+userFromJson.getEmailAddress());
 
-        try {
+        /*try {
             hash=generatePasswordHash(user.getPasswordHash());
         }
         catch (NoSuchAlgorithmException e){
@@ -87,12 +87,15 @@ public class LoginController {
             attributes.addAttribute("message", "login-error");
             return "redirect:/login";
         }
+        catch (Exception e){
+            e.printStackTrace();;
+        }*/
 
         String verifyPasswordURL = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam(usersBase)
                 .addPathParam("verify")
-                .addParam("hash", hash)
+                .addParam("hash", user.getPasswordHash())
                 .addParam("userId", userFromJson.getUserId())
                 .build();
 
@@ -128,7 +131,7 @@ public class LoginController {
 
         String password = user.getPasswordHash();
 
-        String hash="";
+        /*String hash="";
 
         try {
             hash=generatePasswordHash(password);
@@ -137,7 +140,7 @@ public class LoginController {
             logger.error("Error occured while creating SHA-256 hash short for password.", e);
             attributes.addAttribute("message", "registration-error");
             return "redirect:/register";
-        }
+        }*/
 
         UserType passenger = methods.getUserTypeByName("Pasażer");
 
@@ -148,14 +151,14 @@ public class LoginController {
 
         user = deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
 
-        user.setPasswordHash(hash);
+        user.setPasswordHash(password);
 
         String changePasswordRequest = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam("users")
                 .addPathParam("password")
                 .addParam("userId", user.getUserId())
-                .addParam("hash", hash)
+                .addParam("hash", password)
                 .build();
 
         template.put(changePasswordRequest, user);
@@ -179,6 +182,7 @@ public class LoginController {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] table = digest.digest(
                 password.getBytes(StandardCharsets.UTF_8));
-        return new String(Hex.encode(table));
+        String string = new String(Hex.encode(table));
+        return string;
     }
 }

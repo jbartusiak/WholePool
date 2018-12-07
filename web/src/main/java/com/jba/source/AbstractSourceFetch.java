@@ -46,7 +46,6 @@ public abstract class AbstractSourceFetch {
     @Autowired
     protected ObjectMapper mapper;
 
-    @Autowired
     protected UserAgent agent;
 
     //https://api.dosiadam.pl/api/v1/search/rides?departure=%API_DEPARTURE%&arrival=%API_ARRIVAL%&departureDateFrom=%API_DATE_OF_DEPARTURE%
@@ -74,6 +73,7 @@ public abstract class AbstractSourceFetch {
         rides = new ArrayList<>();
         rideDetails = new ArrayList<>();
         properties = new Properties();
+        agent = new UserAgent();
     }
 
     public abstract String getResultsForQuery(String from, String to);
