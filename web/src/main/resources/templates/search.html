@@ -110,8 +110,8 @@
                         <a th:href="@{'/ride/' + ${ride.getRideId().rideId}}">
                             <div class="d-sm-flex bd-highlight">
                                 <div class="p-2 align-self-center text-align-center" style="width:10%; min-width:150px;">
-                                    <span th:text="${ride.getFormattedDate(0,null)}" class="result-hour"></span></br>
-                                    <span class="result-hour" th:text="${ride.getFormattedDate(1, null)}"></span>
+                                    <span th:text="${ride.getFormattedDate(0,'H:mm, d MMMM')}" class="result-hour"></span></br>
+                                    <span th:if="${ride.getRideId().sourceId.sourceName=='blablacar.pl'}" class="result-hour" th:text="${ride.getFormattedDate(1, 'H:mm, d MMMM')}"></span>
                                 </div>
                                 <div class="p-2 align-self-center result-place" style="width:50%; min-width:200px;">
 
