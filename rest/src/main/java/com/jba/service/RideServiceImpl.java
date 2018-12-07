@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,6 +39,11 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
+    public List<Ride> getRideByDirectLink(String directLink) {
+        return rideDAO.getRideByDirectLink(directLink);
+    }
+
+    @Override
     public List<Ride> getAllRides() {
         return rideDAO.getAllRides();
     }
@@ -45,6 +51,9 @@ public class RideServiceImpl implements RideService {
     @Override
     public List<RideDetails> findRideByCriteria(String routeFrom, String routeTo, LocalDateTime dateOfDeparture, LocalDateTime dateOfArrival){
         List<Route> routes = searchService.findRouteByCriteria(routeFrom, routeTo);
+
+        if(routes.size()==0)
+            return new ArrayList<RideDetails>();
 
         return rideDAO
                 .findRideByCriteria(

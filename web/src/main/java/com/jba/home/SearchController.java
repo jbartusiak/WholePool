@@ -2,6 +2,7 @@ package com.jba.home;
 
 import com.jba.dao2.ride.enitity.RideDetails;
 import com.jba.dao2.route.entity.Route;
+import com.jba.source.SourceRepository;
 import com.jba.utils.Deserializer;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class SearchController {
@@ -29,6 +28,9 @@ public class SearchController {
 
     @Autowired
     Deserializer deserializer;
+
+    @Autowired
+    SourceRepository repository;
 
     @GetMapping("/search")
     public String search(Model model){
@@ -44,7 +46,14 @@ public class SearchController {
 
         RideDetails[] rides = deserializer.getResultArrayFor(result, RideDetails[].class);
 
-        model.addAttribute("rides", rides);
+        List<RideDetails> rideDetailsList = Arrays.asList(rides);
+
+        rideDetailsList = rideDetailsList.stream()
+                .filter(rideDetails -> rideDetails.getDateOfDeparture().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparingInt(o -> o.getRideId().getSourceId().getSourceId()))
+                .collect(Collectors.toList());
+
+        model.addAttribute("rides", rideDetailsList.toArray());
 
         return "search";
     }
@@ -71,12 +80,7 @@ public class SearchController {
         if(searchTo.endsWith(", Polska"))
             searchTo = searchTo.substring(0, searchTo.lastIndexOf(","));
 
-        String findRouteQuery = RestRequestBuilder.builder(WPLRestURL)
-                .addPathParam("search")
-                .addPathParam("route")
-                .addParam("fromLocation", searchFrom)
-                .addParam("toLocation", searchTo)
-                .build();
+        repository.searchInSources(searchFrom, searchTo, dateOfDeparture, "9999-12-01T23:59:59");
 
         RestTemplate template = new RestTemplate();
 
@@ -119,7 +123,21 @@ public class SearchController {
                     .build();
         }
 
+        try{
+            Thread.sleep(10000);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
         RideDetails[] rideDetails = deserializer.getResultArrayFor(template.getForObject(findRidesQuery, String.class), RideDetails[].class);
+
+        List<RideDetails> rideDetailsList = Arrays.asList(rideDetails);
+
+        rideDetailsList = rideDetailsList.stream()
+                .filter(rd -> rd.getDateOfDeparture().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparingInt(o -> o.getRideId().getSourceId().getSourceId()))
+                .collect(Collectors.toList());
 
         if(rideDetails.length==0){
             model.addAllAttributes(getNoResultsMap(searchFrom, searchTo, localDateTime));
@@ -127,7 +145,7 @@ public class SearchController {
             return "search";
         }
 
-        model.addAttribute("rides", rideDetails);
+        model.addAttribute("rides", rideDetailsList.toArray());
 
         return "search";
     }

@@ -23,7 +23,7 @@
 
 <div class="container-fluid">
     <div class="page-box page-content"
-         style="background-color:#DDD; margin-left:50px; margin-right:50px; margin-top:0; border-radius:0 0 1em 1em; padding:1em;">
+         style="background-color:#DDD; margin-top:0; border-radius:0 0 1em 1em; padding:1em;">
         <form action="/search/rides" method="get" style="padding-left:50px; padding-right:50px;" class="collapse show" id="collapseExample">
             <div class="form-group row">
                 <label for="searchFrom" class="col-sm-2 col-form-label">Miejsce odjazdu:</label>
@@ -49,9 +49,28 @@
                 </div>
             </div>
             <div class="form-group row">
-                <button type="submit" class="btn btn-md btn-wholepool btn-warning"
-                        style="padding-left:30px; padding-right:30px; text-align:center;">Szukaj
+                <button type="button|submit" class="btn btn-md btn-wholepool btn-warning"
+                        style="padding-left:30px; padding-right:30px; text-align:center;" data-toggle="modal" data-target="#exampleModalCenter">Szukaj
                 </button>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content text-align-center">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Szukamy Twoich przejazdów</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="spinner">
+                                    <div class="dot1"></div>
+                                    <div class="dot2"></div>
+                                </div>
+                                <div style="margin-top:2em;">Przeszukujemy wiele źródeł - to może chwile potrwać.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </form>
@@ -65,8 +84,10 @@
     </div>
 </div>
 
+
+
 <div th:if="${message=='no-results'}" class="container-fluid">
-    <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">
+    <div class="page-box" style="margin-top:1em;">
         <div class="alert alert-warning" role="alert">
             <h3>Nic nie znaleziono</h3>
             <div>Nie udało się znaleźć żadnego przejazdu spełniającego zadane kryteria.</div>
@@ -75,48 +96,39 @@
             <p class="mb-0">Odjazd z <strong th:text="${searchFrom}"></strong></p>
             <p class="mb-0">Przyjazd do <strong th:text="${searchTo}"></strong></p>
             <p>Odjazd nie wcześniej niż <strong th:text="${dateTime}"></strong> </p>
+            <p>Możesz też spróbować <a href="">odświeżyć</a> wyszukiwanie.</p>
         </div>
     </div>
 </div>
 
 <div class="container-fluid">
-    <div class="page-box" style="margin-left:50px; margin-right:50px; margin-top:1em;">
+    <div class="page-box" style="margin-top:1em; margin-bottom: 2em;">
         <ul class="list-group">
             <th:block th:each="ride : ${rides}">
                 <li class="list-group-item">
                     <div class="container-fluid result">
                         <a th:href="@{'/ride/' + ${ride.getRideId().rideId}}">
-                            <div class="row">
-                                <div class="col-lg-1 text-align-end">
-                                    <span th:text="${ride.getFormattedDate(0,null)}"
-                                          class="result-hour"></span>
+                            <div class="d-sm-flex bd-highlight">
+                                <div class="p-2 align-self-center text-align-center" style="width:10%; min-width:150px;">
+                                    <span th:text="${ride.getFormattedDate(0,'H:mm, d MMMM')}" class="result-hour"></span></br>
+                                    <span th:if="${ride.getRideId().sourceId.sourceName=='blablacar.pl'}" class="result-hour" th:text="${ride.getFormattedDate(1, 'H:mm, d MMMM')}"></span>
                                 </div>
-                                <div class="col-lg-3">
-                                    <h3 class="result-place"
-                                        th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}"></h3>
-                                </div>
-                                <div class="col-lg-3"></div>
-                                <div class="col-lg-3"></div>
-                                <div class="col-lg-2 text-align-end">
-                                    Cena: <strong th:text="${ride.getPrice()}"></strong><strong>
-                                    PLN</strong>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-1 text-align-end">
-                                    <span class="result-hour"
-                                          th:text="${ride.getFormattedDate(1, null)}"></span>
-                                </div>
-                                <div class="col-lg-3">
-                                    <h3 class="result-place"
-                                        th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}"></h3>
-                                </div>
-                                <div class="col-lg-4">
-                                    Oferta z portalu <img src="/images/logo.png" witdh="25px" height="25px"/><strong
-                                        style="color:var(--fg-wholepool-accent);">Wholepool</strong>
-                                </div>
-                                <div class="col-lg-2">
+                                <div class="p-2 align-self-center result-place" style="width:50%; min-width:200px;">
 
+                                        <h2>
+                                            <span th:text="${ride.getRideId().getRouteForThisRide().getRouteFromLocation()}" style="display:inline;">Wrocław</span>
+                                            →
+                                            <span th:text="${ride.getRideId().getRouteForThisRide().getRouteToLocation()}" style="display:inline;">Warszawa</span>
+                                        </h2>
+
+                                </div>
+                                <div class="p-2 align-self-center text-align-center" style="width:30%">
+                                    Oferta z portalu <img src="/images/logo.png" witdh="25px" height="25px"/>
+                                    <strong th:if="${ride.getRideId().sourceId.sourceName!='localhost'}" th:text="${ride.getRideId().sourceId.sourceName}"></strong>
+                                    <strong th:if="${ride.getRideId().sourceId.sourceName=='localhost'}">Wholepool</strong>
+                                </div>
+                                <div class="p-2 align-self-center text-align-center" style="min-width:150px;">
+                                    <h3 th:text="${#numbers.formatCurrency(ride.getPrice())}"></h3>
                                 </div>
                             </div>
                         </a>

@@ -14,9 +14,13 @@
             <div class="page-box">
                 <div class="page-content">
                     <div th:if="${param.message!=null}">
-                        <div class="alert alert-info fade show" role="alert" style="padding:1em 3em 0 3em;">
+                        <div th:if="${param.message[0]=='registration-required'}" class="alert alert-info fade show" role="alert" style="padding:1em 3em 0 3em;">
                             <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i>&nbsp;Informacja</h4>
                             <p>Aby rezerwować przejazdy, musisz się zarejestrować. W tym celu, skorzystaj z poniższego formularza.</p>
+                        </div>
+                        <div th:if="${param.message[0]=='registration-error'}" class="alert alert-danger fade show" role="alert" style="padding:1em 3em 0 3em;">
+                            <h4 class="alert-heading"> <i class="fas fa-exclamation-circle" style="color:inherit;"></i>&nbsp;Uwaga</h4>
+                            <p>W trakcie rejestracji wystąpił nieoczekiwany błąd. Spróuj ponownie lub skontaktuj się z administracją serwisu.</p>
                         </div>
                     </div>
                     <h3 class="text-align-center">Zarejestruj się</h3>
@@ -40,21 +44,21 @@
                             <label for="firstName" class="col-lg-3 col-form-label">Imię</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" name="firstName" id="firstName"
-                                       placeholder="Imię" pattern="[a-zA-Z]+" required>
+                                       placeholder="Imię" pattern="[a-z].{0,30}" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="lastName" class="col-lg-3 col-form-label">Nazwisko</label>
                             <div class="col-lg-9">
                                 <input type="text" name="lastName" class="form-control" id="lastName"
-                                       placeholder="Nazwisko" pattern="[a-zA-Z]+" required>
+                                       placeholder="Nazwisko" pattern="[a-z].{0,50}" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="userName" class="col-lg-3 col-form-label">Nazwa uźytkownika</label>
                             <div class="col-lg-9">
                                 <input type="text" class="form-control" name="userName" id="userName"
-                                       placeholder="Nazwa użytkownika" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" required>
+                                       placeholder="Nazwa użytkownika" pattern="^[^0-9]+[A-Za-z0-9].{4,9}$" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -66,7 +70,13 @@
                         <div class="form-group row">
                             <label for="passwordHash" class="col-lg-3 col-form-label">Hasło</label>
                             <div class="col-lg-9">
-                                <input type="password" class="form-control" name="passwordHash" id="passwordHash" placeholder="Hasło" pattern="([a-zA-z0-9]).{8,}" required>
+                                <input type="password" class="form-control" name="passwordHash" id="passwordHash" placeholder="Hasło" pattern="^[A-Za-z0-9].{7,59}$" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="passwordRepeat" class="col-lg-3 col-form-label">Powtórz hasło</label>
+                            <div class="col-lg-9">
+                                <input type="password" class="form-control" name="passwordRepeat" id="passwordRepeat" placeholder="Powtórz hasło" pattern="^[A-Za-z0-9].{7,59}$" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -92,19 +102,23 @@
                             rules:{
                                 firstName:{
                                     required:true,
-                                    pattern:/[A-Z][a-z].{1,29}/
+                                    pattern:/[a-z].{0,30}/
                                 },
                                 lastName:{
                                     required:true,
-                                    pattern:/[A-Z][a-z].{1,49}/
+                                    pattern:/[a-z].{0,50}/
                                 },
                                 userName:{
                                     required:true,
-                                    pattern:/^[^0-9][A-Za-z0-9].{4,9}$/
+                                    pattern:/^[^0-9]+[A-Za-z0-9].{4,9}$/
                                 },
                                 passwordHash:{
                                     required:true,
                                     pattern:/^[A-Za-z0-9].{7,59}$/
+                                },
+                                passwordRepeat:{
+                                    required:true,
+                                    equalTo:"#passwordHash"
                                 }
                             },
                             highlight: function(element) {
@@ -123,6 +137,7 @@
                                 emailAddress:"Wprowadź swój adres e-mail",
                                 passwordHash:"Wprowadź hasło. Hasło musi mieć co najmniej 8 znaków i może zawierać" +
                                     " małe i duże litery, oraz cyfry.",
+                                passwordRepeat:"Wprowadzone hasła różnią się od siebie!",
                                 dateOfBirth:"Wybierz datę urodzenia"
                             }
                         });
@@ -134,18 +149,16 @@
         <div class="col-lg-3">
             <div class="page-box">
                 <div class="jumbotron page-content-jumbotron" style="padding:50px">
-                    <h1 class="text-align-center">Lorem ipsum</h1>
+                    <h1 class="text-align-center" style="font-weight: bold;">Wholepool</h1>
                 </div>
                 <div class="page-content">
 
                     <div>
                         <img src="images/sedan.png" style="margin:auto; width:100%"/>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quis risus eget urna
-                            tincidunt eleifend. Phasellus ac turpis sit amet orci malesuada faucibus. Ut nec lorem in
-                            justo vulputate rhoncus. Curabitur consequat neque vestibulum lorem elementum porta. Aliquam
-                            erat volutpat. Proin ac lorem lectus. Aliquam faucibus fermentum ante, eget vehicula leo
-                            congue eget.
+                            Serwis <span style="display:inline;">Wholepool</span> pomoże Ci znaleźć przejazd dopasowany
+                            do Twoich potrzeb. Rejestracja jest jednorazowo, a niezwłocznie po jej zakończeniu możesz
+                            korzystać z pełnych funkcjonalności witryny!
                         </p>
                     </div>
                 </div>

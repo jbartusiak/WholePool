@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        div, h3{
+            margin-bottom:1em;
+        }
+    </style>
+</head>
+<body>
+    <h3>Cześć, <strong th:text="${user}"></strong></h3>
+    <div>Ten email jest potwierdzeniem, że z sukcesem zapisałeś się na przejazd z <span th:text="${rideFrom}" ></span>
+        do <span th:text="${rideTo}"></span>!
+    </div>
+    <div>
+        Pozdrowienia,<br/>
+        <strong>Wholepool</strong>
+    </div>
+</body>
+</html>

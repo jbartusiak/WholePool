@@ -122,6 +122,17 @@ public class RideDAOMySQLRepository implements RideDAO{
     }
 
     @Override
+    public List<Ride> getRideByDirectLink(String directLink) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Ride> result = session.createQuery("from Ride r where r.directURL=:directLink")
+                .setParameter("directLink", directLink)
+                .getResultList();
+
+        return result;
+    }
+
+    @Override
     public List<RideDetails> getAllRideDetails() {
         Session session = sessionFactory.getCurrentSession();
 

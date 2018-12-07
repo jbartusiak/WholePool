@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 public interface RideService {
     Ride getRideById(Integer rideId);
+    List<Ride> getRideByDirectLink(String directLink);
     List<Ride> getAllRides();
     List<RideDetails> findRideByCriteria(String routeFrom, String routeTo, LocalDateTime dateOfDeparture, LocalDateTime dateOfArrival);
     List<RideDetails> getAllRideDetails();

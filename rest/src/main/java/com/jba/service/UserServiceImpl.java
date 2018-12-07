@@ -39,7 +39,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return userDAO.getUserByEmail(email);
+        try {
+            return userDAO.getUserByEmail(email);
+        }
+        catch (IllegalArgumentException e){
+            return new User(-1);
+        }
     }
 
     @Override

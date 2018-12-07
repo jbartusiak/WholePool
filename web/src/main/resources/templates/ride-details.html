@@ -9,7 +9,7 @@
     <div class="page-box" style="margin-top:0; margin-bottom:2em; border-radius:0 0 1em 1em; padding-bottom:1em;">
         <div class="container-fluid">
             <div class="row wholepool-breadcrumb">
-                <a href="" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
+                <a href="javascript:history.back();" style="color:inherit">&lt;&nbsp;powrót do wyszukiwania</a>&nbsp;/&nbsp;<strong>ten
                 przejazd</strong>
             </div>
             <div class="row" style="padding:1em; margin-bottom:0; font-size:large; background-color:#DDD;">
@@ -32,8 +32,8 @@
 
                 <div class="card" style="width:50%">
                     <div class="card-body">
-                        <h5 class="card-title" style="font-size:x-large"><span th:text="${ride.getPrice()}">##PLACEHOLDER##</span>
-                            PLN <i
+                        <h5 class="card-title" style="font-size:x-large"><span th:text="${#numbers.formatCurrency(ride.getPrice())}">##PLACEHOLDER##</span>
+                            <i
                                     class="fas fa-money-bill"
                                     style="color:inherit"></i>
                         </h5>
@@ -114,7 +114,7 @@
                             <a th:if="${!@utilityMethods.isUserAPassenger(passengers,session.user.getUserId())&&!@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>
                         </th:block>
                         <a th:if="${@utilityMethods.isUserAPassenger(passengers,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/resign'}"><button class="btn btn-danger btn-block">Zrezygnuj</button></a></th:if>
-                        <a th:if="${@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/delete'}"><button class="btn btn-danger btn-block">Usuń przejazd</button></a></th:if>
+                        <!--<a th:if="${@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/delete'}"><button class="btn btn-danger btn-block">Usuń przejazd</button></a></th:if>-->
                     </th:block>
                     <th:block th:if="${session.user==null}">
                         <a th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>
