@@ -13,6 +13,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.internet.MimeMessage;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,15 @@ public class Mailer {
         Map<String, String> map = new HashMap<>();
         map.put("user", userName);
         sendSimpleMessage(to, "Twoje hasło w serwisie Wholepool zostało zmienione", build("mail/password-changed", map), true);
+    }
+
+    @Async("mailerTaskExecutor")
+    public void sendRegisteredToRideMessageToPassanger(String to, String userName, String rideFrom, String rideTo){
+        Map<String, String> map = new HashMap<>();
+        map.put("user", userName);
+        map.put("rideFrom", rideFrom);
+        map.put("rideTo", rideTo);
+        sendSimpleMessage(to, "Zapisałeś się na przejazd!", build("mail/password-changed", map), true);
     }
 
     public String build(String template, Map<String, String> params){

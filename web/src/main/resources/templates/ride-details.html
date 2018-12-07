@@ -114,7 +114,7 @@
                             <a th:if="${!@utilityMethods.isUserAPassenger(passengers,session.user.getUserId())&&!@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>
                         </th:block>
                         <a th:if="${@utilityMethods.isUserAPassenger(passengers,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/resign'}"><button class="btn btn-danger btn-block">Zrezygnuj</button></a></th:if>
-                        <a th:if="${@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/delete'}"><button class="btn btn-danger btn-block">Usuń przejazd</button></a></th:if>
+                        <!--<a th:if="${@utilityMethods.isUserDriver(offerer,session.user.getUserId())}" th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/delete'}"><button class="btn btn-danger btn-block">Usuń przejazd</button></a></th:if>-->
                     </th:block>
                     <th:block th:if="${session.user==null}">
                         <a th:href="@{'/ride/' + ${ride.getRideId().rideId} + '/register'}"><button class="btn btn-wholepool btn-block">Zarezerwuj miejsce</button></a></th:if>

@@ -8,6 +8,7 @@ import com.jba.dao2.source.entity.Source;
 import com.jba.dao2.user.enitity.User;
 import com.jba.ride.form.NewRideForm;
 import com.jba.utils.Deserializer;
+import com.jba.utils.Mailer;
 import com.jba.utils.RestRequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,9 @@ public class RideController {
 
     @Autowired
     Deserializer deserializer;
+
+    @Autowired
+    Mailer mailer;
 
     String rideBaseURL = "ride";
 
@@ -155,7 +159,7 @@ public class RideController {
     }
 
     @PostMapping("/ride/register")
-    public String doRideRegister(String ride, String passenger, RedirectAttributes attributes){
+    public String doRideRegister(String ride, String passenger, RedirectAttributes attributes, HttpSession session){
         String registerForRideRequest = RestRequestBuilder.builder(WPLRestURL)
                 .addPathParam(rideBaseURL)
                 .addPathParam("register")
@@ -168,6 +172,13 @@ public class RideController {
         RidePassangers ridePassangers = deserializer.getSingleItemFor(template.postForObject(registerForRideRequest, null, String.class), RidePassangers.class);
 
         attributes.addAttribute("message", "registered");
+
+        User userFromSession = (User) session.getAttribute("user");
+
+        String from = ridePassangers.getRide().getRouteForThisRide().getRouteFromLocation();
+        String to = ridePassangers.getRide().getRouteForThisRide().getRouteFromLocation();
+
+        mailer.sendRegisteredToRideMessageToPassanger(userFromSession.getEmailAddress(), userFromSession.getFirstName(), from, to);
 
         return "redirect:/user/dashboard";
     }
