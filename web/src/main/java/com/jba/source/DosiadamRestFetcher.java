@@ -134,7 +134,7 @@ public class DosiadamRestFetcher extends AbstractSourceFetch {
 
             String postRideQuery = RestRequestBuilder.builder(wholepoolRestBaseURL)
                     .addPathParam("ride")
-                    .addParam("userId", 1)
+                    .addParam("userId", definition.getSourceId())
                     .build();
 
             ride = deserializer.getSingleItemFor(template.postForObject(postRideQuery, ride, String.class), Ride.class);
