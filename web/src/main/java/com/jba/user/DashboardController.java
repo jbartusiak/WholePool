@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user/dashboard")
@@ -60,6 +59,11 @@ public class DashboardController {
             rideDetails.add(temp);
         }
 
+        rideDetails = rideDetails.stream()
+                .filter(rd->rd.getDateOfDeparture().isAfter(LocalDateTime.now())||rd.getDateOfDeparture().isEqual(LocalDateTime.now()))
+                .sorted(Comparator.comparing(RideDetails::getDateOfDeparture))
+                .collect(Collectors.toList());
+
         model.addAttribute("offeredRides", rideDetails);
 
         String getUserIncomingRides = RestRequestBuilder.builder(WPLRestURL)
@@ -73,7 +77,10 @@ public class DashboardController {
 
         if(details!=null) {
             List<RideDetails> rideDetailsList = Arrays.asList(details);
-            rideDetailsList.sort(Comparator.comparing(RideDetails::getDateOfDeparture));
+            rideDetailsList = rideDetailsList.stream()
+                    .filter(rd->rd.getDateOfDeparture().isAfter(LocalDateTime.now())||rd.getDateOfDeparture().isEqual(LocalDateTime.now()))
+                    .sorted(Comparator.comparing(RideDetails::getDateOfDeparture))
+                    .collect(Collectors.toList());
             model.addAttribute("incomingRides", rideDetailsList);
         }
         else

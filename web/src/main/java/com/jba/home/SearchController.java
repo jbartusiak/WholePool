@@ -32,6 +32,9 @@ public class SearchController {
     @Autowired
     SourceRepository repository;
 
+    @Value("${wholepool.search.wait.time}")
+    Integer waitTime;
+
     @GetMapping("/search")
     public String search(Model model){
         String getAllRidesQuery = RestRequestBuilder
@@ -124,7 +127,7 @@ public class SearchController {
         }
 
         try{
-            Thread.sleep(10000);
+            Thread.sleep(waitTime);
         }
         catch (InterruptedException e){
             e.printStackTrace();

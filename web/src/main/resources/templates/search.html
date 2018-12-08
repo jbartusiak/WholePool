@@ -84,7 +84,9 @@
     </div>
 </div>
 
-
+<script>
+    document.getElementById('dateOfDeparture').valueAsDate = new Date();
+</script>
 
 <div th:if="${message=='no-results'}" class="container-fluid">
     <div class="page-box" style="margin-top:1em;">
