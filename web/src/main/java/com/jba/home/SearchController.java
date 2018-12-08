@@ -70,6 +70,17 @@ public class SearchController {
         @RequestParam String inputHOD,
         Model model
     ){
+        String time[] = inputHOD.split(":");
+
+        if(time[0].length()==1){
+            time[0]="0"+time[0];
+        }
+        if(time[1].length()==1){
+            time[1]="0"+time[1];
+        }
+
+        inputHOD = time[0]+":"+time[1];
+
         LocalDateTime localDateTime = null;
         if(dateOfDeparture!=null) {
             if(inputHOD!=null)
