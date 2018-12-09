@@ -113,14 +113,23 @@
                     $(element).addClass("form-ok");
                 },
                 messages:{
-                    searchFrom:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi.",
-                    searchTo:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi.",
+                    searchFrom:{
+                        required:"Wskaż miejsce odjazdu",
+                        pattern:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi."
+                    },
+                    searchTo:{
+                        required:"Wkaż miejsce przyjazdu",
+                        pattern:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi."
+                    },
                     dateOfDeparture:{
                         required: "Wybierz datę odjazdu",
                         pattern: "Wprowadź datę w formacie dzień-miesiąc-rok",
                         min: "Odjazd nie może odbyć się z datą przeszłą!"
                     },
-                    inputHOD:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM"
+                    inputHOD:{
+                        required:"Wprowadź godzinę odjazdu",
+                        pattern:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM"
+                    }
                 },
                 submitHandler:function(form){
                     console.log("Inside submitHandler()");
