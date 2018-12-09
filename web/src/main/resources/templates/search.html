@@ -49,10 +49,10 @@
                 </div>
             </div>
             <div class="form-group row">
-                <button type="button|submit" class="btn btn-md btn-wholepool btn-warning"
-                        style="padding-left:30px; padding-right:30px; text-align:center;" data-toggle="modal" data-target="#exampleModalCenter">Szukaj
+                <button type="submit" class="btn btn-md btn-wholepool btn-warning"
+                        style="padding-left:30px; padding-right:30px; text-align:center;" data-target="#modalSearchInProgress">Szukaj
                 </button>
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="modalSearchInProgress" tabindex="-1" role="dialog" aria-labelledby="modalSearchInProgressTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content text-align-center">
                             <div class="modal-header">
@@ -121,6 +121,11 @@
                         min: "Odjazd nie może odbyć się z datą przeszłą!"
                     },
                     inputHOD:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM"
+                },
+                submitHandler:function(form){
+                    console.log("Inside submitHandler()");
+                    $('#modalSearchInProgress').modal('show');
+                    form.submit();
                 }
             });
         </script>

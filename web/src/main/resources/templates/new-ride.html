@@ -163,9 +163,15 @@
                         $(element).addClass("form-ok");
                     },
                     messages:{
-                        inputAddressFrom:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi.",
-                        inputAddressTo:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi.",
-                        inputAvailableSpots:"Wprowadź ilość wolnych miejsc.",
+                        inputAddressFrom:{
+                            required:"Wskaż miejsce odjazdu",
+                            pattern:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi."
+                        },
+                        inputAddressTo:{
+                            required:"Wskaż miejsce przyjazdu",
+                            pattern:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi."
+                        },
+                        inputAvailableSpots:"Wprowadź ilość wolnych miejsc",
                         inputPrice:"Podaj cenę",
                         inputDOD:{
                             required: "Wybierz datę odjazdu",
