@@ -151,14 +151,14 @@ public class LoginController {
 
         user = deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
 
-        user.setPasswordHash(password);
+        user.setPasswordHash(hash);
 
         String changePasswordRequest = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam("users")
                 .addPathParam("password")
                 .addParam("userId", user.getUserId())
-                .addParam("hash", password)
+                .addParam("hash", hash)
                 .build();
 
         template.put(changePasswordRequest, user);

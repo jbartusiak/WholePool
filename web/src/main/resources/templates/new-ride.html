@@ -136,6 +136,16 @@
                             required:true,
                             pattern:/([01]?[0-9]|2[0-3]):[0-5][0-9]/
                         },
+                        inputDOA:{
+                            required:true,
+                            pattern:/(([12]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$)/,
+                            min:(new Date().toISOString().substring(0, 10))
+                        },
+                        inputDOD:{
+                            required:true,
+                            pattern:/(([12]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$)/,
+                            min:new Date().toISOString().substring(0, 10)
+                        },
                         inputAvailableSpots:{
                             required:true,
                             pattern:/[0-9]/
@@ -157,8 +167,16 @@
                         inputAddressTo:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi.",
                         inputAvailableSpots:"Wprowadź ilość wolnych miejsc.",
                         inputPrice:"Podaj cenę",
-                        inputDOD:"Wybierz datę odjazdu",
-                        inputDOA:"Wybierz datę przyjazdu",
+                        inputDOD:{
+                            required: "Wybierz datę odjazdu",
+                            pattern: "Wprowadź datę w formacie dzień-miesiąc-rok",
+                            min: "Odjazd nie może odbyć się z datą przeszłą!"
+                        },
+                        inputDOA:{
+                            required: "Wybierz datę odjazdu",
+                            pattern: "Wprowadź datę w formacie dzień-miesiąc-rok",
+                            min: "Przyjazd nie może mieć miejsca w przeszłości!"
+                        },
                         inputHOD:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM",
                         inputHOA:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM"
                     }
