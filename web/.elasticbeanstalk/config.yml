@@ -3,7 +3,7 @@ branch-defaults:
     environment: WholepoolWebProduction-env
     group_suffix: null
 deploy:
-  artifact: target/wholepool-web-1.0.0.jar
+  artifact: target/wholepool-web-1.0.1.jar
 global:
   application_name: wholepool-web-production
   branch: null

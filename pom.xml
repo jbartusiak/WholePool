@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <webModuleVersion>1.0.0</webModuleVersion>
+        <webModuleVersion>1.0.1</webModuleVersion>
         <restModuleVersion>1.5.0</restModuleVersion>
         <daoModuleVersion>1.5.0</daoModuleVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

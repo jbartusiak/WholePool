@@ -79,7 +79,7 @@ public class LoginController {
 
         logger.info("User found: "+userFromJson.getEmailAddress());
 
-        /*try {
+        try {
             hash=generatePasswordHash(user.getPasswordHash());
         }
         catch (NoSuchAlgorithmException e){
@@ -89,13 +89,13 @@ public class LoginController {
         }
         catch (Exception e){
             e.printStackTrace();;
-        }*/
+        }
 
         String verifyPasswordURL = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam(usersBase)
                 .addPathParam("verify")
-                .addParam("hash", user.getPasswordHash())
+                .addParam("hash", hash)
                 .addParam("userId", userFromJson.getUserId())
                 .build();
 
@@ -131,7 +131,7 @@ public class LoginController {
 
         String password = user.getPasswordHash();
 
-        /*String hash="";
+        String hash="";
 
         try {
             hash=generatePasswordHash(password);
@@ -140,7 +140,7 @@ public class LoginController {
             logger.error("Error occured while creating SHA-256 hash short for password.", e);
             attributes.addAttribute("message", "registration-error");
             return "redirect:/register";
-        }*/
+        }
 
         UserType passenger = methods.getUserTypeByName("Pasażer");
 
@@ -151,14 +151,14 @@ public class LoginController {
 
         user = deserializer.getSingleItemFor(template.postForObject(postNewUserQuery, user, String.class), User.class);
 
-        user.setPasswordHash(password);
+        user.setPasswordHash(hash);
 
         String changePasswordRequest = RestRequestBuilder
                 .builder(wholepoolBaseUrl)
                 .addPathParam("users")
                 .addPathParam("password")
                 .addParam("userId", user.getUserId())
-                .addParam("hash", password)
+                .addParam("hash", hash)
                 .build();
 
         template.put(changePasswordRequest, user);

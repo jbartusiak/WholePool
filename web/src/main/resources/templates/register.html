@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-lg-2"></div>
         <div class="col-lg-5">
-            <div class="page-box">
+            <div class="page-box" style="margin-bottom:2em;">
                 <div class="page-content">
                     <div th:if="${param.message!=null}">
                         <div th:if="${param.message[0]=='registration-required'}" class="alert alert-info fade show" role="alert" style="padding:1em 3em 0 3em;">
@@ -110,7 +110,7 @@
                                 },
                                 userName:{
                                     required:true,
-                                    pattern:/^[^0-9]+[A-Za-z0-9].{4,9}$/
+                                    pattern:/^[^0-9]+[A-Za-z0-9].{3,9}$/
                                 },
                                 passwordHash:{
                                     required:true,
@@ -132,11 +132,14 @@
                             messages:{
                                 firstName:"Wprowadź swoje imię",
                                 lastName:"Wprowadź swoje nazwisko",
-                                userName:"Wprowadź nazwę użytkownika. Nazwa uźytkownika nie moźe zaczynać się od cyfry " +
-                                    "i może zawierać małe i duże litery oraz liczby.",
+                                userName:{
+                                    required:"Wybierz nazwę użytkownika",
+                                    pattern:"Nazwa użytkownika musi mieć co najmniej 5 znaków i może zawierać małe i duże" +
+                                        " litery oraz cyfry"
+                                },
                                 emailAddress:"Wprowadź swój adres e-mail",
                                 passwordHash:"Wprowadź hasło. Hasło musi mieć co najmniej 8 znaków i może zawierać" +
-                                    " małe i duże litery, oraz cyfry.",
+                                    " małe i duże litery, oraz cyfry",
                                 passwordRepeat:"Wprowadzone hasła różnią się od siebie!",
                                 dateOfBirth:"Wybierz datę urodzenia"
                             }
@@ -157,7 +160,7 @@
                         <img src="images/sedan.png" style="margin:auto; width:100%"/>
                         <p>
                             Serwis <span style="display:inline;">Wholepool</span> pomoże Ci znaleźć przejazd dopasowany
-                            do Twoich potrzeb. Rejestracja jest jednorazowo, a niezwłocznie po jej zakończeniu możesz
+                            do Twoich potrzeb. Rejestracja jest jednorazowa, a niezwłocznie po jej zakończeniu możesz
                             korzystać z pełnych funkcjonalności witryny!
                         </p>
                     </div>

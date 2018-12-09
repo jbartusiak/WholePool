@@ -24,7 +24,7 @@
 <div class="container-fluid">
     <div class="page-box page-content"
          style="background-color:#DDD; margin-top:0; border-radius:0 0 1em 1em; padding:1em;">
-        <form action="/search/rides" method="get" style="padding-left:50px; padding-right:50px;" class="collapse show" id="collapseExample">
+        <form action="/search/rides" method="get" style="padding-left:50px; padding-right:50px;" class="collapse show" id="formSearch">
             <div class="form-group row">
                 <label for="searchFrom" class="col-sm-2 col-form-label">Miejsce odjazdu:</label>
                 <div class="col-sm-4">
@@ -45,14 +45,14 @@
                 <label for="inputHOD" class="col-sm-2 col-form-label">Odjazd po godzinie:</label>
                 <div class="col-sm-4">
                     <input type="text" name="inputHOD" class="form-control" id="inputHOD" placeholder="HH:MM"
-                           pattern="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9])">
+                           maxlength="5">
                 </div>
             </div>
             <div class="form-group row">
-                <button type="button|submit" class="btn btn-md btn-wholepool btn-warning"
-                        style="padding-left:30px; padding-right:30px; text-align:center;" data-toggle="modal" data-target="#exampleModalCenter">Szukaj
+                <button type="submit" class="btn btn-md btn-wholepool btn-warning"
+                        style="padding-left:30px; padding-right:30px; text-align:center;" data-target="#modalSearchInProgress">Szukaj
                 </button>
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="modalSearchInProgress" tabindex="-1" role="dialog" aria-labelledby="modalSearchInProgressTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content text-align-center">
                             <div class="modal-header">
@@ -74,9 +74,73 @@
             </div>
 
         </form>
+        <script>
+            $.validator.addMethod("pattern", function(value, element, param) {
+                if (this.optional(element)) {
+                    return true;
+                }
+                if (typeof param === "string") {
+                    param = new RegExp("^(?:" + param + ")$");
+                }
+                return param.test(value);
+            }, "Invalid regular expression format");
+            $('#formSearch').validate({
+                rules:{
+                    searchFrom:{
+                        required:true,
+                        pattern:/[a-z]/
+                    },
+                    searchTo:{
+                        required:true,
+                        pattern:/[a-z]/
+                    },
+                    inputHOD:{
+                        required:true,
+                        pattern:/([01]?[0-9]|2[0-3]):[0-5][0-9]/
+                    },
+                    dateOfDeparture:{
+                        required:true,
+                        pattern:/(([12]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$)/,
+                        min:new Date().toISOString().substring(0, 10)
+                    }
+                },
+                highlight: function(element) {
+                    $(element).addClass("form-error");
+                    $(element).removeClass("form-ok");
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass("form-error");
+                    $(element).addClass("form-ok");
+                },
+                messages:{
+                    searchFrom:{
+                        required:"Wskaż miejsce odjazdu",
+                        pattern:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi."
+                    },
+                    searchTo:{
+                        required:"Wkaż miejsce przyjazdu",
+                        pattern:"Wprowadzona wartość jest nieprawidłowa. Zacznij wprowadzać adres i skorzystaj z podpowiedzi."
+                    },
+                    dateOfDeparture:{
+                        required: "Wybierz datę odjazdu",
+                        pattern: "Wprowadź datę w formacie dzień-miesiąc-rok",
+                        min: "Odjazd nie może odbyć się z datą przeszłą!"
+                    },
+                    inputHOD:{
+                        required:"Wprowadź godzinę odjazdu",
+                        pattern:"Niewłaściwy format godziny. Wprowadź godzinę w formacie HH:MM"
+                    }
+                },
+                submitHandler:function(form){
+                    console.log("Inside submitHandler()");
+                    $('#modalSearchInProgress').modal('show');
+                    form.submit();
+                }
+            });
+        </script>
         <div th:if="${param.searchFrom!=null}" class="text-center">
             <button class="btn btn-block text-center" data-toggle="collapse"
-                    data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i
+                    data-target="#formSearch" aria-expanded="false" aria-controls="formSearch"><i
                     class="fas fa-caret-down" style="color:inherit; box-shadow: none; -webkit-box-shadow: none;"></i>
                 <small>&nbsp;rozwiń&nbsp;</small>
                 <i class="fas fa-caret-down" style="color:inherit;"></i></button>
@@ -84,7 +148,9 @@
     </div>
 </div>
 
-
+<script>
+    document.getElementById('dateOfDeparture').valueAsDate = new Date();
+</script>
 
 <div th:if="${message=='no-results'}" class="container-fluid">
     <div class="page-box" style="margin-top:1em;">
@@ -149,7 +215,7 @@
     $("document").ready(function () {
         var searchFrom = get('searchFrom');
         if(searchFrom!=null){
-            $('#collapseExample').removeClass('show');
+            $('#formSearch').removeClass('show');
         }
     });
     function get(name){

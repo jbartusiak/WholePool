@@ -32,6 +32,9 @@ public class SearchController {
     @Autowired
     SourceRepository repository;
 
+    @Value("${wholepool.search.wait.time}")
+    Integer waitTime;
+
     @GetMapping("/search")
     public String search(Model model){
         String getAllRidesQuery = RestRequestBuilder
@@ -67,6 +70,17 @@ public class SearchController {
         @RequestParam String inputHOD,
         Model model
     ){
+        String time[] = inputHOD.split(":");
+
+        if(time[0].length()==1){
+            time[0]="0"+time[0];
+        }
+        if(time[1].length()==1){
+            time[1]="0"+time[1];
+        }
+
+        inputHOD = time[0]+":"+time[1];
+
         LocalDateTime localDateTime = null;
         if(dateOfDeparture!=null) {
             if(inputHOD!=null)
@@ -124,7 +138,7 @@ public class SearchController {
         }
 
         try{
-            Thread.sleep(10000);
+            Thread.sleep(waitTime);
         }
         catch (InterruptedException e){
             e.printStackTrace();

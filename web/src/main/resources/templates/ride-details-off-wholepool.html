@@ -32,7 +32,7 @@
             </a>
         </div>
         <iframe th:if="${ride.getRideId().sourceId.sourceName!='blablacar.pl'}" th:src="${ride.getRideId().getDirectURL()}" style="width:100%; height:500px; border:1px solid #CCC;"></iframe>
-        <div style="text-align: center; padding: 3em;">
+        <div th:if="${ride.getRideId().sourceId.sourceName=='blablacar.pl'}" style="text-align: center; padding: 3em;">
             Ten portal nie umożliwia podglądu oferty w osadzonym oknie. Skorzystaj z przycisku powyżej, aby przejść do szczegółów oferty.
         </div>
     </div>
